@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Политика возврата средств — DJ MAP</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --gold: #c9a84c; --black: #050508; --card: #0f0f18; --border: #1a1a2e; --muted: #555566; }
+  body { background: var(--black); color: #fff; font-family: 'Space Grotesk', sans-serif; line-height: 1.7; }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px; border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 20px; color: var(--gold); text-decoration: none; letter-spacing: 2px; }
+  .nav-back { color: var(--muted); text-decoration: none; font-size: 14px; }
+  .nav-back:hover { color: #fff; }
+
+  .page { max-width: 760px; margin: 0 auto; padding: 72px 24px 100px; }
+  .page-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
+  .page-title { font-size: clamp(28px, 4vw, 48px); font-weight: 700; letter-spacing: -1px; margin-bottom: 8px; }
+  .page-date { font-size: 13px; color: var(--muted); margin-bottom: 56px; }
+
+  h2 { font-size: 20px; font-weight: 700; margin: 48px 0 16px; color: #fff; }
+  p { font-size: 15px; color: #aaa; margin-bottom: 16px; line-height: 1.8; }
+  ul { margin: 0 0 16px 20px; }
+  li { font-size: 15px; color: #aaa; margin-bottom: 10px; line-height: 1.7; }
+  strong { color: #fff; }
+  a { color: var(--gold); }
+
+  .highlight {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px 28px; margin: 24px 0;
+  }
+  .highlight p { margin: 0; }
+
+  .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .case-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+  .case-card.yes { border-color: rgba(52,211,153,0.3); }
+  .case-card.no { border-color: rgba(239,68,68,0.3); }
+  .case-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+  .case-label.yes { color: #34d399; }
+  .case-label.no { color: #f87171; }
+  .case-card ul { margin: 0; padding-left: 16px; }
+  .case-card li { font-size: 13px; margin-bottom: 8px; }
+
+  .steps { counter-reset: step; margin: 24px 0; }
+  .step { display: flex; gap: 20px; margin-bottom: 28px; align-items: flex-start; }
+  .step-num {
+    counter-increment: step;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: var(--gold);
+    flex-shrink: 0;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: #fff; }
+  .step-desc { font-size: 14px; color: #aaa; line-height: 1.7; }
+
+  .contact-box {
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 14px; padding: 28px 32px; margin-top: 48px; text-align: center;
+  }
+  .contact-box h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .contact-box p { margin-bottom: 20px; }
+  .contact-btn {
+    display: inline-block; padding: 12px 32px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--gold), #8b6914);
+    color: #000; font-weight: 700; font-size: 15px; text-decoration: none;
+  }
+
+  footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; max-width: 760px; margin: 0 auto; }
+  .footer-links { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 14px; }
+  .footer-links a:hover { color: #fff; }
+
+  @media (max-width: 600px) {
+    nav { padding: 16px 20px; }
+    .case-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">DJ MAP</a>
+  <a href="index.html" class="nav-back">← Главная</a>
+</nav>
+
+<div class="page">
+  <p class="page-label">Legal</p>
+  <h1 class="page-title">Политика возврата средств</h1>
+  <p class="page-date">Последнее обновление: 1 января 2025 года</p>
+
+  <div class="highlight">
+    <p>DJ MAP — цифровой сервис с мгновенным предоставлением доступа. Мы стараемся подходить к каждому случаю справедливо. Если что-то пошло не так — напишите нам, мы найдём решение.</p>
+  </div>
+
+  <h2>Общие условия</h2>
+  <p>DJ MAP предоставляет доступ к цифровому контенту сразу после оплаты. В соответствии с международной практикой для цифровых продуктов, <strong>возврат средств за текущий период не производится автоматически</strong> — однако мы рассматриваем каждый запрос индивидуально.</p>
+
+  <h2>Когда возврат возможен</h2>
+  <div class="case-grid">
+    <div class="case-card yes">
+      <div class="case-label yes">✓ Возврат возможен</div>
+      <ul>
+        <li>Техническая неисправность сервиса по нашей вине</li>
+        <li>Двойное списание за один период</li>
+        <li>Оплата была произведена ошибочно (в течение 24 часов)</li>
+        <li>Сервис недоступен более 72 часов подряд</li>
+        <li>Контент существенно не соответствует описанию</li>
+      </ul>
+    </div>
+    <div class="case-card no">
+      <div class="case-label no">✗ Возврат не производится</div>
+      <ul>
+        <li>Передумали использовать сервис</li>
+        <li>Не использовали подписку в течение периода</li>
+        <li>Нашли другой источник информации</li>
+        <li>Запрос после истечения периода оплаты</li>
+        <li>Нарушение условий использования</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Отмена подписки</h2>
+  <p>Вы можете отменить подписку в любое время — без штрафов и объяснений.</p>
+  <ul>
+    <li>После отмены <strong>доступ сохраняется до конца оплаченного периода</strong></li>
+    <li>Следующее списание не произойдёт</li>
+    <li>Отменить можно через личный кабинет Paddle (ссылка в письме от Paddle) или написав нам</li>
+  </ul>
+
+  <h2>Как подать запрос на возврат</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Напишите на support@djmap.app</div>
+        <div class="step-desc">Укажите email аккаунта, дату платежа и причину запроса. Прикрепите скриншот если есть.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Ожидайте ответа</div>
+        <div class="step-desc">Мы рассмотрим запрос в течение <strong>3 рабочих дней</strong> и свяжемся с вами по email.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Получите возврат</div>
+        <div class="step-desc">При одобрении возврат поступит на карту в течение <strong>5–10 рабочих дней</strong> через Paddle.</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Споры через Paddle</h2>
+  <p>Если вы не согласны с нашим решением, вы можете обратиться напрямую в Paddle — они являются Merchant of Record и обрабатывают все платежи. Paddle рассматривает споры в соответствии со своими условиями.</p>
+  <p>Сайт Paddle: <a href="https://paddle.com" target="_blank">paddle.com</a></p>
+
+  <h2>Chargeback (оспаривание через банк)</h2>
+  <p>Мы просим связаться с нами <strong>до</strong> инициирования чарджбека через банк — в большинстве случаев мы решаем вопрос быстрее и без лишних формальностей. Необоснованные чарджбеки могут привести к блокировке аккаунта.</p>
+
+  <div class="contact-box">
+    <h3>Есть вопрос по оплате?</h3>
+    <p>Напишите нам — отвечаем в течение 24 часов.</p>
+    <a href="mailto:support@djmap.app" class="contact-btn">support@djmap.app</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="index.html">Главная</a>
+    <a href="djmap-pricing.html">Тарифы</a>
+    <a href="djmap-terms.html">Условия использования</a>
+    <a href="djmap-privacy.html">Конфиденциальность</a>
+    <a href="mailto:support@djmap.app">support@djmap.app</a>
+  </div>
+</footer>
+
+</body>
+</html>
