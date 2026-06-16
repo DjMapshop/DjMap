@@ -1,181 +1,131 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Политика конфиденциальности — DJ MAP</title>
+<title>Privacy Policy — DJ MAP</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root { --gold: #c9a84c; --black: #050508; --card: #0f0f18; --border: #1a1a2e; --muted: #555566; }
   body { background: var(--black); color: #fff; font-family: 'Space Grotesk', sans-serif; line-height: 1.7; }
-
-  nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 48px; border-bottom: 1px solid var(--border);
-  }
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; border-bottom: 1px solid var(--border); }
   .nav-logo { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 20px; color: var(--gold); text-decoration: none; letter-spacing: 2px; }
   .nav-back { color: var(--muted); text-decoration: none; font-size: 14px; }
   .nav-back:hover { color: #fff; }
-
   .page { max-width: 760px; margin: 0 auto; padding: 72px 24px 100px; }
   .page-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
   .page-title { font-size: clamp(28px, 4vw, 48px); font-weight: 700; letter-spacing: -1px; margin-bottom: 8px; }
   .page-date { font-size: 13px; color: var(--muted); margin-bottom: 56px; }
-
   h2 { font-size: 20px; font-weight: 700; margin: 48px 0 16px; color: #fff; }
   p { font-size: 15px; color: #aaa; margin-bottom: 16px; line-height: 1.8; }
   ul { margin: 0 0 16px 20px; }
   li { font-size: 15px; color: #aaa; margin-bottom: 8px; line-height: 1.7; }
   strong { color: #fff; }
   a { color: var(--gold); }
-
-  .highlight {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 12px; padding: 20px 24px; margin: 24px 0;
-  }
+  .highlight { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
   .highlight p { margin: 0; }
-
   .section-block { border-left: 2px solid var(--border); padding-left: 24px; margin: 24px 0; }
-
   .table-wrap { overflow-x: auto; margin: 24px 0; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th { text-align: left; padding: 12px 16px; background: var(--card); color: var(--gold); font-weight: 600; border-bottom: 1px solid var(--border); }
   td { padding: 12px 16px; color: #aaa; border-bottom: 1px solid var(--border); vertical-align: top; }
-
   footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; max-width: 760px; margin: 0 auto; }
   .footer-links { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
   .footer-links a { color: var(--muted); text-decoration: none; font-size: 14px; }
   .footer-links a:hover { color: #fff; }
-
   @media (max-width: 600px) { nav { padding: 16px 20px; } }
 </style>
 </head>
 <body>
-
 <nav>
   <a href="index.html" class="nav-logo">DJ MAP</a>
-  <a href="index.html" class="nav-back">← Главная</a>
+  <a href="index.html" class="nav-back">← Home</a>
 </nav>
-
 <div class="page">
   <p class="page-label">Legal</p>
-  <h1 class="page-title">Политика конфиденциальности</h1>
-  <p class="page-date">Последнее обновление: 1 января 2025 года</p>
+  <h1 class="page-title">Privacy Policy</h1>
+  <p class="page-date">Last updated: January 1, 2025</p>
 
-  <div class="highlight">
-    <p>Мы серьёзно относимся к защите ваших персональных данных. Эта политика объясняет, какие данные мы собираем, как используем и как защищаем.</p>
-  </div>
+  <div class="highlight"><p>We take the protection of your personal data seriously. This policy explains what data we collect, how we use it and how we protect it.</p></div>
 
-  <h2>1. Кто мы</h2>
-  <p>DJ MAP («Компания», «мы», «нас») — сервис для диджеев, предоставляющий доступ к базе данных заведений и контактов в странах Азии. Сайт: <a href="https://djmap.app">djmap.app</a>. По вопросам конфиденциальности: <a href="mailto:evgeny.sound@gmail.com">evgeny.sound@gmail.com</a>.</p>
+  <h2>1. Who We Are</h2>
+  <p>DJ MAP ("Company", "we", "us") is a service for DJs providing access to a database of venues and contacts across Asian countries. Website: <a href="https://djmap.app">djmap.app</a>. For privacy inquiries: <a href="mailto:evgeny.sound@gmail.com">evgeny.sound@gmail.com</a>.</p>
 
-  <h2>2. Какие данные мы собираем</h2>
-
+  <h2>2. What Data We Collect</h2>
   <div class="table-wrap">
     <table>
-      <tr>
-        <th>Категория</th>
-        <th>Данные</th>
-        <th>Когда собираем</th>
-      </tr>
-      <tr>
-        <td><strong>Аккаунт</strong></td>
-        <td>Email, имя пользователя, пароль (хэш)</td>
-        <td>При регистрации</td>
-      </tr>
-      <tr>
-        <td><strong>Платёжные</strong></td>
-        <td>Email для выставления счёта, страна</td>
-        <td>При оплате через Paddle</td>
-      </tr>
-      <tr>
-        <td><strong>Использование</strong></td>
-        <td>Просмотренные страницы, поисковые запросы внутри приложения</td>
-        <td>При использовании Сервиса</td>
-      </tr>
-      <tr>
-        <td><strong>Техническое</strong></td>
-        <td>IP-адрес, тип устройства, браузер, версия приложения</td>
-        <td>Автоматически</td>
-      </tr>
+      <tr><th>Category</th><th>Data</th><th>When Collected</th></tr>
+      <tr><td><strong>Account</strong></td><td>Email, username, password (hashed)</td><td>At registration</td></tr>
+      <tr><td><strong>Payment</strong></td><td>Billing email, country</td><td>At payment via Paddle</td></tr>
+      <tr><td><strong>Usage</strong></td><td>Pages viewed, in-app search queries</td><td>While using the Service</td></tr>
+      <tr><td><strong>Technical</strong></td><td>IP address, device type, browser, app version</td><td>Automatically</td></tr>
     </table>
   </div>
+  <p><strong>What we do NOT collect:</strong> bank card details (processed exclusively by Paddle), identity documents, geolocation.</p>
 
-  <p><strong>Что мы НЕ собираем:</strong> данные банковских карт (обрабатываются исключительно Paddle), документы удостоверяющие личность, геолокацию.</p>
-
-  <h2>3. Как мы используем данные</h2>
+  <h2>3. How We Use Your Data</h2>
   <ul>
-    <li><strong>Предоставление Сервиса</strong> — создание и управление вашей учётной записью, предоставление доступа к подписке</li>
-    <li><strong>Коммуникация</strong> — отправка чеков, уведомлений о продлении подписки, ответы на обращения в поддержку</li>
-    <li><strong>Улучшение продукта</strong> — анализ использования для улучшения функциональности (в агрегированном виде)</li>
-    <li><strong>Безопасность</strong> — предотвращение мошенничества и несанкционированного доступа</li>
+    <li><strong>Providing the Service</strong> — creating and managing your account, granting subscription access</li>
+    <li><strong>Communication</strong> — sending receipts, renewal notifications, responding to support requests</li>
+    <li><strong>Product improvement</strong> — analyzing usage to improve functionality (in aggregate form)</li>
+    <li><strong>Security</strong> — fraud prevention and unauthorized access prevention</li>
   </ul>
-  <p>Мы не используем ваши данные для таргетированной рекламы и не продаём их третьим лицам.</p>
+  <p>We do not use your data for targeted advertising and do not sell it to third parties.</p>
 
-  <h2>4. Передача данных третьим лицам</h2>
-  <p>Мы передаём минимально необходимые данные только следующим партнёрам:</p>
+  <h2>4. Sharing Data with Third Parties</h2>
+  <p>We share minimal necessary data only with the following partners:</p>
+  <div class="section-block"><p><strong>Paddle</strong> (paddle.com) — payment processing. They receive: email, country. Paddle is an independent data controller and processes data according to their own privacy policy.</p></div>
+  <div class="section-block"><p><strong>Hosting provider</strong> — storage of application data on secure servers.</p></div>
+  <p>We may disclose data as required by law or court order.</p>
 
-  <div class="section-block">
-    <p><strong>Paddle</strong> (paddle.com) — обработка платежей. Получают: email, страну. Paddle является самостоятельным контролёром данных и обрабатывает их согласно своей политике конфиденциальности.</p>
-  </div>
-  <div class="section-block">
-    <p><strong>Хостинг-провайдер</strong> — хранение данных приложения на защищённых серверах.</p>
-  </div>
-
-  <p>Мы можем раскрыть данные по требованию закона или судебного решения.</p>
-
-  <h2>5. Cookies и трекинг</h2>
-  <p>Мы используем минимальное количество cookies:</p>
+  <h2>5. Cookies and Tracking</h2>
+  <p>We use a minimal number of cookies:</p>
   <ul>
-    <li><strong>Необходимые</strong> — для поддержания сессии авторизации (без них Сервис не работает)</li>
-    <li><strong>Аналитические</strong> — анонимная статистика посещаемости (без идентификации личности)</li>
+    <li><strong>Essential</strong> — to maintain your login session (the Service cannot function without these)</li>
+    <li><strong>Analytics</strong> — anonymous usage statistics (without personal identification)</li>
   </ul>
-  <p>Вы можете отключить cookies в настройках браузера, однако это может нарушить работу Сервиса.</p>
+  <p>You can disable cookies in your browser settings, though this may affect Service functionality.</p>
 
-  <h2>6. Хранение и защита данных</h2>
-  <p>Ваши данные хранятся на защищённых серверах с использованием шифрования. Пароли хранятся исключительно в виде хэша — мы не можем их восстановить.</p>
-  <p>Мы храним данные вашего аккаунта пока он активен. После удаления аккаунта данные удаляются в течение 30 дней, кроме финансовой документации (хранится 7 лет согласно требованиям законодательства).</p>
+  <h2>6. Data Storage and Security</h2>
+  <p>Your data is stored on secure servers using encryption. Passwords are stored exclusively as hashes — we cannot recover them.</p>
+  <p>We retain your account data while it is active. After account deletion, data is removed within 30 days, except financial records (retained for 7 years as required by law).</p>
 
-  <h2>7. Ваши права</h2>
-  <p>Вы имеете право:</p>
+  <h2>7. Your Rights</h2>
+  <p>You have the right to:</p>
   <ul>
-    <li><strong>Доступ</strong> — запросить копию ваших персональных данных</li>
-    <li><strong>Исправление</strong> — обновить неточные данные в настройках аккаунта</li>
-    <li><strong>Удаление</strong> — запросить удаление аккаунта и связанных данных</li>
-    <li><strong>Ограничение</strong> — ограничить обработку ваших данных</li>
-    <li><strong>Переносимость</strong> — получить данные в машиночитаемом формате</li>
+    <li><strong>Access</strong> — request a copy of your personal data</li>
+    <li><strong>Correction</strong> — update inaccurate data in your account settings</li>
+    <li><strong>Deletion</strong> — request deletion of your account and related data</li>
+    <li><strong>Restriction</strong> — restrict the processing of your data</li>
+    <li><strong>Portability</strong> — receive your data in machine-readable format</li>
   </ul>
-  <p>Для реализации прав обращайтесь: <a href="mailto:evgeny.sound@gmail.com">evgeny.sound@gmail.com</a>. Ответ — в течение 30 дней.</p>
+  <p>To exercise these rights, contact: <a href="mailto:evgeny.sound@gmail.com">evgeny.sound@gmail.com</a>. Response within 30 days.</p>
 
-  <h2>8. Несовершеннолетние</h2>
-  <p>Сервис предназначен для лиц старше 18 лет. Мы не собираем намеренно данные несовершеннолетних. Если вам стало известно, что ребёнок предоставил нам данные — сообщите на evgeny.sound@gmail.com.</p>
+  <h2>8. Minors</h2>
+  <p>The Service is intended for users aged 18 and over. We do not knowingly collect data from minors. If you become aware that a child has provided us with data, please contact evgeny.sound@gmail.com.</p>
 
-  <h2>9. Международная передача данных</h2>
-  <p>Ваши данные могут обрабатываться в странах с иными законами о защите данных. Мы обеспечиваем надлежащий уровень защиты при любой передаче данных.</p>
+  <h2>9. International Data Transfers</h2>
+  <p>Your data may be processed in countries with different data protection laws. We ensure an adequate level of protection for any data transfer.</p>
 
-  <h2>10. Изменения политики</h2>
-  <p>При существенных изменениях мы уведомим вас по email не менее чем за 14 дней. Продолжение использования Сервиса означает принятие обновлённой политики.</p>
+  <h2>10. Changes to This Policy</h2>
+  <p>For material changes, we will notify you by email at least 14 days in advance. Continued use of the Service constitutes acceptance of the updated policy.</p>
 
-  <h2>11. Контакты</h2>
+  <h2>11. Contact</h2>
   <div class="section-block">
     <p><strong>DJ MAP</strong><br>
     Email: <a href="mailto:evgeny.sound@gmail.com">evgeny.sound@gmail.com</a><br>
     Telegram: <a href="https://t.me/djmap_support">@djmap_support</a></p>
   </div>
-
 </div>
-
 <footer>
-    <div class="footer-links">
-    <a href="index.html">Главная</a>
-    <a href="djmap-pricing.html">Тарифы</a>
-    <a href="djmap-terms.html">Условия использования</a>
-    <a href="djmap-privacy.html">Конфиденциальность</a>
-    <a href="djmap-refund.html">Возврат средств</a>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="djmap-pricing.html">Pricing</a>
+    <a href="djmap-terms.html">Terms of Service</a>
+    <a href="djmap-refund.html">Refund Policy</a>
     <a href="mailto:evgeny.sound@gmail.com">evgeny.sound@gmail.com</a>
   </div>
 </footer>
-
 </body>
 </html>

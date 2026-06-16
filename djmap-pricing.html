@@ -1,39 +1,26 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Тарифы — DJ MAP</title>
+<title>Pricing — DJ MAP</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root { --gold: #c9a84c; --black: #050508; --dark: #0a0a12; --card: #0f0f18; --border: #1a1a2e; --muted: #555566; }
-  body { background: var(--black); color: #fff; font-family: 'Space Grotesk', sans-serif; line-height: 1.6; }
-
-  nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 48px; border-bottom: 1px solid var(--border);
-  }
+  :root { --gold: #c9a84c; --black: #050508; --card: #0f0f18; --border: #1a1a2e; --muted: #555566; }
+  body { background: var(--black); color: #fff; font-family: 'Space Grotesk', sans-serif; line-height: 1.7; }
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; border-bottom: 1px solid var(--border); }
   .nav-logo { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 20px; color: var(--gold); text-decoration: none; letter-spacing: 2px; }
   .nav-back { color: var(--muted); text-decoration: none; font-size: 14px; }
   .nav-back:hover { color: #fff; }
-
   .page { max-width: 900px; margin: 0 auto; padding: 80px 24px; }
   .page-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
   .page-title { font-size: clamp(32px, 5vw, 56px); font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
   .page-sub { font-size: 16px; color: var(--muted); margin-bottom: 64px; }
-
   .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-bottom: 64px; }
-  .price-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 20px; padding: 36px; position: relative;
-  }
+  .price-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 36px; position: relative; }
   .price-card.featured { border-color: var(--gold); background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02)); }
-  .price-badge {
-    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-    background: var(--gold); color: #000; font-size: 11px; font-weight: 700;
-    padding: 4px 16px; border-radius: 20px; white-space: nowrap;
-  }
+  .price-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; font-size: 11px; font-weight: 700; padding: 4px 16px; border-radius: 20px; white-space: nowrap; }
   .price-name { font-size: 12px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; }
   .price-amount { font-family: 'Space Mono', monospace; font-size: 52px; font-weight: 700; color: var(--gold); line-height: 1; }
   .price-period { font-size: 14px; color: var(--muted); display: block; margin-bottom: 12px; }
@@ -42,145 +29,103 @@
   .price-features { list-style: none; margin-bottom: 32px; }
   .price-features li { font-size: 14px; padding: 9px 0; border-bottom: 1px solid var(--border); display: flex; gap: 10px; }
   .price-features li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
-  .price-btn {
-    display: block; width: 100%; padding: 14px; border-radius: 12px;
-    text-align: center; font-weight: 700; font-size: 15px; text-decoration: none; cursor: pointer;
-  }
+  .price-btn { display: block; width: 100%; padding: 14px; border-radius: 12px; text-align: center; font-weight: 700; font-size: 15px; text-decoration: none; cursor: pointer; }
   .price-btn.gold { background: linear-gradient(135deg, var(--gold), #8b6914); color: #000; }
   .price-btn.outline { border: 1px solid var(--border); color: #fff; background: transparent; }
-
   .faq { margin-top: 64px; border-top: 1px solid var(--border); padding-top: 64px; }
   .faq-title { font-size: 28px; font-weight: 700; margin-bottom: 32px; }
   .faq-item { border-bottom: 1px solid var(--border); padding: 24px 0; }
   .faq-q { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
   .faq-a { font-size: 14px; color: var(--muted); line-height: 1.7; }
-
-  .policy-note {
-    margin-top: 48px; background: var(--card); border: 1px solid var(--border);
-    border-radius: 14px; padding: 24px 28px; font-size: 13px; color: var(--muted); line-height: 1.7;
-  }
+  .policy-note { margin-top: 48px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; font-size: 13px; color: var(--muted); line-height: 1.7; }
   .policy-note strong { color: #fff; }
-
   footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; max-width: 900px; margin: 0 auto; }
   .footer-links { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
   .footer-links a { color: var(--muted); text-decoration: none; font-size: 14px; }
-
+  .footer-links a:hover { color: #fff; }
   @media (max-width: 600px) { nav { padding: 16px 20px; } }
 </style>
 </head>
 <body>
-
 <nav>
   <a href="index.html" class="nav-logo">DJ MAP</a>
-  <a href="index.html" class="nav-back">← Главная</a>
+  <a href="index.html" class="nav-back">← Home</a>
 </nav>
-
 <div class="page">
   <p class="page-label">Pricing</p>
-  <h1 class="page-title">Тарифы и цены</h1>
-  <p class="page-sub">Выберите план подходящий вашей деятельности. Без скрытых платежей.</p>
-
+  <h1 class="page-title">Plans & Pricing</h1>
+  <p class="page-sub">Choose the plan that fits your work. No hidden fees.</p>
   <div class="pricing-grid">
-
     <div class="price-card">
-      <div class="price-name">Один город</div>
+      <div class="price-name">One City</div>
       <div class="price-amount">$50</div>
-      <span class="price-period">в месяц</span>
-      <div class="price-scope">Доступ к одному городу</div>
-      <div class="price-desc">Для диджеев, работающих преимущественно в одном городе.</div>
+      <span class="price-period">per year</span>
+      <div class="price-scope">Access to one city</div>
+      <div class="price-desc">For DJs working primarily in one city.</div>
       <ul class="price-features">
-        <li>1 город на выбор (при регистрации)</li>
-        <li>Все заведения выбранного города</li>
-        <li>Прямые контакты (WhatsApp, Telegram, Line и др.)</li>
-        <li>Шаблоны букинг-сообщений (до 10)</li>
-        <li>Раздел музыкального сервиса</li>
-        <li>Поддержка по Email и Telegram</li>
+        <li>1 city of your choice (selected at signup)</li>
+        <li>All venues in the selected city</li>
+        <li>Direct contacts (WhatsApp, Telegram, Line, etc.)</li>
+        <li>Booking message templates (up to 10)</li>
+        <li>Music service section</li>
+        <li>Email & Telegram support</li>
       </ul>
-      <a href="djmap-landing.html#pricing" class="price-btn outline">Выбрать план</a>
+      <a href="index.html#pricing" class="price-btn outline">Choose Plan</a>
     </div>
-
     <div class="price-card featured">
-      <div class="price-badge">ПОПУЛЯРНЫЙ</div>
-      <div class="price-name">Одна страна</div>
+      <div class="price-badge">MOST POPULAR</div>
+      <div class="price-name">One Country</div>
       <div class="price-amount">$100</div>
-      <span class="price-period">в месяц</span>
-      <div class="price-scope">Доступ к одной стране</div>
-      <div class="price-desc">Для активных диджеев, гастролирующих по одной стране.</div>
+      <span class="price-period">per year</span>
+      <div class="price-scope">Access to one country</div>
+      <div class="price-desc">For active DJs touring across one country.</div>
       <ul class="price-features">
-        <li>Все города одной страны (9 стран на выбор)</li>
-        <li>Все заведения выбранной страны</li>
-        <li>Прямые контакты (WhatsApp, Telegram, Line и др.)</li>
-        <li>Шаблоны букинг-сообщений (до 10)</li>
-        <li>Раздел музыкального сервиса</li>
-        <li>Поддержка по Email и Telegram</li>
+        <li>All cities in one country (9 countries available)</li>
+        <li>All venues in the selected country</li>
+        <li>Direct contacts (WhatsApp, Telegram, Line, etc.)</li>
+        <li>Booking message templates (up to 10)</li>
+        <li>Music service section</li>
+        <li>Email & Telegram support</li>
       </ul>
-      <a href="djmap-landing.html#pricing" class="price-btn gold">Выбрать план</a>
+      <a href="index.html#pricing" class="price-btn gold">Choose Plan</a>
     </div>
-
     <div class="price-card">
-      <div class="price-name">Все страны</div>
+      <div class="price-name">All Countries</div>
       <div class="price-amount">$200</div>
-      <span class="price-period">в месяц</span>
-      <div class="price-scope">Полный доступ — 9 стран</div>
-      <div class="price-desc">Для профессиональных диджеев, работающих по всей Азии.</div>
+      <span class="price-period">per year</span>
+      <div class="price-scope">Full access — 9 countries</div>
+      <div class="price-desc">For professional DJs working across all of Asia.</div>
       <ul class="price-features">
-        <li>Все 9 стран Азии</li>
-        <li>500+ заведений полная база</li>
-        <li>Прямые контакты всех заведений</li>
-        <li>Шаблоны букинг-сообщений (до 10)</li>
-        <li>Раздел музыкального сервиса</li>
-        <li>Приоритетная поддержка</li>
+        <li>All 9 Asian countries</li>
+        <li>500+ venues — full database</li>
+        <li>Direct contacts for all venues</li>
+        <li>Booking message templates (up to 10)</li>
+        <li>Music service section</li>
+        <li>Priority support</li>
       </ul>
-      <a href="djmap-landing.html#pricing" class="price-btn outline">Выбрать план</a>
+      <a href="index.html#pricing" class="price-btn outline">Choose Plan</a>
     </div>
-
   </div>
-
   <div class="policy-note">
-    <strong>Политика возврата средств:</strong> Вы можете отменить подписку в любое время. При отмене доступ сохраняется до конца оплаченного периода. Возврат средств за текущий период не предусмотрен, кроме случаев технических неисправностей на нашей стороне. По вопросам возврата обращайтесь на <strong>evgeny.sound@gmail.com</strong>.
+    <strong>Refund Policy:</strong> You can cancel your subscription at any time. Upon cancellation, access remains active until the end of the paid period. Refunds for the current period are not provided, except in cases of technical failure on our end. For refund requests, contact <strong>evgeny.sound@gmail.com</strong>.
   </div>
-
   <div class="faq">
-    <h2 class="faq-title">Частые вопросы</h2>
-
-    <div class="faq-item">
-      <div class="faq-q">Как я получаю доступ к контактам?</div>
-      <div class="faq-a">После оплаты подписки в мобильном приложении DJ MAP разблокируется кнопка «Контакты» на странице каждого заведения. Вы видите имена, роли и все мессенджеры контактных лиц.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q">Можно ли сменить страну после оплаты?</div>
-      <div class="faq-a">Для плана «Один город» — смена города возможна раз в месяц через поддержку. Для плана «Одна страна» — смена страны возможна при следующем продлении.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q">Как часто обновляется база?</div>
-      <div class="faq-a">База обновляется регулярно. Новые заведения добавляются еженедельно, контактные данные проверяются ежемесячно.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q">Как отменить подписку?</div>
-      <div class="faq-a">Отмена через личный кабинет Paddle (ссылка приходит на email после оплаты) или через обращение в поддержку на evgeny.sound@gmail.com. Доступ сохраняется до конца оплаченного периода.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q">Какие способы оплаты принимаются?</div>
-      <div class="faq-a">Visa, Mastercard, American Express — карты со всего мира. Оплата обрабатывается через Paddle, международный сервис для цифровых продуктов.</div>
-    </div>
-
+    <h2 class="faq-title">Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q">How do I access the contacts?</div><div class="faq-a">After subscribing, the "Contacts" button is unlocked on each venue page in the DJ MAP mobile app. You can see names, roles and all messenger contacts.</div></div>
+    <div class="faq-item"><div class="faq-q">Can I change my country after subscribing?</div><div class="faq-a">For the "One City" plan — city changes are available once per month via support. For the "One Country" plan — country changes are available at the next renewal.</div></div>
+    <div class="faq-item"><div class="faq-q">How often is the database updated?</div><div class="faq-a">The database is updated regularly. New venues are added weekly, contact details are verified monthly.</div></div>
+    <div class="faq-item"><div class="faq-q">How do I cancel my subscription?</div><div class="faq-a">Cancel via your Paddle account (link sent to your email after payment) or by contacting support at evgeny.sound@gmail.com. Access remains active until the end of the paid period.</div></div>
+    <div class="faq-item"><div class="faq-q">What payment methods are accepted?</div><div class="faq-a">Visa, Mastercard, American Express — cards from anywhere in the world. Payments are processed through Paddle, an international digital products payment service.</div></div>
   </div>
 </div>
-
 <footer>
-    <div class="footer-links">
-    <a href="index.html">Главная</a>
-    <a href="djmap-pricing.html">Тарифы</a>
-    <a href="djmap-terms.html">Условия использования</a>
-    <a href="djmap-privacy.html">Конфиденциальность</a>
-    <a href="djmap-refund.html">Возврат средств</a>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="djmap-terms.html">Terms of Service</a>
+    <a href="djmap-privacy.html">Privacy Policy</a>
+    <a href="djmap-refund.html">Refund Policy</a>
     <a href="mailto:evgeny.sound@gmail.com">evgeny.sound@gmail.com</a>
   </div>
 </footer>
-
 </body>
 </html>
