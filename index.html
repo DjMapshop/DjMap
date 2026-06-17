@@ -236,6 +236,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .method-btn:hover{border-color:rgba(201,168,76,.4);}
 .payment-back{width:100%;padding:12px;border-radius:14px;background:transparent;color:#333;border:1px solid #1a1a2e;cursor:pointer;font-family:'Inter',sans-serif;}
 </style>
+<script src="data.js"></script>
 </head>
 <body>
 
@@ -570,6 +571,22 @@ let editingAdminItem = null;
 //  NAVIGATION
 // ══════════════════════════════════════════════
 function enterApp(pro) {
+  // Загружаем данные из Google Sheets если доступны
+  if (window.sheetDataReady) {
+    window.sheetDataReady.then(() => {
+      if (window.venuesFromSheet && window.venuesFromSheet.length > 0) {
+        venues = window.venuesFromSheet;
+      }
+      if (window.servicesFromSheet && window.servicesFromSheet.length > 0) {
+        services = window.servicesFromSheet;
+      }
+      renderCountriesGrid();
+      renderServiceCountriesGrid();
+      renderSaved();
+      renderProfileStats();
+      document.getElementById('venueCountBadge').textContent = `● ${venues.length} venue`;
+    });
+  }
   isPro = pro;
   document.getElementById('splash').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
