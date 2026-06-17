@@ -51,11 +51,9 @@ async function tryFetch(url) {
 async function loadSheetData() {
   let text = '';
   try {
-    // Пробуем первый вариант URL
     text = await tryFetch(SHEET_CSV_URL);
   } catch(e1) {
     try {
-      // Пробуем второй вариант
       text = await tryFetch(SHEET_CSV_URL2);
     } catch(e2) {
       console.warn('⚠️ Google Sheets недоступен:', e2.message);
@@ -110,6 +108,12 @@ async function loadSheetData() {
     const isPremiumRaw = get('isPremium') || get('ispremium');
     const isPremium = ['true','1','yes','да'].includes(isPremiumRaw.toLowerCase());
 
+    // ── PHOTOS (колонки V, W, X в таблице) ──
+    const photo1 = get('photo1');
+    const photo2 = get('photo2');
+    const photo3 = get('photo3');
+    const photos = [photo1, photo2, photo3].filter(Boolean);
+
     return {
       id: 1000 + idx,
       name, country, city: get('city'), area: get('area'), type,
@@ -122,6 +126,7 @@ async function loadSheetData() {
       mapurl: get('mapurl'),
       brands: get('brands') || '',
       workingHours: get('workingHours') || get('workinghours') || '',
+      photos, // массив URL фотографий (0–3 штуки)
     };
   }).filter(Boolean);
 

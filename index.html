@@ -776,11 +776,21 @@ function venueCardHTML(v) {
   const grads = TYPE_GRADIENTS[v.type] || TYPE_GRADIENTS['Nightclub'];
   const emojis = PHOTO_EMOJIS[v.type] || ['🎵','🎶','🎛️'];
   const color = TYPE_COLORS[v.type] || GOLD;
-  const isSaved = savedIds.includes(v.id);
-  const slides = grads.map((g,i) =>
-    `<div class="carousel-slide ${i===0?'active':''}" style="background:${g}"><span class="carousel-emoji">${emojis[i]}</span></div>`).join('');
-  const dots = grads.map((_,i) =>
+  const photos = v.photos && v.photos.length ? v.photos : [];
+
+  // Если есть фото — показываем фото, иначе emoji-градиент
+  const slideCount = photos.length > 0 ? photos.length : grads.length;
+  const slides = photos.length > 0
+    ? photos.map((url, i) =>
+        `<div class="carousel-slide ${i===0?'active':''}" style="background:#0a0a10;">
+          <img src="${url}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.style.background='${grads[i%grads.length]}';this.style.display='none';">
+        </div>`).join('')
+    : grads.map((g, i) =>
+        `<div class="carousel-slide ${i===0?'active':''}" style="background:${g}"><span class="carousel-emoji">${emojis[i]}</span></div>`).join('');
+
+  const dots = Array.from({length: slideCount}, (_, i) =>
     `<div class="carousel-dot" style="width:${i===0?14:5}px;"></div>`).join('');
+
   return `<div class="venue-card ${v.isPremium?'premium':''}" onclick="openVenue(${v.id})">
     <div class="venue-carousel" id="vc_${v.id}">
       ${slides}
@@ -807,28 +817,68 @@ function openVenue(id) {
   const grads = TYPE_GRADIENTS[v.type] || TYPE_GRADIENTS['Nightclub'];
   const emojis = PHOTO_EMOJIS[v.type] || ['🎵','🎶','🎛️'];
   const color = TYPE_COLORS[v.type] || GOLD;
+  const photos = v.photos && v.photos.length ? v.photos : [];
   let slideIdx = 0;
 
-  // Carousel
-  const slides = grads.map((g,i) =>
-    `<div class="detail-slide ${i===0?'active':''}" style="background:${g}" id="ds_${id}_${i}">
-      <span class="detail-emoji">${emojis[i]}</span>
-      <span class="detail-name-bg">${v.name.toUpperCase()}</span>
-    </div>`).join('');
-  const dots = grads.map((_,i) =>
+  // Carousel — реальные фото если есть, иначе emoji-градиент
+  const slideCount = photos.length > 0 ? photos.length : grads.length;
+  const slides = photos.length > 0
+    ? photos.map((url, i) =>
+        `<div class="detail-slide ${i===0?'active':''}" style="background:#0a0a10;position:relative;" id="ds_${id}_${i}">
+          <img src="${url}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" onerror="this.parentElement.style.background='${grads[i%grads.length]}';this.style.display='none';">
+        </div>`).join('')
+    : grads.map((g, i) =>
+        `<div class="detail-slide ${i===0?'active':''}" style="background:${g}" id="ds_${id}_${i}">
+          <span class="detail-emoji">${emojis[i]}</span>
+          <span class="detail-name-bg">${v.name.toUpperCase()}</span>
+        </div>`).join('');
+  const dots = Array.from({length: slideCount}, (_, i) =>
     `<div class="detail-dot" id="dd_${id}_${i}" style="width:${i===0?20:6}px;${i===0?'background:#fff;':''}"></div>`).join('');
 
   document.getElementById('detailCarousel').innerHTML = `
     ${slides}
-    <button class="detail-nav-btn prev" onclick="detailPrev(${id},${grads.length})">‹</button>
-    <button class="detail-nav-btn next" onclick="detailNext(${id},${grads.length})">›</button>
+    <button class="detail-nav-btn prev" onclick="detailPrev(${id},${slideCount})">‹</button>
+    <button class="detail-nav-btn next" onclick="detailNext(${id},${slideCount})">›</button>
     <div class="detail-dots" id="detailDots_${id}">${dots}</div>
-    <div class="detail-counter" id="detailCounter_${id}">1/${grads.length}</div>`;
+    <div class="detail-counter" id="detailCounter_${id}">1/${slideCount}</div>`;
 
   // Body
   const isSaved = savedIds.includes(v.id);
   const contacts = (v.contacts||[]).filter(c=>c.name);
-  const CHANNELS = [{key:'whatsapp',icon:'💬',label:'WhatsApp'},{key:'telegram',icon:'✈️',label:'Telegram'},{key:'line',icon:'💚',label:'Line'},{key:'instagram',icon:'📸',label:'Instagram'},{key:'facebook',icon:'👤',label:'Facebook'},{key:'email',icon:'✉️',label:'Email'}];
+  function channelUrl(key, val) {
+    const v = val.trim();
+    if (key === 'whatsapp') {
+      const num = v.replace(/[^0-9+]/g, '');
+      return 'https://wa.me/' + num;
+    }
+    if (key === 'telegram') {
+      const handle = v.replace(/^@/, '');
+      return 'https://t.me/' + handle;
+    }
+    if (key === 'line') {
+      return v.startsWith('http') ? v : 'https://line.me/ti/p/~' + v;
+    }
+    if (key === 'instagram') {
+      const handle = v.replace(/^@/, '').replace(/^https?:\/\/(www\.)?instagram\.com\//, '').replace(/\/$/, '');
+      return 'https://instagram.com/' + handle;
+    }
+    if (key === 'facebook') {
+      return v.startsWith('http') ? v : 'https://facebook.com/' + v;
+    }
+    if (key === 'email') {
+      return 'mailto:' + v;
+    }
+    return '#';
+  }
+
+  const CHANNELS = [
+    {key:'whatsapp', icon:'💬', label:'WhatsApp'},
+    {key:'telegram', icon:'✈️', label:'Telegram'},
+    {key:'line',     icon:'💚', label:'Line'},
+    {key:'instagram',icon:'📸', label:'Instagram'},
+    {key:'facebook', icon:'👤', label:'Facebook'},
+    {key:'email',    icon:'✉️', label:'Email'},
+  ];
 
   let contactsHTML = contacts.map(c => {
     const filled = CHANNELS.filter(ch => c[ch.key] && c[ch.key].trim());
@@ -838,11 +888,13 @@ function openVenue(id) {
         <div class="contact-avatar">👤</div>
         <div><div class="contact-name">${c.name}</div><span class="contact-role">${c.role}</span></div>
       </div>
-      ${isPro ? filled.map(ch => `<div class="channel-row">
-        <span class="channel-icon">${ch.icon}</span>
-        <div style="flex:1"><div class="channel-label">${ch.label.toUpperCase()}</div><div class="channel-val">${c[ch.key]}</div></div>
-        <span class="channel-arrow">→</span>
-      </div>`).join('') : '<div style="color:#555;font-size:12px;padding:8px;text-align:center;">🔒 Доступно в PRO версии</div>'}
+      ${isPro ? filled.map(ch => `<a href="${channelUrl(ch.key, c[ch.key])}" target="_blank" rel="noopener" style="text-decoration:none;display:block;">
+        <div class="channel-row" style="cursor:pointer;active:opacity:.7;">
+          <span class="channel-icon">${ch.icon}</span>
+          <div style="flex:1"><div class="channel-label">${ch.label.toUpperCase()}</div><div class="channel-val">${c[ch.key]}</div></div>
+          <span class="channel-arrow" style="color:var(--gold);">→</span>
+        </div>
+      </a>`).join('') : '<div style="color:#555;font-size:12px;padding:8px;text-align:center;">🔒 Доступно в PRO версии</div>'}
     </div>`;
   }).join('');
 
