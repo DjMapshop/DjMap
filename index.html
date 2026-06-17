@@ -782,8 +782,9 @@ function venueCardHTML(v) {
   const slideCount = photos.length > 0 ? photos.length : grads.length;
   const slides = photos.length > 0
     ? photos.map((url, i) =>
-        `<div class="carousel-slide ${i===0?'active':''}" style="background:#0a0a10;">
-          <img src="${url}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.style.background='${grads[i%grads.length]}';this.style.display='none';">
+        `<div class="carousel-slide ${i===0?'active':''}" style="background:${grads[i%grads.length]};position:relative;">
+          <img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">
+          <span class="carousel-emoji" style="position:relative;z-index:1;">${emojis[i%emojis.length]}</span>
         </div>`).join('')
     : grads.map((g, i) =>
         `<div class="carousel-slide ${i===0?'active':''}" style="background:${g}"><span class="carousel-emoji">${emojis[i]}</span></div>`).join('');
@@ -824,8 +825,10 @@ function openVenue(id) {
   const slideCount = photos.length > 0 ? photos.length : grads.length;
   const slides = photos.length > 0
     ? photos.map((url, i) =>
-        `<div class="detail-slide ${i===0?'active':''}" style="background:#0a0a10;position:relative;" id="ds_${id}_${i}">
-          <img src="${url}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" onerror="this.parentElement.style.background='${grads[i%grads.length]}';this.style.display='none';">
+        `<div class="detail-slide ${i===0?'active':''}" style="background:${grads[i%grads.length]};position:relative;" id="ds_${id}_${i}">
+          <img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">
+          <span class="detail-emoji" style="position:relative;z-index:1;">${emojis[i%emojis.length]}</span>
+          <span class="detail-name-bg" style="position:relative;z-index:1;">${v.name.toUpperCase()}</span>
         </div>`).join('')
     : grads.map((g, i) =>
         `<div class="detail-slide ${i===0?'active':''}" style="background:${g}" id="ds_${id}_${i}">
