@@ -113,7 +113,7 @@ async function loadSheetData() {
       if (!url) return '';
       // https://drive.google.com/file/d/FILE_ID/view... → прямая ссылка
       const m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-      if (m) return 'https://lh3.googleusercontent.com/d/' + m[1];
+      if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w800';
       return url;
     }
     const photo1 = driveUrl(get('photo1'));
