@@ -527,25 +527,9 @@ const TYPE_COLORS = {
   'Music Shop':'#3b82f6','Service Center':'#d97706'
 };
 
-let venues = [
-  {id:1,country:'thailand',name:'ONYX Club',type:'Nightclub',city:'Bangkok',area:'RCA',rating:4.8,capacity:1200,genre:['Techno','House'],description:'Крупнейший клуб Бангкока с мощной звуковой системой L-Acoustics.',instagram:'@onyxbkk',contacts:[{name:'Aroon Srisuk',role:'Директор',whatsapp:'+66 81 234 5678',telegram:'@aroon_onyx',email:'booking@onyxbkk.com'}],fee:'฿15k–฿80k',nights:['Fri','Sat'],isPremium:true},
-  {id:2,country:'thailand',name:'Café del Mar Samui',type:'Beach Club',city:'Koh Samui',area:'Chaweng Beach',rating:4.6,capacity:600,genre:['Sunset House','Afro'],description:'Иконический бич-клуб с видом на закат.',instagram:'@cafedelmarsamui',contacts:[{name:'Marco Ricci',role:'Менеджер',whatsapp:'+66 77 123 4567',telegram:'',email:'dj@cafedelmar-samui.com'},{name:'Nong Rattana',role:'Арт-директор',whatsapp:'+66 81 999 0000',telegram:'@nong_cdm',email:'art@cafedelmar.com'}],fee:'฿8k–฿35k',nights:['Daily'],isPremium:true},
-  {id:3,country:'thailand',name:'Above Eleven',type:'Rooftop Bar',city:'Bangkok',area:'Sukhumvit 11',rating:4.7,capacity:300,genre:['Nu-Jazz','Lounge'],description:'Rooftop на 33 этаже с панорамой Бангкока.',instagram:'@aboveeleven',contacts:[{name:'Siam Wongsawat',role:'Управляющий',whatsapp:'+66 82 456 7890',telegram:'',email:'events@aboveeleven.com'}],fee:'฿5k–฿20k',nights:['Wed','Thu','Fri','Sat'],isPremium:false},
-  {id:4,country:'vietnam',name:'Envy Club',type:'Nightclub',city:'Ho Chi Minh City',area:'Bui Vien',rating:4.5,capacity:800,genre:['EDM','Hip-Hop'],description:'Главный клуб Сайгона.',instagram:'@envyclubvn',contacts:[{name:'Nguyen Minh Duc',role:'Директор',whatsapp:'+84 90 123 4567',telegram:'@duc_envy',email:'booking@envyclub.vn'}],fee:'₫3M–₫15M',nights:['Fri','Sat','Sun'],isPremium:true},
-  {id:5,country:'indonesia',name:'Potato Head Beach Club',type:'Beach Club',city:'Bali',area:'Seminyak',rating:4.9,capacity:1500,genre:['House','Afro','Balearic'],description:'Один из лучших бич-клубов Азии.',instagram:'@potatoheadbali',contacts:[{name:'I Made Wirawan',role:'Арт-директор',whatsapp:'+62 361 473 7979',telegram:'',email:'music@ptthead.com'}],fee:'Rp5M–Rp30M',nights:['Daily'],isPremium:true},
-  {id:6,country:'japan',name:'Womb Tokyo',type:'Nightclub',city:'Tokyo',area:'Shibuya',rating:4.8,capacity:700,genre:['Techno','Drum & Bass'],description:'Легендарный клуб Токио с 4 танцполами.',instagram:'@womb_tokyo',contacts:[{name:'Takeshi Yamamoto',role:'Директор',whatsapp:'',telegram:'@takeshi_womb',email:'booking@womb.co.jp'}],fee:'¥80k–¥500k',nights:['Fri','Sat'],isPremium:true},
-  {id:7,country:'korea',name:'Octagon Seoul',type:'Nightclub',city:'Seoul',area:'Gangnam',rating:4.7,capacity:2000,genre:['EDM','House','Techno'],description:'Неоднократно в топ-10 клубов мира.',instagram:'@octagonseoul',contacts:[{name:'Park Ji-hoon',role:'Менеджер',whatsapp:'',telegram:'@jihoon_octagon',email:'booking@octagonseoul.com'}],fee:'₩500k–₩3M',nights:['Fri','Sat'],isPremium:true},
-  {id:8,country:'malaysia',name:'Zouk Club KL',type:'Nightclub',city:'Kuala Lumpur',area:'TREC Hub',rating:4.6,capacity:1800,genre:['House','Techno'],description:'Флагман азиатской клубной сцены. 5 танцполов.',instagram:'@zoukclubkl',contacts:[{name:'Adrian Lim',role:'Управляющий',whatsapp:'+60 3 2110 6688',telegram:'',email:'bookings@zoukclub.com.my'}],fee:'RM2k–RM15k',nights:['Fri','Sat','Sun'],isPremium:true},
-];
-
-let services = [
-  {id:101,country:'thailand',name:'Music Arms Bangkok',type:'Music Shop',city:'Bangkok',area:'Siam Square',rating:4.7,description:'Крупнейший музыкальный магазин Таиланда. Pioneer, NI, Technics.',instagram:'@musicarmsbkk',contacts:[{name:'Somchai P.',role:'Менеджер',whatsapp:'+66 83 111 2222',telegram:'',email:'info@musicarms.co.th'}],brands:'Pioneer DJ, Native Instruments, Rane',workingHours:'10:00–20:00 ежедневно',isPremium:true},
-  {id:102,country:'thailand',name:'DJ Pro Service BKK',type:'Service Center',city:'Bangkok',area:'Pratunam',rating:4.5,description:'Авторизованный сервисный центр Pioneer DJ и Denon.',instagram:'@djproservicebkk',contacts:[{name:'Nattapol K.',role:'Управляющий',whatsapp:'+66 84 333 4444',telegram:'@djproservice',email:'repair@djproservice.co.th'}],brands:'Pioneer DJ, Denon DJ',workingHours:'09:00–18:00 пн–сб',isPremium:false},
-  {id:103,country:'indonesia',name:'Bali DJ Store',type:'Music Shop',city:'Bali',area:'Kuta',rating:4.4,description:'Музыкальное оборудование для диджеев на Бали.',instagram:'@balidjstore',contacts:[{name:'Wayan Arta',role:'Директор',whatsapp:'+62 812 345 6789',telegram:'',email:'info@balidjstore.com'}],brands:'Pioneer DJ, Roland, Behringer',workingHours:'10:00–21:00 ежедневно',isPremium:false},
-  {id:104,country:'japan',name:'Disc Union Tokyo',type:'Music Shop',city:'Tokyo',area:'Shinjuku',rating:4.9,description:'Легендарный магазин винила и DJ-оборудования в Токио.',instagram:'@discunion_jp',contacts:[{name:'Kenji Mori',role:'Менеджер',whatsapp:'',telegram:'',email:'info@discunion.co.jp'}],brands:'Technics, Pioneer DJ, Vinyl',workingHours:'11:00–21:00 ежедневно',isPremium:true},
-];
-
-let savedIds = [2,5];
+let venues = [];
+let services = [];
+let savedIds = [];
 let isPro = false;
 let activeTab = 'countries';
 let selectedCountry = null;
