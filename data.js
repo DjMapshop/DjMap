@@ -109,9 +109,16 @@ async function loadSheetData() {
     const isPremium = ['true','1','yes','да'].includes(isPremiumRaw.toLowerCase());
 
     // ── PHOTOS (колонки V, W, X в таблице) ──
-    const photo1 = get('photo1');
-    const photo2 = get('photo2');
-    const photo3 = get('photo3');
+    function driveUrl(url) {
+      if (!url) return '';
+      // https://drive.google.com/file/d/FILE_ID/view... → прямая ссылка
+      const m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      if (m) return 'https://lh3.googleusercontent.com/d/' + m[1];
+      return url;
+    }
+    const photo1 = driveUrl(get('photo1'));
+    const photo2 = driveUrl(get('photo2'));
+    const photo3 = driveUrl(get('photo3'));
     const photos = [photo1, photo2, photo3].filter(Boolean);
 
     return {
