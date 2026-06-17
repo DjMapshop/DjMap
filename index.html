@@ -92,7 +92,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .venue-card{background:#0f0f18;border:1px solid #1a1a2e;border-radius:14px;margin-bottom:11px;cursor:pointer;overflow:hidden;transition:border-color .2s;}
 .venue-card:hover{border-color:rgba(201,168,76,.3);}
 .venue-card.premium{border-color:rgba(201,168,76,.3);}
-.venue-carousel{position:relative;width:100%;height:118px;border-radius:12px 12px 0 0;overflow:hidden;}
+.venue-carousel{position:relative;width:100%;height:200px;border-radius:12px 12px 0 0;overflow:hidden;}
 .carousel-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;}
 .carousel-slide.active{opacity:1;}
 .carousel-emoji{font-size:34px;}
@@ -783,8 +783,7 @@ function venueCardHTML(v) {
   const slides = photos.length > 0
     ? photos.map((url, i) =>
         `<div class="carousel-slide ${i===0?'active':''}" style="background:${grads[i%grads.length]};position:relative;">
-          <img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">
-          <span class="carousel-emoji" style="position:relative;z-index:1;">${emojis[i%emojis.length]}</span>
+          <img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         </div>`).join('')
     : grads.map((g, i) =>
         `<div class="carousel-slide ${i===0?'active':''}" style="background:${g}"><span class="carousel-emoji">${emojis[i]}</span></div>`).join('');
@@ -793,7 +792,10 @@ function venueCardHTML(v) {
     `<div class="carousel-dot" style="width:${i===0?14:5}px;"></div>`).join('');
 
   return `<div class="venue-card ${v.isPremium?'premium':''}" onclick="openVenue(${v.id})">
-    <div class="venue-carousel" id="vc_${v.id}">
+    <div class="venue-carousel" id="vc_${v.id}" 
+      data-idx="0" data-count="${slideCount}"
+      ontouchstart="vcTouchStart(event,this)" 
+      ontouchend="vcTouchEnd(event,this)">
       ${slides}
       <div class="carousel-dots" id="vcd_${v.id}">${dots}</div>
       ${v.isPremium?'<div class="hot-badge">HOT</div>':''}
@@ -826,9 +828,7 @@ function openVenue(id) {
   const slides = photos.length > 0
     ? photos.map((url, i) =>
         `<div class="detail-slide ${i===0?'active':''}" style="background:${grads[i%grads.length]};position:relative;" id="ds_${id}_${i}">
-          <img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">
-          <span class="detail-emoji" style="position:relative;z-index:1;">${emojis[i%emojis.length]}</span>
-          <span class="detail-name-bg" style="position:relative;z-index:1;">${v.name.toUpperCase()}</span>
+          <img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         </div>`).join('')
     : grads.map((g, i) =>
         `<div class="detail-slide ${i===0?'active':''}" style="background:${g}" id="ds_${id}_${i}">
@@ -1194,6 +1194,27 @@ function showToast(msg) {
   t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ══════════════════════════════════════════════
+//  VENUE CARD SWIPE
+// ══════════════════════════════════════════════
+let vcTouchX = 0;
+function vcTouchStart(e, el) {
+  vcTouchX = e.touches[0].clientX;
+}
+function vcTouchEnd(e, el) {
+  const diff = vcTouchX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) < 30) return;
+  const id = el.id.replace('vc_','');
+  const count = parseInt(el.dataset.count);
+  let idx = parseInt(el.dataset.idx);
+  if (diff > 0) idx = Math.min(idx + 1, count - 1);
+  else idx = Math.max(idx - 1, 0);
+  el.dataset.idx = idx;
+  el.querySelectorAll('.carousel-slide').forEach((s,i) => s.classList.toggle('active', i===idx));
+  const dotsEl = document.getElementById('vcd_'+id);
+  if (dotsEl) dotsEl.querySelectorAll('.carousel-dot').forEach((d,i) => d.style.width = i===idx?'14px':'5px');
 }
 
 // ══════════════════════════════════════════════
