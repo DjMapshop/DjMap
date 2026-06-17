@@ -861,10 +861,12 @@ function openVenue(id) {
     </div>
     ${v.description?`<div class="detail-section"><div class="detail-section-label">О заведении</div><div class="detail-desc">${v.description}</div></div>`:''}
     ${v.genre&&v.genre.length?`<div class="detail-section"><div class="detail-section-label">Жанры</div><div class="tag-row">${v.genre.map(g=>`<span class="tag">${g}</span>`).join('')}</div></div>`:''}
-    ${v.fee?`<div class="detail-section"><div class="detail-section-label">Гонорар</div><div class="detail-desc" style="color:${color};">${v.fee}</div></div>`:''}
+    ${v.fee?`<div class="detail-section"><div class="detail-section-label">Гонорар</div><div class="detail-desc" style="color:${color};">${v.fee} THB</div></div>`:''}
     ${v.nights&&v.nights.length?`<div class="detail-section"><div class="detail-section-label">Рабочие дни</div><div class="tag-row">${v.nights.map(n=>`<span class="tag">${n}</span>`).join('')}</div></div>`:''}
     ${v.brands?`<div class="detail-section"><div class="detail-section-label">Бренды</div><div class="detail-desc" style="color:#60a5fa;">${v.brands}</div></div>`:''}
     ${v.workingHours?`<div class="detail-section"><div class="detail-section-label">Часы работы</div><div class="detail-desc">${v.workingHours}</div></div>`:''}
+    ${v.venueInstagram?`<div class="detail-section"><div class="detail-section-label">Instagram заведения</div><div class="detail-desc"><a href="https://instagram.com/${v.venueInstagram.replace('@','')}" target="_blank" style="color:#c9a84c;text-decoration:none;">📸 ${v.venueInstagram}</a></div></div>`:''}
+    ${v.mapurl?`<div class="detail-section"><div class="detail-section-label">Локация</div><div class="detail-desc"><a href="${v.mapurl}" target="_blank" style="color:#60a5fa;text-decoration:none;">📍 Открыть на карте</a></div></div>`:''}
     ${contactsHTML?`<div style="margin-top:4px;"><div style="font-size:10px;color:${color};letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Контакты</div>${contactsHTML}</div>`:''}`;
 
   document.getElementById('venue-detail').classList.add('open');
