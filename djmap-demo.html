@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>DJ MAP — Live Demo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --gold: #c9a84c; --black: #050508; --card: #0f0f18; --card2: #12121e; --border: #1a1a2e; --muted: #555566; }
+  body { background: var(--black); color: #fff; font-family: 'Space Grotesk', sans-serif; min-height: 100vh; }
+
+  /* PHONE FRAME */
+  .frame-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 20px; background: #020204; }
+  .phone { width: 390px; min-height: 780px; background: var(--black); border-radius: 48px; border: 1px solid #1a1a2e; overflow: hidden; position: relative; box-shadow: 0 0 80px rgba(201,168,76,0.08), 0 40px 100px rgba(0,0,0,0.8); display: flex; flex-direction: column; }
+
+  /* NOTCH */
+  .notch { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; flex-shrink: 0; }
+  .notch-time { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; }
+  .notch-icons { display: flex; gap: 6px; align-items: center; }
+  .notch-icons span { font-size: 12px; color: #888; }
+
+  /* HEADER */
+  .app-header { padding: 8px 20px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .logo-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #1a1400, #3d2e00); border: 1px solid rgba(201,168,76,0.4); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .logo-text { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 16px; letter-spacing: 1px; }
+  .logo-sub { font-size: 8px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; display: block; line-height: 1; }
+  .demo-badge { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; }
+
+  /* DEMO BANNER */
+  .demo-banner { background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04)); border-bottom: 1px solid rgba(201,168,76,0.2); padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .demo-banner-text { font-size: 11px; color: #888; }
+  .demo-banner-text strong { color: var(--gold); }
+  .upgrade-btn { background: linear-gradient(135deg, var(--gold), #8b6914); color: #000; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 8px; text-decoration: none; white-space: nowrap; }
+
+  /* CONTENT */
+  .content { flex: 1; overflow-y: auto; padding-bottom: 70px; }
+
+  /* TAB CONTENT */
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* SECTION HEADER */
+  .section-header { padding: 16px 20px 8px; }
+  .section-label { font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+  .section-title { font-size: 20px; font-weight: 700; }
+
+  /* VENUE CARD */
+  .venue-card { margin: 0 16px 12px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .venue-img { height: 140px; background: linear-gradient(135deg, #0f0f18, #1a1428); display: flex; align-items: center; justify-content: center; font-size: 48px; position: relative; }
+  .venue-type-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); border: 1px solid var(--border); color: #888; font-size: 10px; padding: 3px 8px; border-radius: 6px; }
+  .venue-rating { position: absolute; top: 10px; right: 10px; background: rgba(201,168,76,0.2); border: 1px solid rgba(201,168,76,0.4); color: var(--gold); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+  .venue-body { padding: 14px 16px; }
+  .venue-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .venue-location { font-size: 12px; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 4px; }
+  .venue-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .venue-tag { background: #0a0a14; border: 1px solid var(--border); color: #555; font-size: 10px; padding: 3px 8px; border-radius: 6px; }
+  .venue-actions { display: flex; gap: 8px; }
+  .btn-contact { flex: 1; background: linear-gradient(135deg, var(--gold), #8b6914); color: #000; font-weight: 700; font-size: 13px; padding: 10px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+  .btn-lock { flex: 1; background: #0f0f18; border: 1px solid var(--border); color: var(--muted); font-size: 13px; padding: 10px; border-radius: 10px; cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .btn-map { width: 40px; background: #0f0f18; border: 1px solid var(--border); color: var(--muted); font-size: 16px; padding: 10px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  /* CONTACT MODAL */
+  .modal-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.85); z-index: 50; align-items: flex-end; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #0d0d1a; border-radius: 24px 24px 0 0; padding: 24px 20px 40px; width: 100%; border-top: 1px solid var(--border); }
+  .modal-handle { width: 40px; height: 4px; background: #2a2a3a; border-radius: 2px; margin: 0 auto 20px; }
+  .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .modal-sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+  .contact-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .contact-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .contact-info { flex: 1; }
+  .contact-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .contact-val { font-size: 14px; font-weight: 600; color: #fff; }
+  .contact-arrow { color: var(--gold); font-size: 16px; }
+  .modal-close { width: 100%; margin-top: 16px; padding: 13px; background: #1a1a2e; border: none; border-radius: 12px; color: #888; font-size: 14px; cursor: pointer; font-family: 'Space Grotesk', sans-serif; }
+
+  /* SERVICE CARD */
+  .service-card { margin: 0 16px 12px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; display: flex; gap: 14px; align-items: flex-start; }
+  .service-icon { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, #1a1400, #3d2e00); border: 1px solid rgba(201,168,76,0.25); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+  .service-body { flex: 1; }
+  .service-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+  .service-type { font-size: 11px; color: var(--gold); margin-bottom: 6px; }
+  .service-location { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .service-btns { display: flex; gap: 8px; }
+  .service-btn { flex: 1; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-family: 'Space Grotesk', sans-serif; }
+  .service-btn.gold { background: linear-gradient(135deg, var(--gold), #8b6914); color: #000; }
+  .service-btn.outline { background: #0a0a14; border: 1px solid var(--border); color: var(--muted); cursor: not-allowed; }
+  .service-btn.map { background: #0a0a14; border: 1px solid var(--border); color: var(--muted); }
+
+  /* UPGRADE CARD */
+  .upgrade-card { margin: 16px; background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.03)); border: 1px solid rgba(201,168,76,0.25); border-radius: 18px; padding: 24px 20px; text-align: center; }
+  .upgrade-icon { font-size: 36px; margin-bottom: 12px; }
+  .upgrade-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .upgrade-desc { font-size: 13px; color: #666; margin-bottom: 20px; line-height: 1.6; }
+  .upgrade-plans { display: flex; gap: 8px; margin-bottom: 16px; }
+  .plan-pill { flex: 1; background: #0f0f18; border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .plan-pill.hot { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.06); }
+  .plan-price { font-family: 'Space Mono', monospace; font-size: 16px; font-weight: 700; color: var(--gold); }
+  .plan-name { font-size: 10px; color: #444; margin-top: 2px; }
+  .upgrade-cta { display: block; width: 100%; padding: 14px; background: linear-gradient(135deg, var(--gold), #8b6914); color: #000; font-weight: 700; font-size: 15px; border-radius: 12px; text-decoration: none; }
+
+  /* BOTTOM NAV */
+  .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; background: #060610; border-top: 1px solid var(--border); display: flex; padding: 10px 0 16px; flex-shrink: 0; }
+  .nav-btn { flex: 1; background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 0; font-family: 'Space Grotesk', sans-serif; }
+  .nav-btn svg { transition: all 0.2s; }
+  .nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.3px; transition: color 0.2s; }
+
+  /* BACKGROUND GLOW */
+  .bg-glow { position: absolute; pointer-events: none; z-index: 0; inset: 0; }
+
+  /* PAGE HEADER */
+  .page-top { padding: 20px 20px 0; position: relative; z-index: 1; }
+  .page-top-label { font-size: 10px; color: var(--muted); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px; }
+  .page-top-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+  .stats-row { display: flex; gap: 10px; margin-bottom: 16px; }
+  .stat-box { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px; text-align: center; }
+  .stat-n { font-family: 'Space Mono', monospace; font-size: 18px; font-weight: 700; color: var(--gold); }
+  .stat-l { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<div class="frame-wrap">
+  <div class="phone" id="phone">
+
+    <!-- GLOW BG -->
+    <svg class="bg-glow" viewBox="0 0 390 780" preserveAspectRatio="none">
+      <defs>
+        <radialGradient id="glow1" cx="50%" cy="15%" r="40%">
+          <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.06"/>
+          <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <ellipse cx="195" cy="80" rx="200" ry="120" fill="url(#glow1)"/>
+      <line x1="0" y1="120" x2="160" y2="40" stroke="#c9a84c" stroke-width="0.6" opacity="0.12"/>
+      <line x1="230" y1="20" x2="390" y2="100" stroke="#c9a84c" stroke-width="0.6" opacity="0.10"/>
+    </svg>
+
+    <!-- NOTCH -->
+    <div class="notch">
+      <span class="notch-time">9:41</span>
+      <div class="notch-icons">
+        <span>▂▄▆</span>
+        <span>WiFi</span>
+        <span>🔋</span>
+      </div>
+    </div>
+
+    <!-- HEADER -->
+    <div class="app-header">
+      <div class="logo-wrap" onclick="showTab('venues')">
+        <div class="logo-icon">🎧</div>
+        <div>
+          <span class="logo-sub">Venue Guide</span>
+          <div class="logo-text">DJ MAP</div>
+        </div>
+      </div>
+      <div class="demo-badge">DEMO</div>
+    </div>
+
+    <!-- DEMO BANNER -->
+    <div class="demo-banner">
+      <div class="demo-banner-text">Demo: <strong>3 venues</strong> · contacts locked</div>
+      <a href="djmap-pricing.html" class="upgrade-btn">Get PRO →</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- VENUES TAB -->
+      <div class="tab-pane active" id="tab-venues">
+        <div class="page-top">
+          <div class="page-top-label">Asia · All Countries</div>
+          <div class="page-top-title">Venues</div>
+          <div class="stats-row">
+            <div class="stat-box"><div class="stat-n">3</div><div class="stat-l">Demo</div></div>
+            <div class="stat-box"><div class="stat-n">500+</div><div class="stat-l">PRO</div></div>
+            <div class="stat-box"><div class="stat-n">9</div><div class="stat-l">Countries</div></div>
+          </div>
+        </div>
+
+        <!-- VENUE 1 -->
+        <div class="venue-card">
+          <div class="venue-img" style="background:linear-gradient(135deg,#0d0d1f,#1a0d2e)">
+            🎵
+            <div class="venue-type-badge">Nightclub</div>
+            <div class="venue-rating">★ 4.9</div>
+          </div>
+          <div class="venue-body">
+            <div class="venue-name">Levels Club & Lounge</div>
+            <div class="venue-location">📍 Sukhumvit, Bangkok · Thailand 🇹🇭</div>
+            <div class="venue-tags">
+              <span class="venue-tag">House</span>
+              <span class="venue-tag">Hip-Hop</span>
+              <span class="venue-tag">Cap: 1,200</span>
+              <span class="venue-tag">Thu–Sun</span>
+            </div>
+            <div class="venue-actions">
+              <button class="btn-contact" onclick="openModal('levels')">📋 Contacts</button>
+              <button class="btn-map" onclick="openMaps(13.7370,100.5600,'Levels Club Bangkok')">📍</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- VENUE 2 -->
+        <div class="venue-card">
+          <div class="venue-img" style="background:linear-gradient(135deg,#0d1a0d,#0d2e1a)">
+            🌴
+            <div class="venue-type-badge">Beach Club</div>
+            <div class="venue-rating">★ 4.8</div>
+          </div>
+          <div class="venue-body">
+            <div class="venue-name">Potato Head Beach Club</div>
+            <div class="venue-location">📍 Seminyak, Bali · Indonesia 🇮🇩</div>
+            <div class="venue-tags">
+              <span class="venue-tag">Deep House</span>
+              <span class="venue-tag">Afro</span>
+              <span class="venue-tag">Cap: 800</span>
+              <span class="venue-tag">Daily</span>
+            </div>
+            <div class="venue-actions">
+              <button class="btn-lock" disabled>🔒 PRO Only</button>
+              <button class="btn-map" onclick="openMaps(-8.6906,115.1585,'Potato Head Beach Club Bali')">📍</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- VENUE 3 -->
+        <div class="venue-card">
+          <div class="venue-img" style="background:linear-gradient(135deg,#1a0d0d,#2e1a0d)">
+            🏙️
+            <div class="venue-type-badge">Rooftop</div>
+            <div class="venue-rating">★ 4.7</div>
+          </div>
+          <div class="venue-body">
+            <div class="venue-name">Woobar — W Hotel</div>
+            <div class="venue-location">📍 Seminyak, Bali · Indonesia 🇮🇩</div>
+            <div class="venue-tags">
+              <span class="venue-tag">Lounge</span>
+              <span class="venue-tag">Electronic</span>
+              <span class="venue-tag">Cap: 300</span>
+              <span class="venue-tag">Daily</span>
+            </div>
+            <div class="venue-actions">
+              <button class="btn-lock" disabled>🔒 PRO Only</button>
+              <button class="btn-map" onclick="openMaps(-8.6890,115.1620,'Woobar W Hotel Bali')">📍</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- UPGRADE CARD -->
+        <div class="upgrade-card">
+          <div class="upgrade-icon">🔓</div>
+          <div class="upgrade-title">Unlock All 500+ Venues</div>
+          <div class="upgrade-desc">Get direct contacts of booking managers across 9 Asian countries. WhatsApp, Telegram, Line and more.</div>
+          <div class="upgrade-plans">
+            <div class="plan-pill"><div class="plan-price">$50</div><div class="plan-name">1 City/yr</div></div>
+            <div class="plan-pill hot"><div class="plan-price">$100</div><div class="plan-name">1 Country/yr</div></div>
+            <div class="plan-pill"><div class="plan-price">$200</div><div class="plan-name">Asia/yr</div></div>
+          </div>
+          <a href="djmap-pricing.html" class="upgrade-cta">Get PRO Access →</a>
+        </div>
+      </div>
+
+      <!-- SERVICE TAB -->
+      <div class="tab-pane" id="tab-service">
+        <div class="page-top">
+          <div class="page-top-label">Music Services · Asia</div>
+          <div class="page-top-title">Equipment & Service</div>
+          <div class="stats-row">
+            <div class="stat-box"><div class="stat-n">3</div><div class="stat-l">Demo</div></div>
+            <div class="stat-box"><div class="stat-n">50+</div><div class="stat-l">PRO</div></div>
+            <div class="stat-box"><div class="stat-n">9</div><div class="stat-l">Countries</div></div>
+          </div>
+        </div>
+
+        <!-- SERVICE 1 -->
+        <div class="service-card">
+          <div class="service-icon">🎛️</div>
+          <div class="service-body">
+            <div class="service-name">Pioneer DJ Thailand</div>
+            <div class="service-type">Authorized Service Center</div>
+            <div class="service-location">📍 Asok, Bangkok · Thailand 🇹🇭</div>
+            <div class="service-btns">
+              <button class="service-btn gold" onclick="openModal('pioneer')">📞 Contacts</button>
+              <button class="service-btn map" onclick="openMaps(13.7367,100.5601,'Pioneer DJ Thailand Bangkok')">📍 Maps</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SERVICE 2 -->
+        <div class="service-card">
+          <div class="service-icon">🎚️</div>
+          <div class="service-body">
+            <div class="service-name">Bali DJ Equipment</div>
+            <div class="service-type">Sales & Rental</div>
+            <div class="service-location">📍 Kuta, Bali · Indonesia 🇮🇩</div>
+            <div class="service-btns">
+              <button class="service-btn outline" disabled>🔒 PRO Only</button>
+              <button class="service-btn map" onclick="openMaps(-8.7215,115.1694,'Bali DJ Equipment Kuta')">📍 Maps</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SERVICE 3 -->
+        <div class="service-card">
+          <div class="service-icon">🔊</div>
+          <div class="service-body">
+            <div class="service-name">Sound Lab Tokyo</div>
+            <div class="service-type">Repair & Maintenance</div>
+            <div class="service-location">📍 Shibuya, Tokyo · Japan 🇯🇵</div>
+            <div class="service-btns">
+              <button class="service-btn outline" disabled>🔒 PRO Only</button>
+              <button class="service-btn map" onclick="openMaps(35.6580,139.7016,'Sound Lab Tokyo Shibuya')">📍 Maps</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- UPGRADE -->
+        <div class="upgrade-card">
+          <div class="upgrade-icon">🔧</div>
+          <div class="upgrade-title">50+ Services Across Asia</div>
+          <div class="upgrade-desc">Equipment stores, repair centers, rental services. Pioneer, Technics, Native Instruments and more.</div>
+          <a href="djmap-pricing.html" class="upgrade-cta">Get PRO Access →</a>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <button class="nav-btn" id="nav-venues" onclick="showTab('venues')">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/>
+        </svg>
+        <span class="nav-label">Venues</span>
+      </button>
+      <button class="nav-btn" id="nav-service" onclick="showTab('service')">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 14a9 9 0 0118 0"/>
+          <rect x="2" y="14" width="4" height="6" rx="2" fill="currentColor" stroke="none"/>
+          <rect x="18" y="14" width="4" height="6" rx="2" fill="currentColor" stroke="none"/>
+        </svg>
+        <span class="nav-label">Service</span>
+      </button>
+      <button class="nav-btn" onclick="window.location='djmap-pricing.html'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span class="nav-label">Get PRO</span>
+      </button>
+    </div>
+
+    <!-- CONTACT MODAL: Levels -->
+    <div class="modal-overlay" id="modal-levels" onclick="closeModal('levels')">
+      <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-handle"></div>
+        <div class="modal-title">Levels Club & Lounge</div>
+        <div class="modal-sub">Booking Manager · Bangkok, Thailand</div>
+        <div class="contact-row">
+          <div class="contact-icon" style="background:#1a2e1a">💬</div>
+          <div class="contact-info">
+            <div class="contact-label">WhatsApp</div>
+            <div class="contact-val">+66 81 234 5678</div>
+          </div>
+          <span class="contact-arrow">→</span>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon" style="background:#1a1a2e">✈️</div>
+          <div class="contact-info">
+            <div class="contact-label">Telegram</div>
+            <div class="contact-val">@levels_booking</div>
+          </div>
+          <span class="contact-arrow">→</span>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon" style="background:#2e1a1a">📧</div>
+          <div class="contact-info">
+            <div class="contact-label">Email</div>
+            <div class="contact-val">booking@levelsclub.com</div>
+          </div>
+          <span class="contact-arrow">→</span>
+        </div>
+        <div style="margin-top:14px;padding:10px 14px;background:rgba(201,168,76,0.08);border-radius:10px;font-size:11px;color:#666;text-align:center">
+          This is a demo contact. <a href="djmap-pricing.html" style="color:var(--gold)">Get PRO</a> for real contacts.
+        </div>
+        <button class="modal-close" onclick="closeModal('levels')">Close</button>
+      </div>
+    </div>
+
+    <!-- CONTACT MODAL: Pioneer -->
+    <div class="modal-overlay" id="modal-pioneer" onclick="closeModal('pioneer')">
+      <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-handle"></div>
+        <div class="modal-title">Pioneer DJ Thailand</div>
+        <div class="modal-sub">Authorized Service Center · Bangkok</div>
+        <div class="contact-row">
+          <div class="contact-icon" style="background:#1a2e1a">💬</div>
+          <div class="contact-info">
+            <div class="contact-label">WhatsApp</div>
+            <div class="contact-val">+66 2 123 4567</div>
+          </div>
+          <span class="contact-arrow">→</span>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon" style="background:#2e1a1a">📧</div>
+          <div class="contact-info">
+            <div class="contact-label">Email</div>
+            <div class="contact-val">service@pioneerdj.th</div>
+          </div>
+          <span class="contact-arrow">→</span>
+        </div>
+        <div style="margin-top:14px;padding:10px 14px;background:rgba(201,168,76,0.08);border-radius:10px;font-size:11px;color:#666;text-align:center">
+          This is a demo contact. <a href="djmap-pricing.html" style="color:var(--gold)">Get PRO</a> for real contacts.
+        </div>
+        <button class="modal-close" onclick="closeModal('pioneer')">Close</button>
+      </div>
+    </div>
+
+  </div><!-- /phone -->
+</div><!-- /frame-wrap -->
+
+<script>
+  const GOLD = '#c9a84c';
+
+  function showTab(tab) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      b.style.color = '#2a2a2a';
+      b.querySelector('.nav-label').style.color = '#2a2a2a';
+    });
+    document.getElementById('tab-' + tab).classList.add('active');
+    const btn = document.getElementById('nav-' + tab);
+    if (btn) {
+      btn.style.color = GOLD;
+      btn.querySelector('.nav-label').style.color = GOLD;
+    }
+  }
+
+  function openModal(id) {
+    document.getElementById('modal-' + id).classList.add('open');
+  }
+  function closeModal(id) {
+    document.getElementById('modal-' + id).classList.remove('open');
+  }
+
+  function openMaps(lat, lng, name) {
+    window.open('https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lng + '&query_place_id=' + encodeURIComponent(name), '_blank');
+  }
+
+  // Init active tab color
+  showTab('venues');
+</script>
+</body>
+</html>
