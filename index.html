@@ -2,835 +2,1146 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DJ MAP — Venue Guide Asia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:#050508;color:#fff;}
+:root{--gold:#c9a84c;--gold2:#8b6914;--bg:#050508;--dark:#0a0a10;--card:#0f0f18;--border:#1a1a2e;}
 
-  :root {
-    --gold: #C9A84C;
-    --gold2: #8b6914;
-    --bg: #08080f;
-    --bg2: #0f0f18;
-    --bg3: #1a1a2e;
-    --text: #ffffff;
-    --muted: #444;
-    --muted2: #333;
-  }
+/* ── SPLASH ── */
+#splash{position:fixed;inset:0;background:#050508;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 24px;text-align:center;z-index:200;overflow:hidden;}
+#splash.hidden{display:none;}
+.splash-logo{width:100px;height:100px;border-radius:24px;object-fit:cover;margin:0 auto 16px;box-shadow:0 0 60px rgba(201,168,76,.5);cursor:pointer;user-select:none;}
+.splash-eyebrow{font-size:10px;color:var(--gold);letter-spacing:5px;text-transform:uppercase;margin-bottom:4px;}
+.splash-title{font-size:32px;font-weight:900;margin-bottom:8px;}
+.splash-sub{color:#555;font-size:13px;line-height:1.7;max-width:280px;margin:0 auto 20px;}
+.splash-flags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;font-size:22px;}
+.splash-plans{width:100%;max-width:340px;}
+.splash-label{color:#333;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;text-align:left;}
+.plan-btn{width:100%;padding:14px 18px;border-radius:14px;border:none;cursor:pointer;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;font-family:'Inter',sans-serif;}
+.plan-btn .plan-name{font-weight:800;font-size:15px;}
+.plan-btn .plan-desc{font-size:11px;opacity:.5;margin-top:2px;text-align:left;}
+.plan-btn .plan-price{font-weight:900;font-size:18px;}
+.plan-btn .plan-year{font-size:11px;font-weight:400;opacity:.6;}
+.plan-city{background:linear-gradient(135deg,#374151,#1f2937);color:#fff;}
+.plan-country{background:linear-gradient(135deg,#5b3a00,var(--gold));}
+.plan-all{background:linear-gradient(135deg,var(--gold),#8b6914);color:#000;box-shadow:0 4px 30px rgba(201,168,76,.4);}
+.btn-demo{width:100%;padding:12px;border-radius:14px;background:transparent;color:#333;font-weight:600;font-size:13px;border:1px solid #1a1a2e;cursor:pointer;margin-top:2px;font-family:'Inter',sans-serif;}
+.btn-pro{width:100%;padding:12px;border-radius:14px;background:linear-gradient(135deg,#1a1a2e,#0f0f20);color:var(--gold);font-weight:700;font-size:13px;border:1px solid rgba(201,168,76,.4);cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Inter',sans-serif;}
+.splash-stats{margin-top:28px;display:flex;gap:32px;}
+.stat-val{color:var(--gold);font-weight:800;font-size:18px;display:block;}
+.stat-lab{color:#333;font-size:11px;}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    min-height: 100vh;
-    max-width: 430px;
-    margin: 0 auto;
-    padding-bottom: 80px;
-    overflow-x: hidden;
-  }
+/* ── MAIN APP ── */
+#app{position:fixed;inset:0;background:#050508;display:flex;flex-direction:column;overflow:hidden;}
+#app.hidden{display:none;}
 
-  /* HEADER */
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px 12px;
-    position: sticky;
-    top: 0;
-    background: var(--bg);
-    z-index: 100;
-    border-bottom: 1px solid var(--bg3);
-  }
-  .logo-wrap { display: flex; align-items: center; gap: 10px; }
-  .logo-icon {
-    width: 38px; height: 38px; border-radius: 10px;
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-  }
-  .logo-text { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
-  .logo-name { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; }
-  .pro-badge {
-    background: var(--gold);
-    color: #000;
-    font-size: 10px;
-    font-weight: 800;
-    padding: 3px 9px;
-    border-radius: 6px;
-    letter-spacing: 1px;
-  }
-  .venue-count {
-    display: flex; align-items: center; gap: 5px;
-    font-size: 12px; color: var(--muted);
-  }
-  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+/* Header */
+.app-header{background:#0a0a10;border-bottom:1px solid #1a1a2e;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.header-logo{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.header-logo img{width:32px;height:32px;border-radius:8px;object-fit:cover;}
+.header-logo-text{font-weight:800;font-size:15px;letter-spacing:1px;}
+.header-logo-sub{font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+.header-right{display:flex;align-items:center;gap:8px;}
+.badge-pro{background:var(--gold);color:#000;font-size:10px;font-weight:800;padding:3px 8px;border-radius:18px;}
+.venue-count{font-size:10px;color:#34d399;}
 
-  /* LOADING */
-  .loading {
-    display: flex; flex-direction: column; align-items: center;
-    justify-content: center; padding: 80px 20px; gap: 16px; color: var(--muted);
-  }
-  .spinner {
-    width: 32px; height: 32px; border: 3px solid var(--bg3);
-    border-top-color: var(--gold); border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* Scroll content */
+.app-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:80px;}
 
-  /* FILTERS */
-  .filters { padding: 12px 20px 8px; }
-  .filter-row { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-  .filter-row::-webkit-scrollbar { display: none; }
-  .filter-btn {
-    background: var(--bg2); border: 1px solid var(--bg3);
-    color: var(--muted); border-radius: 20px;
-    padding: 6px 14px; font-size: 11px; font-weight: 600;
-    cursor: pointer; white-space: nowrap; transition: all 0.15s;
-  }
-  .filter-btn.active {
-    background: var(--gold); border-color: var(--gold);
-    color: #000;
-  }
+/* Screen */
+.screen{display:none;padding:0 0 16px;}
+.screen.active{display:block;}
 
-  /* SEARCH */
-  .search-wrap { padding: 0 20px 10px; }
-  .search-input {
-    width: 100%; background: var(--bg2); border: 1px solid var(--bg3);
-    color: var(--text); border-radius: 12px; padding: 10px 14px;
-    font-size: 14px; outline: none;
-  }
-  .search-input::placeholder { color: var(--muted); }
-  .search-input:focus { border-color: var(--gold); }
+/* Screen header */
+.screen-head{padding:16px 20px 8px;display:flex;align-items:center;justify-content:space-between;}
+.screen-title{font-weight:900;font-size:18px;}
+.screen-sub{color:#333;font-size:10px;letter-spacing:2px;text-transform:uppercase;}
 
-  /* COUNTRY GRID */
-  .section-title {
-    padding: 4px 20px 12px;
-    font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase;
-  }
-  .country-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 10px; padding: 0 20px;
-  }
-  .country-card {
-    background: var(--bg2); border: 1px solid var(--bg3);
-    border-radius: 14px; padding: 18px 8px;
-    text-align: center; cursor: pointer;
-    transition: border-color 0.15s, transform 0.15s;
-  }
-  .country-card:active { transform: scale(0.97); }
-  .country-card:hover { border-color: var(--gold); }
-  .country-flag { font-size: 28px; margin-bottom: 6px; }
-  .country-name { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
-  .country-count { font-size: 12px; font-weight: 700; color: var(--gold); }
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0a0a10;border-top:1px solid #1a1a2e;display:flex;padding:8px 0 16px;z-index:100;flex-shrink:0;}
+.nav-tab{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:#2a2a2a;font-family:'Inter',sans-serif;transition:color .2s;}
+.nav-tab.active{color:var(--gold);}
+.nav-tab span{font-size:9px;font-weight:600;letter-spacing:.3px;}
 
-  /* BACK BTN */
-  .back-btn {
-    background: #ffffff12; border: none; color: var(--muted);
-    border-radius: 8px; padding: 6px 12px; cursor: pointer;
-    font-size: 12px; font-weight: 600;
-  }
-  .view-header {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px 20px 10px;
-  }
-  .view-title { font-size: 15px; font-weight: 800; }
+/* Countries grid */
+.countries-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px 20px;}
+.country-card{background:#0f0f18;border:1px solid #1a1a2e;border-radius:16px;padding:16px;cursor:pointer;transition:border-color .2s;}
+.country-card:hover{border-color:rgba(201,168,76,.4);}
+.country-flag{font-size:28px;margin-bottom:6px;}
+.country-name{font-weight:700;font-size:14px;margin-bottom:2px;}
+.country-count{font-size:11px;color:var(--gold);}
 
-  /* VENUE CARDS */
-  .venues-list { padding: 0 20px; }
-  .venue-card {
-    background: var(--bg2); border: 1px solid var(--bg3);
-    border-radius: 14px; margin-bottom: 12px;
-    cursor: pointer; overflow: hidden;
-    transition: border-color 0.15s;
-  }
-  .venue-card.premium { border-color: var(--gold) + "55"; }
-  .venue-card:hover { border-color: var(--gold); }
+/* Filter row */
+.filter-row{display:flex;gap:8px;padding:8px 20px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.filter-row::-webkit-scrollbar{display:none;}
+.filter-chip{background:#0f0f18;border:1px solid #1a1a2e;border-radius:18px;padding:6px 12px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;color:#444;font-family:'Inter',sans-serif;transition:all .2s;}
+.filter-chip.active{background:#ffffff22;border-color:var(--gold);color:#fff;}
 
-  .venue-img {
-    width: 100%; height: 160px; object-fit: cover;
-    background: var(--bg3);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 40px; color: var(--muted2);
-  }
-  .venue-img-placeholder {
-    width: 100%; height: 160px; background: var(--bg3);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 36px; color: var(--muted2);
-  }
+/* Search */
+.search-wrap{padding:8px 20px;}
+.search-input{width:100%;background:#0f0f18;border:1px solid #1a1a2e;border-radius:12px;padding:10px 14px;color:#fff;font-size:13px;font-family:'Inter',sans-serif;outline:none;}
+.search-input:focus{border-color:rgba(201,168,76,.4);}
+.search-input::placeholder{color:#333;}
 
-  .venue-body { padding: 12px 14px; }
-  .type-badge {
-    display: inline-block;
-    font-size: 9px; font-weight: 700; text-transform: uppercase;
-    padding: 2px 8px; border-radius: 4px; margin-bottom: 5px;
-  }
-  .venue-name { font-size: 15px; font-weight: 800; margin-bottom: 3px; }
-  .venue-meta { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
-  .venue-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
-  .tag {
-    background: #ffffff0a; border: 1px solid var(--bg3);
-    color: var(--muted); font-size: 10px; padding: 2px 8px; border-radius: 10px;
-  }
-  .venue-footer {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 8px; border-top: 1px solid var(--bg3);
-  }
-  .fee { font-size: 11px; color: var(--gold); font-weight: 600; }
-  .nights { font-size: 10px; color: var(--muted); }
-  .rating-badge {
-    background: var(--gold); color: #000;
-    font-size: 11px; font-weight: 800;
-    padding: 3px 8px; border-radius: 6px;
-  }
+/* Venue list */
+.venue-list{padding:0 20px;}
+.venue-card{background:#0f0f18;border:1px solid #1a1a2e;border-radius:14px;margin-bottom:11px;cursor:pointer;overflow:hidden;transition:border-color .2s;}
+.venue-card:hover{border-color:rgba(201,168,76,.3);}
+.venue-card.premium{border-color:rgba(201,168,76,.3);}
+.venue-carousel{position:relative;width:100%;height:118px;border-radius:12px 12px 0 0;overflow:hidden;}
+.carousel-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;}
+.carousel-slide.active{opacity:1;}
+.carousel-emoji{font-size:34px;}
+.carousel-dots{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);display:flex;gap:5px;}
+.carousel-dot{height:5px;border-radius:3px;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;}
+.hot-badge{position:absolute;top:7px;left:7px;background:var(--gold);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:#000;}
+.venue-info{padding:11px 13px;}
+.venue-type-badge{border-radius:4px;padding:2px 7px;font-size:9px;font-weight:700;text-transform:uppercase;display:inline-block;margin-bottom:3px;}
+.venue-name{font-weight:800;font-size:13px;margin-bottom:2px;}
+.venue-loc{color:#444;font-size:11px;margin-bottom:4px;}
+.venue-genres{color:#60a5fa;font-size:10px;margin-bottom:3px;}
+.venue-hours{color:#555;font-size:10px;}
 
-  /* VENUE DETAIL */
-  .detail-view { padding: 0 20px 20px; }
-  .detail-hero {
-    width: 100%; height: 220px; border-radius: 14px;
-    background: var(--bg3); margin-bottom: 16px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 60px; overflow: hidden;
-  }
-  .detail-hero img { width: 100%; height: 100%; object-fit: cover; }
-  .detail-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-  .detail-location { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
-  .detail-section { margin-bottom: 14px; }
-  .detail-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
-  .detail-value { font-size: 13px; color: #ccc; }
-  .contacts-block { background: var(--bg2); border-radius: 12px; overflow: hidden; }
-  .contact-row {
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px 14px; border-bottom: 1px solid var(--bg3);
-    text-decoration: none; color: inherit;
-  }
-  .contact-row:last-child { border-bottom: none; }
-  .contact-icon { font-size: 18px; width: 24px; flex-shrink: 0; }
-  .contact-info { flex: 1; }
-  .contact-type { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
-  .contact-val { font-size: 13px; color: #ccc; font-weight: 500; }
-  .arrow { color: var(--muted2); font-size: 14px; }
+/* Back button */
+.back-btn{background:#ffffff12;border:none;color:#777;border-radius:8px;padding:6px 11px;cursor:pointer;font-size:12px;font-family:'Inter',sans-serif;}
 
-  /* SAVED */
-  .save-btn {
-    background: none; border: none; font-size: 20px;
-    cursor: pointer; color: var(--gold);
-  }
-  .empty-state {
-    text-align: center; padding: 60px 20px; color: var(--muted2);
-  }
-  .empty-state .emoji { font-size: 40px; margin-bottom: 10px; }
+/* Venue detail */
+#venue-detail{position:fixed;inset:0;background:#050508;z-index:150;display:none;flex-direction:column;overflow-y:auto;}
+#venue-detail.open{display:flex;}
+.detail-carousel{position:relative;width:100%;height:220px;overflow:hidden;}
+.detail-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;opacity:0;transition:opacity .4s;}
+.detail-slide.active{opacity:1;}
+.detail-emoji{font-size:60px;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5));}
+.detail-name-bg{color:rgba(255,255,255,.2);font-size:10px;letter-spacing:2px;}
+.detail-nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:none;color:#fff;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
+.detail-nav-btn.prev{left:12px;}
+.detail-nav-btn.next{right:12px;}
+.detail-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;}
+.detail-dot{height:6px;border-radius:3px;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;}
+.detail-counter{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.6);border-radius:20px;padding:4px 10px;font-size:11px;color:#fff;}
+.detail-body{padding:20px 20px 100px;}
+.detail-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.detail-title{font-size:22px;font-weight:900;margin-bottom:4px;}
+.detail-meta{display:flex;align-items:center;gap:6px;color:#444;font-size:12px;}
+.save-btn{background:none;border:none;color:var(--gold);font-size:24px;cursor:pointer;padding:4px;}
+.detail-section{background:#0f0f18;border-radius:13px;padding:14px;margin-bottom:12px;}
+.detail-section-label{font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.detail-desc{font-size:13px;color:#888;line-height:1.6;}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{background:rgba(201,168,76,.12);color:var(--gold);font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;}
+.contact-card{background:#0a0a14;border-radius:13px;padding:14px;margin-bottom:10px;}
+.contact-avatar{width:40px;height:40px;border-radius:10px;background:rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.contact-name{font-weight:700;font-size:14px;}
+.contact-role{background:rgba(201,168,76,.15);color:var(--gold);font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;display:inline-block;margin-top:2px;}
+.contact-channels{margin-top:10px;display:flex;flex-direction:column;gap:8px;}
+.channel-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(255,255,255,.03);border-radius:9px;}
+.channel-icon{font-size:18px;width:24px;text-align:center;flex-shrink:0;}
+.channel-label{color:#333;font-size:10px;letter-spacing:1px;}
+.channel-val{color:#ccc;font-size:13px;font-weight:500;}
+.channel-arrow{margin-left:auto;color:#333;font-size:13px;}
 
-  /* BOTTOM NAV */
-  .bottom-nav {
-    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 100%; max-width: 430px;
-    background: #0a0a10; border-top: 1px solid var(--bg3);
-    display: flex; padding: 8px 0 env(safe-area-inset-bottom, 12px);
-    z-index: 200;
-  }
-  .nav-btn {
-    flex: 1; background: none; border: none; cursor: pointer;
-    display: flex; flex-direction: column; align-items: center; gap: 2px;
-    color: var(--muted2); padding: 4px 0;
-  }
-  .nav-btn.active { color: var(--gold); }
-  .nav-icon { font-size: 20px; line-height: 1; }
-  .nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.3px; }
+/* Sort row */
+.sort-row{display:flex;gap:8px;padding:4px 20px 8px;}
 
-  /* RESULT COUNT */
-  .result-count { padding: 0 20px 8px; font-size: 11px; color: var(--muted); }
+/* Saved empty */
+.empty-state{text-align:center;padding:50px 0;color:#222;}
+.empty-icon{font-size:32px;margin-bottom:12px;}
 
-  /* PRO BANNER */
-  .pro-banner {
-    margin: 0 20px 12px;
-    background: linear-gradient(135deg, #1a1500, #0f0f18);
-    border: 1px solid var(--gold);
-    border-radius: 12px; padding: 12px 16px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .pro-banner-text { font-size: 12px; color: #ccc; }
-  .pro-banner-text b { color: var(--gold); }
-  .pro-cta {
-    background: var(--gold); color: #000;
-    border: none; border-radius: 8px;
-    padding: 7px 14px; font-size: 11px; font-weight: 800;
-    cursor: pointer; white-space: nowrap;
-  }
+/* Templates */
+.template-card{background:#0f0f18;border:1px solid #1a1a2e;border-radius:13px;padding:15px;margin-bottom:11px;}
+.template-title{font-weight:700;font-size:14px;color:#fff;margin-bottom:5px;}
+.template-preview{color:#555;font-size:12px;line-height:1.5;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.template-actions{display:flex;gap:7px;}
+.tpl-btn{flex:1;padding:8px 0;border-radius:9px;border:1px solid #1a1a2e;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;background:rgba(255,255,255,.04);color:#555;transition:all .2s;}
+.tpl-btn.copy-done{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.12);}
+.tpl-btn.edit{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.3);color:var(--gold);}
+.tpl-btn.del{padding:8px 12px;background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.2);color:#f87171;}
+.tpl-new-btn{width:100%;padding:13px;border-radius:13px;background:rgba(201,168,76,.08);border:1px dashed rgba(201,168,76,.3);color:var(--gold);font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px;font-family:'Inter',sans-serif;}
 
-  /* TEMPLATES */
-  .templates-list { padding: 0 20px; }
-  .template-card {
-    background: var(--bg2); border: 1px solid var(--bg3);
-    border-radius: 14px; padding: 16px; margin-bottom: 10px;
-  }
-  .template-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-  .template-desc { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
-  .template-copy {
-    background: var(--gold); color: #000; border: none;
-    border-radius: 8px; padding: 8px 16px; font-size: 12px;
-    font-weight: 700; cursor: pointer;
-  }
+/* Template editor */
+#tpl-editor{display:none;padding:0 20px 100px;}
+#tpl-editor.open{display:block;}
+#tpl-list.hidden{display:none;}
+.tpl-input{width:100%;background:#0f0f18;border:1px solid #1a1a2e;border-radius:10px;padding:11px 13px;color:#fff;font-size:13px;outline:none;box-sizing:border-box;resize:vertical;font-family:'Inter',sans-serif;}
+.tpl-input:focus{border-color:rgba(201,168,76,.4);}
+.tpl-label{color:#444;font-size:10px;letter-spacing:1px;display:block;margin-bottom:5px;margin-top:12px;}
+.tpl-save-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--gold),#8b6914);border:none;color:#000;font-weight:800;font-size:15px;cursor:pointer;margin-top:14px;font-family:'Inter',sans-serif;}
+
+/* Profile */
+.profile-avatar-box{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.16);border-radius:18px;padding:22px;margin-bottom:18px;text-align:center;}
+.profile-avatar{width:56px;height:56px;border-radius:13px;object-fit:cover;margin:0 auto 8px;}
+.profile-name{font-weight:800;font-size:17px;margin-bottom:3px;}
+.profile-email{color:#444;font-size:13px;margin-bottom:14px;}
+.profile-pro-btn{background:var(--gold);border-radius:11px;padding:9px 20px;display:inline-block;font-weight:800;font-size:13px;color:#000;border:none;cursor:pointer;font-family:'Inter',sans-serif;}
+.profile-get-btn{background:linear-gradient(135deg,var(--gold),#8b6914);border:none;color:#000;border-radius:11px;padding:11px 22px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;}
+.stat-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #0f0f18;}
+.stat-row-label{color:#555;font-size:14px;display:flex;align-items:center;gap:6px;}
+.stat-row-val{color:#fff;font-weight:700;font-size:14px;}
+.profile-section{margin-top:12px;background:#0f0f18;border-radius:14px;overflow:hidden;}
+.profile-section-head{padding:12px 16px;border-bottom:1px solid #1a1a2e;}
+.profile-section-label{color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase;}
+.profile-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #1a1a2e;}
+.profile-row-icon{font-size:18px;width:24px;flex-shrink:0;}
+.profile-row-label{color:#ccc;font-size:13px;font-weight:500;flex:1;}
+.profile-row-label-top{color:#444;font-size:10px;letter-spacing:1px;}
+.profile-row-arrow{color:#333;font-size:13px;}
+.logout-btn{width:100%;margin-top:12px;padding:13px;background:#0f0f18;border:1px solid #1a1a2e;border-radius:11px;color:#333;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;}
+
+/* Admin */
+#admin-screen{position:fixed;inset:0;background:#050508;z-index:160;display:none;flex-direction:column;overflow-y:auto;}
+#admin-screen.open{display:flex;}
+.admin-header{background:#0a0a10;border-bottom:1px solid #1a1a2e;padding:14px 20px;display:flex;align-items:center;gap:12px;}
+.admin-section-tabs{display:flex;gap:8px;padding:12px 20px;}
+.admin-tab{flex:1;padding:10px 0;border-radius:10px;border:1px solid #1a1a2e;background:#0f0f18;color:#444;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.admin-tab.active{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.4);color:var(--gold);}
+.admin-form{padding:0 20px 100px;}
+.form-label{color:#444;font-size:10px;letter-spacing:1px;display:block;margin-bottom:5px;margin-top:12px;}
+.form-input{width:100%;background:#0f0f18;border:1px solid #1a1a2e;border-radius:10px;padding:11px 13px;color:#fff;font-size:13px;outline:none;box-sizing:border-box;font-family:'Inter',sans-serif;}
+.form-input:focus{border-color:rgba(201,168,76,.4);}
+.form-select{width:100%;background:#0f0f18;border:1px solid #1a1a2e;border-radius:10px;padding:11px 13px;color:#fff;font-size:13px;outline:none;box-sizing:border-box;font-family:'Inter',sans-serif;appearance:none;}
+.form-checkbox{display:flex;align-items:center;gap:10px;padding:12px 0;}
+.form-checkbox label{color:#888;font-size:13px;}
+.form-save-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--gold),#8b6914);border:none;color:#000;font-weight:800;font-size:15px;cursor:pointer;margin-top:14px;font-family:'Inter',sans-serif;}
+.admin-list-item{background:#0f0f18;border:1px solid #1a1a2e;border-radius:12px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.admin-item-info{}
+.admin-item-name{font-weight:700;font-size:13px;}
+.admin-item-meta{color:#444;font-size:11px;margin-top:2px;}
+.admin-item-actions{display:flex;gap:8px;}
+.admin-edit-btn{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);color:var(--gold);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+.admin-del-btn{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;border-radius:8px;padding:6px 10px;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;}
+
+/* Toast */
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(15,15,24,.95);border:1px solid rgba(201,168,76,.3);border-radius:12px;padding:10px 20px;font-size:13px;color:var(--gold);z-index:999;pointer-events:none;opacity:0;transition:opacity .3s;white-space:nowrap;}
+#toast.show{opacity:1;}
+
+/* SVG bg */
+.svg-bg{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.app-content,.app-header,.bottom-nav{position:relative;z-index:1;}
+
+/* Payment screen */
+#payment-screen{position:fixed;inset:0;background:#050508;z-index:180;display:none;flex-direction:column;overflow-y:auto;}
+#payment-screen.open{display:flex;}
+.payment-body{padding:20px 20px 100px;}
+.payment-plan-card{border-radius:18px;padding:24px;margin-bottom:24px;text-align:center;}
+.payment-plan-name{font-weight:800;font-size:20px;margin-bottom:4px;}
+.payment-plan-desc{font-size:13px;opacity:.7;margin-bottom:16px;}
+.payment-plan-price{font-size:48px;font-weight:900;line-height:1;}
+.payment-plan-year{font-size:14px;opacity:.6;}
+.payment-methods{margin-bottom:24px;}
+.method-btn{width:100%;padding:14px;border-radius:14px;background:#0f0f18;border:1px solid #1a1a2e;color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:10px;font-family:'Inter',sans-serif;transition:border-color .2s;}
+.method-btn:hover{border-color:rgba(201,168,76,.4);}
+.payment-back{width:100%;padding:12px;border-radius:14px;background:transparent;color:#333;border:1px solid #1a1a2e;cursor:pointer;font-family:'Inter',sans-serif;}
 </style>
 </head>
 <body>
 
-<div id="app">
-  <div class="loading"><div class="spinner"></div><span>Загрузка...</span></div>
+<!-- SVG animated background -->
+<svg class="svg-bg" id="svgBg" preserveAspectRatio="none"></svg>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <img src="https://djmap.app/logo.png" alt="DJ MAP" class="splash-logo" id="splashLogo" onerror="this.style.background='linear-gradient(135deg,#c9a84c,#8b6914)';this.style.display='flex';this.style.alignItems='center';this.style.justifyContent='center';this.innerHTML='🎛️';">
+  <div class="splash-eyebrow">Venue Guide</div>
+  <h1 class="splash-title">DJ MAP</h1>
+  <p class="splash-sub">Контакты клубов, баров, rooftop-ов и бич-клубов — 9 стран Азии</p>
+  <div class="splash-flags">🇹🇭🇻🇳🇰🇭🇮🇳🇲🇾🇯🇵🇨🇳🇰🇷🇮🇩</div>
+  <div class="splash-plans">
+    <div class="splash-label">Выберите план</div>
+    <button class="plan-btn plan-city" onclick="selectPlan('city','$50')">
+      <div><div class="plan-name">1 город</div><div class="plan-desc">Один город на выбор</div></div>
+      <div><span class="plan-price">$50</span><span class="plan-year">/год</span></div>
+    </button>
+    <button class="plan-btn plan-country" onclick="selectPlan('country','$100')">
+      <div><div class="plan-name">1 страна</div><div class="plan-desc">Все города одной страны</div></div>
+      <div><span class="plan-price">$100</span><span class="plan-year">/год</span></div>
+    </button>
+    <button class="plan-btn plan-all" onclick="selectPlan('all','$200')">
+      <div><div class="plan-name">Все страны</div><div class="plan-desc">Полный доступ — 9 стран</div></div>
+      <div><span class="plan-price">$200</span><span class="plan-year">/год</span></div>
+    </button>
+    <button class="btn-demo" onclick="enterApp(false)">Демо без контактов</button>
+    <button class="btn-pro" onclick="enterApp(true)">🔑 Войти в тестовом режиме (PRO)</button>
+  </div>
+  <div class="splash-stats">
+    <div><span class="stat-val">9</span><span class="stat-lab">Стран</span></div>
+    <div><span class="stat-val">500+</span><span class="stat-lab">Заведений</span></div>
+    <div><span class="stat-val">24/7</span><span class="stat-lab">Обновлений</span></div>
+  </div>
+</div>
+
+<!-- PAYMENT SCREEN -->
+<div id="payment-screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="closePayment()">← Назад</button>
+    <span style="font-weight:700;font-size:15px;">Оплата</span>
+    <div style="width:60px;"></div>
+  </div>
+  <div class="payment-body">
+    <div class="payment-plan-card" id="paymentCard">
+      <div class="payment-plan-name" id="paymentPlanName">Все страны</div>
+      <div class="payment-plan-desc" id="paymentPlanDesc">Полный доступ — 9 стран</div>
+      <div class="payment-plan-price" id="paymentPrice">$200</div>
+      <div class="payment-plan-year">/год</div>
+    </div>
+    <div class="payment-methods">
+      <button class="method-btn" onclick="completePurchase()">💳 Оплатить картой</button>
+      <button class="method-btn" onclick="completePurchase()">🍎 Apple Pay</button>
+      <button class="method-btn" onclick="completePurchase()">🤖 Google Pay</button>
+    </div>
+    <button class="payment-back" onclick="closePayment()">Отмена</button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="hidden">
+  <div class="app-header">
+    <div class="header-logo" onclick="goSplash()">
+      <img src="https://djmap.app/logo.png" alt="DJ MAP" style="width:32px;height:32px;border-radius:8px;object-fit:cover;" onerror="this.style.display='none'">
+      <div>
+        <div class="header-logo-text">DJ MAP</div>
+        <div class="header-logo-sub">Venue Guide</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="venue-count" id="venueCountBadge">● 8 venue</span>
+      <span class="badge-pro" id="proBadge" style="display:none;">PRO</span>
+    </div>
+  </div>
+
+  <div class="app-content">
+    <!-- COUNTRIES screen -->
+    <div class="screen active" id="screen-countries">
+      <div class="screen-head">
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Заведения</div></div>
+      </div>
+      <div class="countries-grid" id="countriesGrid"></div>
+      <!-- Venue list (shown when country selected) -->
+      <div id="venueListWrap" style="display:none;">
+        <div style="display:flex;align-items:center;gap:9px;margin:11px 20px;">
+          <button class="back-btn" onclick="backToCountries()">← Страны</button>
+          <span id="selectedCountryLabel" style="font-weight:700;font-size:14px;"></span>
+        </div>
+        <div class="filter-row" id="venueTypeFilters"></div>
+        <div class="filter-row" id="venueCityFilters"></div>
+        <div class="filter-row" id="venueGenreFilters"></div>
+        <div class="search-wrap"><input class="search-input" placeholder="🔍 Поиск заведений..." id="venueSearch" oninput="renderVenueList()"></div>
+        <div class="sort-row">
+          <button class="filter-chip active" id="sortRating" onclick="setSort('rating')">★ По рейтингу</button>
+          <button class="filter-chip" id="sortName" onclick="setSort('name')">А-Я По имени</button>
+        </div>
+        <div class="venue-list" id="venueList"></div>
+      </div>
+    </div>
+
+    <!-- SERVICE screen -->
+    <div class="screen" id="screen-service">
+      <div class="screen-head">
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Сервис</div></div>
+      </div>
+      <div id="serviceCountriesWrap">
+        <div class="countries-grid" id="serviceCountriesGrid"></div>
+      </div>
+      <div id="serviceListWrap" style="display:none;">
+        <div style="display:flex;align-items:center;gap:9px;margin:11px 20px;">
+          <button class="back-btn" onclick="backToServiceCountries()">← Страны</button>
+          <span id="selectedServiceCountryLabel" style="font-weight:700;font-size:14px;"></span>
+        </div>
+        <div class="filter-row" id="serviceTypeFilters"></div>
+        <div class="filter-row" id="serviceCityFilters"></div>
+        <div class="venue-list" id="serviceList"></div>
+      </div>
+    </div>
+
+    <!-- SAVED screen -->
+    <div class="screen" id="screen-saved">
+      <div class="screen-head">
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Избранное</div></div>
+      </div>
+      <div class="venue-list" id="savedList"></div>
+    </div>
+
+    <!-- TEMPLATES screen -->
+    <div class="screen" id="screen-templates">
+      <div class="screen-head">
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Мои шаблоны</div></div>
+        <span style="color:#444;font-size:12px;" id="tplCount">0/10</span>
+      </div>
+      <div style="padding:0 20px;">
+        <div id="tpl-list">
+          <button class="tpl-new-btn" onclick="openTplEditor(null)">+ Создать шаблон</button>
+          <div id="templatesList"></div>
+        </div>
+        <div id="tpl-editor">
+          <button class="back-btn" onclick="closeTplEditor()" style="margin-bottom:16px;">← Назад</button>
+          <h3 style="font-size:16px;font-weight:800;margin-bottom:16px;" id="tplEditorTitle">Новый шаблон</h3>
+          <label class="tpl-label">НАЗВАНИЕ</label>
+          <input class="tpl-input" id="tplTitleInput" placeholder="Название шаблона...">
+          <label class="tpl-label">ТЕКСТ СООБЩЕНИЯ</label>
+          <textarea class="tpl-input" rows="9" id="tplTextInput" placeholder="Введите текст..."></textarea>
+          <button class="tpl-save-btn" onclick="saveTpl()">✓ Сохранить</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCOUNT screen -->
+    <div class="screen" id="screen-account">
+      <div class="screen-head">
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Профиль</div></div>
+      </div>
+      <div style="padding:0 20px 20px;">
+        <div class="profile-avatar-box">
+          <img src="https://djmap.app/logo.png" alt="DJ" class="profile-avatar" onerror="this.style.display='none'">
+          <div class="profile-name">DJ Profile</div>
+          <div class="profile-email">dj.user@gmail.com</div>
+          <div id="profileProBtn"></div>
+        </div>
+        <div id="profileStats"></div>
+        <div class="profile-section">
+          <div class="profile-section-head"><div class="profile-section-label">Поддержка</div></div>
+          <div class="profile-row">
+            <span class="profile-row-icon">✉️</span>
+            <div class="profile-row-label"><div class="profile-row-label-top">EMAIL</div>evgeny.sound@gmail.com</div>
+            <span class="profile-row-arrow">→</span>
+          </div>
+          <div class="profile-row" style="border-bottom:none;">
+            <span class="profile-row-icon">✈️</span>
+            <div class="profile-row-label"><div class="profile-row-label-top">TELEGRAM</div>@djmap_support</div>
+            <span class="profile-row-arrow">→</span>
+          </div>
+        </div>
+        <div class="profile-section" style="margin-top:12px;">
+          <div class="profile-section-head"><div class="profile-section-label">Правовая информация</div></div>
+          <a href="djmap-privacy.html" class="profile-row" style="text-decoration:none;display:flex;">
+            <span class="profile-row-icon">📄</span>
+            <div class="profile-row-label" style="color:#ccc;">Политика конфиденциальности</div>
+            <span class="profile-row-arrow">→</span>
+          </a>
+          <a href="djmap-refund.html" class="profile-row" style="text-decoration:none;display:flex;">
+            <span class="profile-row-icon">💰</span>
+            <div class="profile-row-label" style="color:#ccc;">Возврат средств</div>
+            <span class="profile-row-arrow">→</span>
+          </a>
+          <a href="djmap-terms.html" class="profile-row" style="text-decoration:none;display:flex;border-bottom:none;">
+            <span class="profile-row-icon">📋</span>
+            <div class="profile-row-label" style="color:#ccc;">Условия использования</div>
+            <span class="profile-row-arrow">→</span>
+          </a>
+        </div>
+        <button class="logout-btn" onclick="goSplash()">Выйти</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button class="nav-tab active" id="tab-countries" onclick="switchTab('countries')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+      <span>Заведения</span>
+    </button>
+    <button class="nav-tab" id="tab-service" onclick="switchTab('service')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14a9 9 0 0118 0"/><rect x="2" y="14" width="4" height="6" rx="2" fill="currentColor" stroke="none"/><rect x="18" y="14" width="4" height="6" rx="2" fill="currentColor" stroke="none"/></svg>
+      <span>Сервис</span>
+    </button>
+    <button class="nav-tab" id="tab-saved" onclick="switchTab('saved')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Избранное</span>
+    </button>
+    <button class="nav-tab" id="tab-templates" onclick="switchTab('templates')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span>Шаблоны</span>
+    </button>
+    <button class="nav-tab" id="tab-account" onclick="switchTab('account')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Профиль</span>
+    </button>
+  </div>
+</div>
+
+<!-- VENUE DETAIL -->
+<div id="venue-detail">
+  <div class="detail-carousel" id="detailCarousel"></div>
+  <div class="detail-body" id="detailBody"></div>
+</div>
+
+<!-- ADMIN SCREEN -->
+<div id="admin-screen">
+  <div class="admin-header">
+    <button class="back-btn" onclick="closeAdmin()">← Назад</button>
+    <span style="font-weight:800;font-size:16px;flex:1;text-align:center;">Admin Panel</span>
+    <div style="width:60px;"></div>
+  </div>
+  <div class="admin-section-tabs">
+    <button class="admin-tab active" id="adminTabVenues" onclick="switchAdminTab('venues')">Заведения</button>
+    <button class="admin-tab" id="adminTabServices" onclick="switchAdminTab('services')">Сервисы</button>
+  </div>
+  <div id="adminListView" style="padding:0 20px;"></div>
+  <div id="adminFormView" style="display:none;" class="admin-form"></div>
 </div>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────
-const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQBfahfsaXAR4P83HclALQqaZO-C9MOKl7incfyzqGdrr2-kimGHeNTIQQgzJ-hv1NKlcpVqrTDz3d0/pub?output=csv";
+// ══════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════
+const GOLD = '#c9a84c';
+const ADMIN_PASSWORD = 'evgeny111';
 
 const COUNTRIES = [
-  { id: "Thailand",   name: "Таиланд",   flag: "🇹🇭", color: "#3b82f6" },
-  { id: "Vietnam",    name: "Вьетнам",   flag: "🇻🇳", color: "#ef4444" },
-  { id: "Cambodia",   name: "Камбоджа",  flag: "🇰🇭", color: "#8b5cf6" },
-  { id: "India",      name: "Индия",     flag: "🇮🇳", color: "#f97316" },
-  { id: "Malaysia",   name: "Малайзия",  flag: "🇲🇾", color: "#10b981" },
-  { id: "Japan",      name: "Япония",    flag: "🇯🇵", color: "#ec4899" },
-  { id: "China",      name: "Китай",     flag: "🇨🇳", color: "#ef4444" },
-  { id: "Korea",      name: "Корея",     flag: "🇰🇷", color: "#6366f1" },
-  { id: "Indonesia",  name: "Индонезия", flag: "🇮🇩", color: "#f59e0b" },
+  {id:'thailand',  name:'Таиланд',   flag:'🇹🇭', color:'#c9a84c', cities:['Bangkok','Phuket','Koh Samui','Pattaya','Chiang Mai']},
+  {id:'vietnam',   name:'Вьетнам',   flag:'🇻🇳', color:'#ef4444', cities:['Ho Chi Minh City','Hanoi','Da Nang','Nha Trang']},
+  {id:'cambodia',  name:'Камбоджа',  flag:'🇰🇭', color:'#f59e0b', cities:['Phnom Penh','Siem Reap','Sihanoukville']},
+  {id:'india',     name:'Индия',     flag:'🇮🇳', color:'#f97316', cities:['Mumbai','Goa','Delhi','Bangalore']},
+  {id:'malaysia',  name:'Малайзия',  flag:'🇲🇾', color:'#06b6d4', cities:['Kuala Lumpur','Penang','Johor Bahru']},
+  {id:'japan',     name:'Япония',    flag:'🇯🇵', color:'#ec4899', cities:['Tokyo','Osaka','Kyoto','Fukuoka']},
+  {id:'china',     name:'Китай',     flag:'🇨🇳', color:'#dc2626', cities:['Shanghai','Beijing','Shenzhen','Guangzhou']},
+  {id:'korea',     name:'Корея',     flag:'🇰🇷', color:'#8b5cf6', cities:['Seoul','Busan','Incheon']},
+  {id:'indonesia', name:'Индонезия', flag:'🇮🇩', color:'#10b981', cities:['Bali','Jakarta','Lombok','Surabaya']},
 ];
 
+const TYPE_GRADIENTS = {
+  'Nightclub':      ['linear-gradient(135deg,#1a0533,#7c3aed)','linear-gradient(135deg,#0d0d2b,#4c1d95)','linear-gradient(135deg,#2d1b69,#db2777)'],
+  'Beach Club':     ['linear-gradient(135deg,#0c4a6e,#06b6d4)','linear-gradient(135deg,#164e63,#0891b2)','linear-gradient(135deg,#0e7490,#22d3ee)'],
+  'Rooftop Bar':    ['linear-gradient(135deg,#292524,#c9a84c)','linear-gradient(135deg,#1c1917,#d97706)','linear-gradient(135deg,#44403c,#fbbf24)'],
+  'Bar & Club':     ['linear-gradient(135deg,#14532d,#84cc16)','linear-gradient(135deg,#166534,#4ade80)','linear-gradient(135deg,#052e16,#86efac)'],
+  'Club':           ['linear-gradient(135deg,#500724,#ec4899)','linear-gradient(135deg,#831843,#f472b6)','linear-gradient(135deg,#be185d,#fda4af)'],
+  'Lounge':         ['linear-gradient(135deg,#431407,#f97316)','linear-gradient(135deg,#7c2d12,#fb923c)','linear-gradient(135deg,#9a3412,#fdba74)'],
+  'Music Shop':     ['linear-gradient(135deg,#1e3a5f,#3b82f6)','linear-gradient(135deg,#1e40af,#60a5fa)','linear-gradient(135deg,#1d4ed8,#93c5fd)'],
+  'Service Center': ['linear-gradient(135deg,#3f1c00,#92400e)','linear-gradient(135deg,#78350f,#d97706)','linear-gradient(135deg,#451a03,#f59e0b)'],
+};
+const PHOTO_EMOJIS = {
+  'Nightclub':['🎛️','💡','🎶'],'Beach Club':['🏖️','🌅','🍹'],
+  'Rooftop Bar':['🌃','✨','🥂'],'Bar & Club':['🍸','🎵','🌿'],
+  'Club':['💃','🎤','🔊'],'Lounge':['🛋️','🕯️','🎼'],
+  'Music Shop':['🎸','🎹','🎚️'],'Service Center':['🔧','⚙️','🛠️'],
+};
 const TYPE_COLORS = {
-  nightclub: "#a855f7",
-  "beach club": "#10b981",
-  bar: "#3b82f6",
-  rooftop: "#f59e0b",
-  lounge: "#ec4899",
-  "music shop": "#3b82f6",
-  "service center": "#d97706",
+  'Nightclub':'#a855f7','Beach Club':'#06b6d4','Rooftop Bar':'#c9a84c',
+  'Bar & Club':'#84cc16','Club':'#ec4899','Lounge':'#f97316',
+  'Music Shop':'#3b82f6','Service Center':'#d97706'
 };
 
-const TYPE_EMOJI = {
-  nightclub: "🎵", "beach club": "🏖️", bar: "🍸",
-  rooftop: "🌆", lounge: "🎶", "music shop": "🎸", "service center": "🔧"
-};
-
-const TEMPLATES = [
-  { title: "Booking Request EN", desc: "Professional booking request email template", text: `Hello,\n\nMy name is [YOUR NAME], a professional DJ based in [CITY].\n\nI would like to inquire about booking availability for [DATE].\n\nGenres: [GENRES]\nMix examples: [SOUNDCLOUD/MIXCLOUD LINK]\n\nLooking forward to hearing from you.\n\nBest regards,\n[YOUR NAME]` },
-  { title: "Booking Request TH 🇹🇭", desc: "Booking request in Thai for Thailand venues", text: `สวัสดีครับ/ค่ะ\n\nผม/หนูชื่อ [ชื่อ] เป็น DJ มืออาชีพจาก [เมือง]\n\nต้องการสอบถามเกี่ยวกับการจอง [วันที่]\n\nแนวดนตรี: [แนวเพลง]\n\nขอบคุณครับ/ค่ะ\n[ชื่อ]` },
-  { title: "Follow-up Email", desc: "Follow up after no reply", text: `Hi,\n\nI'm following up on my previous booking request.\nI'd love to perform at [VENUE NAME] on [DATE].\n\nPlease let me know if you need any additional info.\n\nBest,\n[YOUR NAME]` },
-  { title: "Rate Card", desc: "Template for your DJ rate card", text: `DJ [NAME] — Rate Card\n\n• 2h set: $[PRICE]\n• 3h set: $[PRICE]\n• 4h set: $[PRICE]\n\nIncludes: travel within [CITY]\nEquipment: [YOUR SETUP]\n\nContact: [EMAIL / WA]` },
+let venues = [
+  {id:1,country:'thailand',name:'ONYX Club',type:'Nightclub',city:'Bangkok',area:'RCA',rating:4.8,capacity:1200,genre:['Techno','House'],description:'Крупнейший клуб Бангкока с мощной звуковой системой L-Acoustics.',instagram:'@onyxbkk',contacts:[{name:'Aroon Srisuk',role:'Директор',whatsapp:'+66 81 234 5678',telegram:'@aroon_onyx',email:'booking@onyxbkk.com'}],fee:'฿15k–฿80k',nights:['Fri','Sat'],isPremium:true},
+  {id:2,country:'thailand',name:'Café del Mar Samui',type:'Beach Club',city:'Koh Samui',area:'Chaweng Beach',rating:4.6,capacity:600,genre:['Sunset House','Afro'],description:'Иконический бич-клуб с видом на закат.',instagram:'@cafedelmarsamui',contacts:[{name:'Marco Ricci',role:'Менеджер',whatsapp:'+66 77 123 4567',telegram:'',email:'dj@cafedelmar-samui.com'},{name:'Nong Rattana',role:'Арт-директор',whatsapp:'+66 81 999 0000',telegram:'@nong_cdm',email:'art@cafedelmar.com'}],fee:'฿8k–฿35k',nights:['Daily'],isPremium:true},
+  {id:3,country:'thailand',name:'Above Eleven',type:'Rooftop Bar',city:'Bangkok',area:'Sukhumvit 11',rating:4.7,capacity:300,genre:['Nu-Jazz','Lounge'],description:'Rooftop на 33 этаже с панорамой Бангкока.',instagram:'@aboveeleven',contacts:[{name:'Siam Wongsawat',role:'Управляющий',whatsapp:'+66 82 456 7890',telegram:'',email:'events@aboveeleven.com'}],fee:'฿5k–฿20k',nights:['Wed','Thu','Fri','Sat'],isPremium:false},
+  {id:4,country:'vietnam',name:'Envy Club',type:'Nightclub',city:'Ho Chi Minh City',area:'Bui Vien',rating:4.5,capacity:800,genre:['EDM','Hip-Hop'],description:'Главный клуб Сайгона.',instagram:'@envyclubvn',contacts:[{name:'Nguyen Minh Duc',role:'Директор',whatsapp:'+84 90 123 4567',telegram:'@duc_envy',email:'booking@envyclub.vn'}],fee:'₫3M–₫15M',nights:['Fri','Sat','Sun'],isPremium:true},
+  {id:5,country:'indonesia',name:'Potato Head Beach Club',type:'Beach Club',city:'Bali',area:'Seminyak',rating:4.9,capacity:1500,genre:['House','Afro','Balearic'],description:'Один из лучших бич-клубов Азии.',instagram:'@potatoheadbali',contacts:[{name:'I Made Wirawan',role:'Арт-директор',whatsapp:'+62 361 473 7979',telegram:'',email:'music@ptthead.com'}],fee:'Rp5M–Rp30M',nights:['Daily'],isPremium:true},
+  {id:6,country:'japan',name:'Womb Tokyo',type:'Nightclub',city:'Tokyo',area:'Shibuya',rating:4.8,capacity:700,genre:['Techno','Drum & Bass'],description:'Легендарный клуб Токио с 4 танцполами.',instagram:'@womb_tokyo',contacts:[{name:'Takeshi Yamamoto',role:'Директор',whatsapp:'',telegram:'@takeshi_womb',email:'booking@womb.co.jp'}],fee:'¥80k–¥500k',nights:['Fri','Sat'],isPremium:true},
+  {id:7,country:'korea',name:'Octagon Seoul',type:'Nightclub',city:'Seoul',area:'Gangnam',rating:4.7,capacity:2000,genre:['EDM','House','Techno'],description:'Неоднократно в топ-10 клубов мира.',instagram:'@octagonseoul',contacts:[{name:'Park Ji-hoon',role:'Менеджер',whatsapp:'',telegram:'@jihoon_octagon',email:'booking@octagonseoul.com'}],fee:'₩500k–₩3M',nights:['Fri','Sat'],isPremium:true},
+  {id:8,country:'malaysia',name:'Zouk Club KL',type:'Nightclub',city:'Kuala Lumpur',area:'TREC Hub',rating:4.6,capacity:1800,genre:['House','Techno'],description:'Флагман азиатской клубной сцены. 5 танцполов.',instagram:'@zoukclubkl',contacts:[{name:'Adrian Lim',role:'Управляющий',whatsapp:'+60 3 2110 6688',telegram:'',email:'bookings@zoukclub.com.my'}],fee:'RM2k–RM15k',nights:['Fri','Sat','Sun'],isPremium:true},
 ];
 
-// ─── STATE ────────────────────────────────────────────────
-let state = {
-  tab: "countries",        // countries | venues | service | saved | templates | account
-  venues: [],
-  loading: true,
-  error: null,
-  selectedCountry: null,
-  selectedVenue: null,
-  filterType: "All",
-  filterCity: "All",
-  search: "",
-  saved: JSON.parse(localStorage.getItem("djmap_saved") || "[]"),
-  isPro: false,
+let services = [
+  {id:101,country:'thailand',name:'Music Arms Bangkok',type:'Music Shop',city:'Bangkok',area:'Siam Square',rating:4.7,description:'Крупнейший музыкальный магазин Таиланда. Pioneer, NI, Technics.',instagram:'@musicarmsbkk',contacts:[{name:'Somchai P.',role:'Менеджер',whatsapp:'+66 83 111 2222',telegram:'',email:'info@musicarms.co.th'}],brands:'Pioneer DJ, Native Instruments, Rane',workingHours:'10:00–20:00 ежедневно',isPremium:true},
+  {id:102,country:'thailand',name:'DJ Pro Service BKK',type:'Service Center',city:'Bangkok',area:'Pratunam',rating:4.5,description:'Авторизованный сервисный центр Pioneer DJ и Denon.',instagram:'@djproservicebkk',contacts:[{name:'Nattapol K.',role:'Управляющий',whatsapp:'+66 84 333 4444',telegram:'@djproservice',email:'repair@djproservice.co.th'}],brands:'Pioneer DJ, Denon DJ',workingHours:'09:00–18:00 пн–сб',isPremium:false},
+  {id:103,country:'indonesia',name:'Bali DJ Store',type:'Music Shop',city:'Bali',area:'Kuta',rating:4.4,description:'Музыкальное оборудование для диджеев на Бали.',instagram:'@balidjstore',contacts:[{name:'Wayan Arta',role:'Директор',whatsapp:'+62 812 345 6789',telegram:'',email:'info@balidjstore.com'}],brands:'Pioneer DJ, Roland, Behringer',workingHours:'10:00–21:00 ежедневно',isPremium:false},
+  {id:104,country:'japan',name:'Disc Union Tokyo',type:'Music Shop',city:'Tokyo',area:'Shinjuku',rating:4.9,description:'Легендарный магазин винила и DJ-оборудования в Токио.',instagram:'@discunion_jp',contacts:[{name:'Kenji Mori',role:'Менеджер',whatsapp:'',telegram:'',email:'info@discunion.co.jp'}],brands:'Technics, Pioneer DJ, Vinyl',workingHours:'11:00–21:00 ежедневно',isPremium:true},
+];
+
+let savedIds = [2,5];
+let isPro = false;
+let activeTab = 'countries';
+let selectedCountry = null;
+let selectedServiceCountry = null;
+let venueTypeFilter = 'All';
+let venueCityFilter = 'All';
+let venueGenreFilter = 'All';
+let serviceTypeFilter = 'All';
+let serviceCityFilter = 'All';
+let sortBy = 'rating';
+let logoTaps = 0;
+let currentPlan = null;
+let templates = [
+  {id:1,title:'Запрос на букинг',text:'Добрый день! Меня зовут [Имя], я диджей. Хотел бы обсудить возможность выступления в вашем заведении. Играю в жанре [жанр], опыт [N] лет. Когда удобно поговорить?'},
+  {id:2,title:'Follow-up после знакомства',text:'Привет! Мы встречались на [событие]. Хотел бы обсудить сотрудничество. Готов поделиться миксом и райдером. Когда удобно поговорить?'},
+  {id:3,title:'Запрос на резидентство',text:'Добрый день! Я ищу возможность для постоянного резидентства. Играю в жанре [жанр], опыт [N] лет. Могу предоставить миксы и пресс-кит.'},
+];
+let editingTplId = null;
+let adminSection = 'venues';
+let editingAdminItem = null;
+
+// ══════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════
+function enterApp(pro) {
+  isPro = pro;
+  document.getElementById('splash').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('proBadge').style.display = pro ? 'inline-block' : 'none';
+  renderCountriesGrid();
+  renderServiceCountriesGrid();
+  renderSaved();
+  renderTemplates();
+  renderProfileStats();
+  updateSVGBg('venues');
+}
+
+function goSplash() {
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('splash').classList.remove('hidden');
+  updateSVGBg('splash');
+}
+
+function selectPlan(plan, price) {
+  currentPlan = {plan, price};
+  const names = {city:'1 город', country:'1 страна', all:'Все страны'};
+  const descs = {city:'Один город на выбор', country:'Все города одной страны', all:'Полный доступ — 9 стран'};
+  const colors = {city:'linear-gradient(135deg,#374151,#1f2937)', country:`linear-gradient(135deg,#5b3a00,${GOLD})`, all:`linear-gradient(135deg,${GOLD},#8b6914)`};
+  document.getElementById('paymentPlanName').textContent = names[plan];
+  document.getElementById('paymentPlanDesc').textContent = descs[plan];
+  document.getElementById('paymentPrice').textContent = price;
+  document.getElementById('paymentCard').style.background = colors[plan];
+  document.getElementById('paymentCard').style.color = plan==='all' ? '#000' : '#fff';
+  document.getElementById('payment-screen').classList.add('open');
+}
+
+function closePayment() {
+  document.getElementById('payment-screen').classList.remove('open');
+}
+
+function completePurchase() {
+  closePayment();
+  enterApp(true);
+  showToast('✓ Оплата прошла успешно!');
+}
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-'+tab).classList.add('active');
+  updateSVGBg(tab);
+  if (tab === 'saved') renderSaved();
+  if (tab === 'templates') renderTemplates();
+  if (tab === 'account') renderProfileStats();
+}
+
+// ══════════════════════════════════════════════
+//  SVG BACKGROUND
+// ══════════════════════════════════════════════
+const BG_CONFIGS = {
+  splash:    {lines:[{x1:'0%',y1:'30%',x2:'40%',y2:'10%',op:.18},{x1:'60%',y1:'0%',x2:'100%',y2:'45%',op:.14},{x1:'20%',y1:'100%',x2:'80%',y2:'60%',op:.12}],glow:[{cx:'50%',cy:'20%',r:'35%',op:.06}]},
+  countries: {lines:[{x1:'0%',y1:'15%',x2:'30%',y2:'5%',op:.15},{x1:'70%',y1:'0%',x2:'100%',y2:'30%',op:.12},{x1:'0%',y1:'80%',x2:'50%',y2:'95%',op:.10}],glow:[{cx:'85%',cy:'12%',r:'28%',op:.05}]},
+  service:   {lines:[{x1:'100%',y1:'20%',x2:'60%',y2:'5%',op:.15},{x1:'0%',y1:'10%',x2:'35%',y2:'30%',op:.12},{x1:'40%',y1:'90%',x2:'100%',y2:'75%',op:.10}],glow:[{cx:'15%',cy:'15%',r:'30%',op:.05}]},
+  saved:     {lines:[{x1:'50%',y1:'0%',x2:'100%',y2:'25%',op:.14},{x1:'0%',y1:'40%',x2:'25%',y2:'10%',op:.12},{x1:'10%',y1:'85%',x2:'60%',y2:'100%',op:.10}],glow:[{cx:'75%',cy:'8%',r:'32%',op:.05}]},
+  templates: {lines:[{x1:'0%',y1:'5%',x2:'45%',y2:'20%',op:.14},{x1:'55%',y1:'0%',x2:'100%',y2:'15%',op:.12},{x1:'30%',y1:'95%',x2:'90%',y2:'80%',op:.10}],glow:[{cx:'25%',cy:'10%',r:'30%',op:.05}]},
+  account:   {lines:[{x1:'0%',y1:'25%',x2:'50%',y2:'5%',op:.15},{x1:'50%',y1:'5%',x2:'100%',y2:'20%',op:.13},{x1:'20%',y1:'90%',x2:'80%',y2:'100%',op:.10}],glow:[{cx:'50%',cy:'5%',r:'40%',op:.06}]},
 };
-
-// ─── CSV PARSER ───────────────────────────────────────────
-function parseCSV(text) {
-  const lines = text.trim().split("\n");
-  if (lines.length < 2) return [];
-  const headers = lines[0].split(",").map(h => h.trim().replace(/^"|"$/g, ""));
-  return lines.slice(1).map(line => {
-    const vals = [];
-    let cur = "", inQ = false;
-    for (let ch of line) {
-      if (ch === '"') { inQ = !inQ; }
-      else if (ch === "," && !inQ) { vals.push(cur.trim()); cur = ""; }
-      else cur += ch;
-    }
-    vals.push(cur.trim());
-    const obj = {};
-    headers.forEach((h, i) => {
-      let v = (vals[i] || "").replace(/^"|"$/g, "").trim();
-      if (h === "rating" || h === "capacity") v = parseFloat(v) || 0;
-      else if (h === "isPremium") v = v === "true" || v === "TRUE" || v === "1";
-      else if (h === "genre" || h === "nights") v = v ? v.split(";").map(s => s.trim()).filter(Boolean) : [];
-      obj[h] = v;
-    });
-    return obj;
-  }).filter(o => o.name && String(o.name).trim());
+function updateSVGBg(type) {
+  const cfg = BG_CONFIGS[type] || BG_CONFIGS.countries;
+  const id = 'bg_'+type;
+  let s = `<defs><radialGradient id="${id}" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c9a84c" stop-opacity="1"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/></radialGradient><filter id="blur_${id}"><feGaussianBlur stdDeviation="8"/></filter></defs>`;
+  cfg.glow.forEach(g => s += `<ellipse cx="${g.cx}" cy="${g.cy}" rx="${g.r}" ry="${g.r}" fill="url(#${id})" opacity="${g.op}" filter="url(#blur_${id})"/>`);
+  cfg.lines.forEach(l => s += `<line x1="${l.x1}" y1="${l.y1}" x2="${l.x2}" y2="${l.y2}" stroke="#c9a84c" stroke-width="1" opacity="${l.op}"/>`);
+  document.getElementById('svgBg').innerHTML = s;
 }
 
-// ─── DATA LOAD ────────────────────────────────────────────
-async function loadData() {
-  try {
-    const res = await fetch(SHEET_CSV);
-    const text = await res.text();
-    state.venues = parseCSV(text);
-    state.loading = false;
-  } catch (e) {
-    state.error = "Ошибка загрузки данных";
-    state.loading = false;
-  }
-  render();
-}
-
-// ─── HELPERS ──────────────────────────────────────────────
-function venuesForCountry(countryId) {
-  return state.venues.filter(v =>
-    String(v.country || "").trim().toLowerCase() === countryId.toLowerCase()
-  );
-}
-
-function toggleSave(venue) {
-  const idx = state.saved.findIndex(s => s.name === venue.name);
-  if (idx === -1) state.saved.push(venue);
-  else state.saved.splice(idx, 1);
-  localStorage.setItem("djmap_saved", JSON.stringify(state.saved));
-  render();
-}
-
-function isSaved(venue) {
-  return state.saved.some(s => s.name === venue.name);
-}
-
-function typeColor(type) {
-  return TYPE_COLORS[(type || "").toLowerCase()] || "#C9A84C";
-}
-
-function typeEmoji(type) {
-  return TYPE_EMOJI[(type || "").toLowerCase()] || "🎵";
-}
-
-function copyToClipboard(text, btn) {
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = "✓ Скопировано";
-    setTimeout(() => btn.textContent = "Скопировать", 1500);
-  });
-}
-
-// ─── RENDER ───────────────────────────────────────────────
-function render() {
-  const app = document.getElementById("app");
-  app.innerHTML = buildHTML();
-  attachEvents();
-}
-
-function buildHTML() {
-  if (state.loading) return `<div class="loading"><div class="spinner"></div><span>Загрузка данных...</span></div>`;
-  if (state.error) return `<div class="loading"><div style="font-size:32px">⚠️</div><span>${state.error}</span></div>`;
-
-  return `
-    ${buildHeader()}
-    ${buildContent()}
-    ${buildBottomNav()}
-  `;
-}
-
-function buildHeader() {
-  const total = state.venues.length;
-  return `
-  <div class="header">
-    <div class="logo-wrap">
-      <div class="logo-icon">🎧</div>
-      <div>
-        <div class="logo-text">Venue Guide</div>
-        <div class="logo-name">DJ MAP</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px">
-      <div class="venue-count"><span class="dot"></span>${total} venue</div>
-      <div class="pro-badge">PRO</div>
-    </div>
-  </div>`;
-}
-
-function buildContent() {
-  if (state.selectedVenue) return buildVenueDetail(state.selectedVenue);
-  switch (state.tab) {
-    case "countries": return buildCountries();
-    case "venues":    return buildVenuesList();
-    case "service":   return buildServiceList();
-    case "saved":     return buildSaved();
-    case "templates": return buildTemplates();
-    case "account":   return buildAccount();
-    default:          return buildCountries();
-  }
-}
-
-// COUNTRIES
-function buildCountries() {
-  const cards = COUNTRIES.map(c => {
-    const count = venuesForCountry(c.id).filter(v =>
-      !["music shop","service center"].includes((v.type||"").toLowerCase())
-    ).length;
-    return `
-    <div class="country-card" data-action="select-country" data-id="${c.id}">
+// ══════════════════════════════════════════════
+//  COUNTRIES
+// ══════════════════════════════════════════════
+function renderCountriesGrid() {
+  const g = document.getElementById('countriesGrid');
+  g.innerHTML = COUNTRIES.map(c => {
+    const cnt = venues.filter(v => v.country === c.id).length;
+    return `<div class="country-card" onclick="selectCountry('${c.id}')">
       <div class="country-flag">${c.flag}</div>
       <div class="country-name">${c.name}</div>
-      <div class="country-count" style="color:${c.color}">${count}</div>
+      <div class="country-count">${cnt} заведений</div>
     </div>`;
-  }).join("");
-
-  return `
-    <div class="section-title">Выберите страну</div>
-    <div class="country-grid">${cards}</div>`;
+  }).join('');
 }
 
-// VENUES LIST
-function buildVenuesList() {
-  const c = COUNTRIES.find(x => x.id === state.selectedCountry);
-  if (!c) return buildCountries();
-
-  let list = venuesForCountry(c.id).filter(v =>
-    !["music shop","service center"].includes((v.type||"").toLowerCase())
-  );
-
-  const types = ["All", ...new Set(list.map(v => v.type).filter(Boolean))];
-  const cities = ["All", ...new Set(list.map(v => v.city).filter(Boolean))];
-
-  if (state.filterType !== "All") list = list.filter(v => v.type === state.filterType);
-  if (state.filterCity !== "All") list = list.filter(v => v.city === state.filterCity);
-  if (state.search) {
-    const q = state.search.toLowerCase();
-    list = list.filter(v => (v.name||"").toLowerCase().includes(q) || (v.city||"").toLowerCase().includes(q));
-  }
-
-  const typeFilters = types.map(t => `<button class="filter-btn ${state.filterType===t?"active":""}" data-action="filter-type" data-val="${t}">${t==="All"?"Все":t}</button>`).join("");
-  const cityFilters = cities.map(ci => `<button class="filter-btn ${state.filterCity===ci?"active":""}" data-action="filter-city" data-val="${ci}">${ci==="All"?"Все города":ci}</button>`).join("");
-
-  const cards = list.length === 0
-    ? `<div class="empty-state"><div class="emoji">${typeEmoji(state.filterType)}</div><p>Нет заведений</p></div>`
-    : list.map(v => buildVenueCard(v)).join("");
-
-  return `
-    <div class="view-header">
-      <button class="back-btn" data-action="back-countries">← Страны</button>
-      <span class="view-title">${c.flag} ${c.name}</span>
-    </div>
-    <div class="search-wrap">
-      <input class="search-input" type="text" placeholder="🔍 Поиск заведений..." value="${state.search}" data-action="search">
-    </div>
-    <div class="filters">
-      <div class="filter-row">${typeFilters}</div>
-      <div class="filter-row" style="margin-top:6px">${cityFilters}</div>
-    </div>
-    <div class="result-count">${list.length} заведений</div>
-    <div class="venues-list">${cards}</div>`;
+function selectCountry(id) {
+  selectedCountry = COUNTRIES.find(c => c.id === id);
+  venueTypeFilter = 'All'; venueCityFilter = 'All'; venueGenreFilter = 'All'; sortBy = 'rating';
+  document.getElementById('countriesGrid').style.display = 'none';
+  document.getElementById('venueListWrap').style.display = 'block';
+  document.getElementById('selectedCountryLabel').textContent = selectedCountry.flag + ' ' + selectedCountry.name;
+  buildVenueFilters();
+  renderVenueList();
 }
 
-function buildVenueCard(v) {
-  const color = typeColor(v.type);
-  const emoji = typeEmoji(v.type);
-  const genres = Array.isArray(v.genre) ? v.genre.slice(0,3).map(g => `<span class="tag">${g}</span>`).join("") : "";
-  const nights = Array.isArray(v.nights) ? v.nights.slice(0,3).join(" · ") : (v.nights||"");
-  const savedMark = isSaved(v) ? "★" : "☆";
+function backToCountries() {
+  selectedCountry = null;
+  document.getElementById('countriesGrid').style.display = 'grid';
+  document.getElementById('venueListWrap').style.display = 'none';
+  document.getElementById('venueSearch').value = '';
+}
 
-  return `
-  <div class="venue-card" data-action="open-venue" data-name="${encodeURIComponent(v.name)}">
-    <div class="venue-img-placeholder">${emoji}</div>
-    <div class="venue-body">
-      <div class="type-badge" style="background:${color}25;color:${color}">${v.type||"venue"}</div>
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div class="venue-name">${v.name}</div>
-        <button class="save-btn" data-action="toggle-save" data-name="${encodeURIComponent(v.name)}" style="color:${isSaved(v)?'#C9A84C':'#333'}">${savedMark}</button>
-      </div>
-      <div class="venue-meta">📍 ${[v.area, v.city].filter(Boolean).join(", ")}</div>
-      ${genres ? `<div class="venue-tags">${genres}</div>` : ""}
-      <div class="venue-footer">
-        <div>
-          ${v.fee ? `<div class="fee">💰 ${v.fee}</div>` : ""}
-          ${nights ? `<div class="nights">🌙 ${nights}</div>` : ""}
-        </div>
-        ${v.rating ? `<div class="rating-badge">★ ${v.rating}</div>` : ""}
-      </div>
+function buildVenueFilters() {
+  const cvs = venues.filter(v => v.country === selectedCountry.id);
+  const types = ['All',...new Set(cvs.map(v=>v.type))];
+  const cities = ['All',...selectedCountry.cities.filter(c => cvs.some(v=>v.city===c))];
+  const genres = ['All',...new Set(cvs.flatMap(v=>v.genre||[]))];
+  document.getElementById('venueTypeFilters').innerHTML = types.map(t =>
+    `<button class="filter-chip ${venueTypeFilter===t?'active':''}" onclick="setVenueTypeFilter('${t}')">${t==='All'?'🎵 Все':t}</button>`).join('');
+  document.getElementById('venueCityFilters').innerHTML = cities.map(c =>
+    `<button class="filter-chip ${venueCityFilter===c?'active':''}" onclick="setVenueCityFilter('${c}')">${c==='All'?'Все города':c}</button>`).join('');
+  document.getElementById('venueGenreFilters').innerHTML = genres.map(g =>
+    `<button class="filter-chip ${venueGenreFilter===g?'active':''}" onclick="setVenueGenreFilter('${g}')">${g==='All'?'Все жанры':g}</button>`).join('');
+}
+
+function setVenueTypeFilter(t){venueTypeFilter=t;buildVenueFilters();renderVenueList();}
+function setVenueCityFilter(c){venueCityFilter=c;buildVenueFilters();renderVenueList();}
+function setVenueGenreFilter(g){venueGenreFilter=g;buildVenueFilters();renderVenueList();}
+function setSort(s){
+  sortBy=s;
+  document.getElementById('sortRating').classList.toggle('active',s==='rating');
+  document.getElementById('sortName').classList.toggle('active',s==='name');
+  renderVenueList();
+}
+
+function renderVenueList() {
+  if (!selectedCountry) return;
+  const search = (document.getElementById('venueSearch').value||'').toLowerCase();
+  let list = venues.filter(v => v.country === selectedCountry.id);
+  if (venueTypeFilter !== 'All') list = list.filter(v => v.type === venueTypeFilter);
+  if (venueCityFilter !== 'All') list = list.filter(v => v.city === venueCityFilter);
+  if (venueGenreFilter !== 'All') list = list.filter(v => (v.genre||[]).includes(venueGenreFilter));
+  if (search) list = list.filter(v => v.name.toLowerCase().includes(search) || (v.genre||[]).join(' ').toLowerCase().includes(search));
+  if (sortBy==='rating') list.sort((a,b)=>b.rating-a.rating);
+  else list.sort((a,b)=>a.name.localeCompare(b.name));
+  const el = document.getElementById('venueList');
+  if (list.length===0) { el.innerHTML='<div class="empty-state"><div class="empty-icon">🎵</div><p>Нет заведений</p></div>'; return; }
+  el.innerHTML = list.map(v => venueCardHTML(v)).join('');
+}
+
+// ══════════════════════════════════════════════
+//  SERVICE
+// ══════════════════════════════════════════════
+function renderServiceCountriesGrid() {
+  const g = document.getElementById('serviceCountriesGrid');
+  g.innerHTML = COUNTRIES.map(c => {
+    const cnt = services.filter(s => s.country === c.id).length;
+    if (cnt === 0) return '';
+    return `<div class="country-card" onclick="selectServiceCountry('${c.id}')">
+      <div class="country-flag">${c.flag}</div>
+      <div class="country-name">${c.name}</div>
+      <div class="country-count">${cnt} объектов</div>
+    </div>`;
+  }).join('');
+}
+
+function selectServiceCountry(id) {
+  selectedServiceCountry = COUNTRIES.find(c => c.id === id);
+  serviceTypeFilter = 'All'; serviceCityFilter = 'All';
+  document.getElementById('serviceCountriesWrap').style.display = 'none';
+  document.getElementById('serviceListWrap').style.display = 'block';
+  document.getElementById('selectedServiceCountryLabel').textContent = selectedServiceCountry.flag + ' ' + selectedServiceCountry.name;
+  buildServiceFilters();
+  renderServiceList();
+}
+
+function backToServiceCountries() {
+  selectedServiceCountry = null;
+  document.getElementById('serviceCountriesWrap').style.display = 'block';
+  document.getElementById('serviceListWrap').style.display = 'none';
+}
+
+function buildServiceFilters() {
+  const css = services.filter(s => s.country === selectedServiceCountry.id);
+  const types = ['All',...new Set(css.map(s=>s.type))];
+  const cities = ['All',...new Set(css.map(s=>s.city))];
+  document.getElementById('serviceTypeFilters').innerHTML = types.map(t =>
+    `<button class="filter-chip ${serviceTypeFilter===t?'active':''}" onclick="setServiceTypeFilter('${t}')">${t==='All'?'🎵 Все':t}</button>`).join('');
+  document.getElementById('serviceCityFilters').innerHTML = cities.map(c =>
+    `<button class="filter-chip ${serviceCityFilter===c?'active':''}" onclick="setServiceCityFilter('${c}')">${c==='All'?'Все города':c}</button>`).join('');
+}
+
+function setServiceTypeFilter(t){serviceTypeFilter=t;buildServiceFilters();renderServiceList();}
+function setServiceCityFilter(c){serviceCityFilter=c;buildServiceFilters();renderServiceList();}
+
+function renderServiceList() {
+  if (!selectedServiceCountry) return;
+  let list = services.filter(s => s.country === selectedServiceCountry.id);
+  if (serviceTypeFilter !== 'All') list = list.filter(s => s.type === serviceTypeFilter);
+  if (serviceCityFilter !== 'All') list = list.filter(s => s.city === serviceCityFilter);
+  const el = document.getElementById('serviceList');
+  if (list.length===0) { el.innerHTML='<div class="empty-state"><div class="empty-icon">🔧</div><p>Нет объектов</p></div>'; return; }
+  el.innerHTML = list.map(v => venueCardHTML(v)).join('');
+}
+
+// ══════════════════════════════════════════════
+//  VENUE CARD HTML
+// ══════════════════════════════════════════════
+function venueCardHTML(v) {
+  const grads = TYPE_GRADIENTS[v.type] || TYPE_GRADIENTS['Nightclub'];
+  const emojis = PHOTO_EMOJIS[v.type] || ['🎵','🎶','🎛️'];
+  const color = TYPE_COLORS[v.type] || GOLD;
+  const isSaved = savedIds.includes(v.id);
+  const slides = grads.map((g,i) =>
+    `<div class="carousel-slide ${i===0?'active':''}" style="background:${g}"><span class="carousel-emoji">${emojis[i]}</span></div>`).join('');
+  const dots = grads.map((_,i) =>
+    `<div class="carousel-dot" style="width:${i===0?14:5}px;"></div>`).join('');
+  return `<div class="venue-card ${v.isPremium?'premium':''}" onclick="openVenue(${v.id})">
+    <div class="venue-carousel" id="vc_${v.id}">
+      ${slides}
+      <div class="carousel-dots" id="vcd_${v.id}">${dots}</div>
+      ${v.isPremium?'<div class="hot-badge">HOT</div>':''}
+    </div>
+    <div class="venue-info">
+      <span class="venue-type-badge" style="background:${color}25;color:${color};">${v.type}</span>
+      <div class="venue-name">${v.name}</div>
+      <div class="venue-loc">📍 ${v.area}, ${v.city} · ★${v.rating}</div>
+      ${v.brands?`<div class="venue-genres">🎸 ${v.brands}</div>`:''}
+      ${(v.genre&&v.genre.length)?`<div class="venue-genres">🎵 ${v.genre.join(', ')}</div>`:''}
+      ${v.workingHours?`<div class="venue-hours">🕐 ${v.workingHours}</div>`:''}
     </div>
   </div>`;
 }
 
-// SERVICE LIST
-function buildServiceList() {
-  const c = COUNTRIES.find(x => x.id === state.selectedCountry);
-  if (!c) {
-    const cards = COUNTRIES.map(c => {
-      const count = venuesForCountry(c.id).filter(v =>
-        ["music shop","service center"].includes((v.type||"").toLowerCase())
-      ).length;
-      return `
-      <div class="country-card" data-action="select-country-service" data-id="${c.id}">
-        <div class="country-flag">${c.flag}</div>
-        <div class="country-name">${c.name}</div>
-        <div class="country-count" style="color:${c.color}">${count}</div>
-      </div>`;
-    }).join("");
-    return `<div class="section-title">Выберите страну</div><div class="country-grid">${cards}</div>`;
-  }
+// ══════════════════════════════════════════════
+//  VENUE DETAIL
+// ══════════════════════════════════════════════
+function openVenue(id) {
+  const v = [...venues,...services].find(x=>x.id===id);
+  if (!v) return;
+  const grads = TYPE_GRADIENTS[v.type] || TYPE_GRADIENTS['Nightclub'];
+  const emojis = PHOTO_EMOJIS[v.type] || ['🎵','🎶','🎛️'];
+  const color = TYPE_COLORS[v.type] || GOLD;
+  let slideIdx = 0;
 
-  let list = venuesForCountry(c.id).filter(v =>
-    ["music shop","service center"].includes((v.type||"").toLowerCase())
-  );
-  if (state.filterType !== "All") list = list.filter(v => v.type.toLowerCase() === state.filterType.toLowerCase());
+  // Carousel
+  const slides = grads.map((g,i) =>
+    `<div class="detail-slide ${i===0?'active':''}" style="background:${g}" id="ds_${id}_${i}">
+      <span class="detail-emoji">${emojis[i]}</span>
+      <span class="detail-name-bg">${v.name.toUpperCase()}</span>
+    </div>`).join('');
+  const dots = grads.map((_,i) =>
+    `<div class="detail-dot" id="dd_${id}_${i}" style="width:${i===0?20:6}px;${i===0?'background:#fff;':''}"></div>`).join('');
 
-  const cards = list.length === 0
-    ? `<div class="empty-state"><div class="emoji">🔧</div><p>Нет сервисов в этой стране</p></div>`
-    : list.map(v => buildVenueCard(v)).join("");
+  document.getElementById('detailCarousel').innerHTML = `
+    ${slides}
+    <button class="detail-nav-btn prev" onclick="detailPrev(${id},${grads.length})">‹</button>
+    <button class="detail-nav-btn next" onclick="detailNext(${id},${grads.length})">›</button>
+    <div class="detail-dots" id="detailDots_${id}">${dots}</div>
+    <div class="detail-counter" id="detailCounter_${id}">1/${grads.length}</div>`;
 
-  return `
-    <div class="view-header">
-      <button class="back-btn" data-action="back-countries-service">← Страны</button>
-      <span class="view-title">${c.flag} ${c.name}</span>
-    </div>
-    <div class="filters">
-      <div class="filter-row">
-        ${["All","Music Shop","Service Center"].map(t =>
-          `<button class="filter-btn ${state.filterType===t?"active":""}" data-action="filter-type" data-val="${t}">${t==="All"?"Все":t}</button>`
-        ).join("")}
+  // Body
+  const isSaved = savedIds.includes(v.id);
+  const contacts = (v.contacts||[]).filter(c=>c.name);
+  const CHANNELS = [{key:'whatsapp',icon:'💬',label:'WhatsApp'},{key:'telegram',icon:'✈️',label:'Telegram'},{key:'line',icon:'💚',label:'Line'},{key:'instagram',icon:'📸',label:'Instagram'},{key:'facebook',icon:'👤',label:'Facebook'},{key:'email',icon:'✉️',label:'Email'}];
+
+  let contactsHTML = contacts.map(c => {
+    const filled = CHANNELS.filter(ch => c[ch.key] && c[ch.key].trim());
+    if (!filled.length && !c.name) return '';
+    return `<div class="contact-card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="contact-avatar">👤</div>
+        <div><div class="contact-name">${c.name}</div><span class="contact-role">${c.role}</span></div>
       </div>
-    </div>
-    <div class="result-count">${list.length} объектов</div>
-    <div class="venues-list">${cards}</div>`;
-}
+      ${isPro ? filled.map(ch => `<div class="channel-row">
+        <span class="channel-icon">${ch.icon}</span>
+        <div style="flex:1"><div class="channel-label">${ch.label.toUpperCase()}</div><div class="channel-val">${c[ch.key]}</div></div>
+        <span class="channel-arrow">→</span>
+      </div>`).join('') : '<div style="color:#555;font-size:12px;padding:8px;text-align:center;">🔒 Доступно в PRO версии</div>'}
+    </div>`;
+  }).join('');
 
-// VENUE DETAIL
-function buildVenueDetail(v) {
-  const color = typeColor(v.type);
-  const emoji = typeEmoji(v.type);
-  const genres = Array.isArray(v.genre) ? v.genre.join(", ") : (v.genre||"");
-  const nights = Array.isArray(v.nights) ? v.nights.join(", ") : (v.nights||"");
-
-  const contacts = [];
-  if (v.whatsapp)  contacts.push({ icon:"💬", type:"WhatsApp",  val: v.whatsapp,  href:`https://wa.me/${v.whatsapp.replace(/\D/g,"")}` });
-  if (v.telegram)  contacts.push({ icon:"✈️", type:"Telegram",  val: v.telegram,  href:`https://t.me/${v.telegram.replace("@","")}` });
-  if (v.instagram) contacts.push({ icon:"📸", type:"Instagram", val: v.instagram, href:`https://instagram.com/${v.instagram.replace("@","")}` });
-  if (v.email)     contacts.push({ icon:"✉️", type:"Email",     val: v.email,     href:`mailto:${v.email}` });
-  if (v.line)      contacts.push({ icon:"💚", type:"Line",      val: v.line,      href:`#` });
-  if (v.mapurl)    contacts.push({ icon:"🗺️", type:"Maps",      val: "Открыть карту", href: v.mapurl });
-
-  const contactsHTML = contacts.length === 0
-    ? `<div style="padding:12px 14px;color:var(--muted);font-size:12px">Контакты доступны в PRO версии</div>`
-    : contacts.map(c => `
-      <a class="contact-row" href="${c.href}" target="_blank" rel="noreferrer">
-        <span class="contact-icon">${c.icon}</span>
-        <div class="contact-info">
-          <div class="contact-type">${c.type}</div>
-          <div class="contact-val">${c.val}</div>
+  document.getElementById('detailBody').innerHTML = `
+    <button class="back-btn" onclick="closeVenue()" style="margin-bottom:16px;">← Назад</button>
+    <div class="detail-header">
+      <div>
+        <div class="detail-title">${v.name}</div>
+        <div class="detail-meta">
+          <span style="background:${color}22;color:${color};font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;">${v.type}</span>
+          <span>📍 ${v.area}, ${v.city}</span>
+          <span>★ ${v.rating}</span>
         </div>
-        <span class="arrow">→</span>
-      </a>`).join("");
-
-  return `
-    <div class="view-header">
-      <button class="back-btn" data-action="back-venue">← Назад</button>
+      </div>
+      <button class="save-btn" onclick="toggleSave(${v.id})" id="saveBtn_${v.id}">${isSaved?'★':'☆'}</button>
     </div>
-    <div class="detail-view">
-      <div class="detail-hero">${emoji}</div>
-      <div class="type-badge" style="background:${color}25;color:${color};margin-bottom:8px">${v.type||"venue"}</div>
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div class="detail-name">${v.name}</div>
-        <button class="save-btn" data-action="toggle-save" data-name="${encodeURIComponent(v.name)}" style="color:${isSaved(v)?'#C9A84C':'#333'};font-size:24px">${isSaved(v)?"★":"☆"}</button>
-      </div>
-      <div class="detail-location">📍 ${[v.area, v.city, v.country].filter(Boolean).join(", ")}</div>
+    ${v.description?`<div class="detail-section"><div class="detail-section-label">О заведении</div><div class="detail-desc">${v.description}</div></div>`:''}
+    ${v.genre&&v.genre.length?`<div class="detail-section"><div class="detail-section-label">Жанры</div><div class="tag-row">${v.genre.map(g=>`<span class="tag">${g}</span>`).join('')}</div></div>`:''}
+    ${v.fee?`<div class="detail-section"><div class="detail-section-label">Гонорар</div><div class="detail-desc" style="color:${color};">${v.fee}</div></div>`:''}
+    ${v.nights&&v.nights.length?`<div class="detail-section"><div class="detail-section-label">Рабочие дни</div><div class="tag-row">${v.nights.map(n=>`<span class="tag">${n}</span>`).join('')}</div></div>`:''}
+    ${v.brands?`<div class="detail-section"><div class="detail-section-label">Бренды</div><div class="detail-desc" style="color:#60a5fa;">${v.brands}</div></div>`:''}
+    ${v.workingHours?`<div class="detail-section"><div class="detail-section-label">Часы работы</div><div class="detail-desc">${v.workingHours}</div></div>`:''}
+    ${contactsHTML?`<div style="margin-top:4px;"><div style="font-size:10px;color:${color};letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Контакты</div>${contactsHTML}</div>`:''}`;
 
-      ${v.rating ? `<div class="rating-badge" style="display:inline-block;margin-bottom:14px">★ ${v.rating}</div>` : ""}
-
-      ${v.description ? `<div class="detail-section"><div class="detail-label">О заведении</div><div class="detail-value">${v.description}</div></div>` : ""}
-      ${genres ? `<div class="detail-section"><div class="detail-label">Жанры</div><div class="venue-tags">${genres.split(",").map(g=>`<span class="tag">${g.trim()}</span>`).join("")}</div></div>` : ""}
-      ${nights ? `<div class="detail-section"><div class="detail-label">Дни работы</div><div class="detail-value">🌙 ${nights}</div></div>` : ""}
-      ${v.capacity ? `<div class="detail-section"><div class="detail-label">Вместимость</div><div class="detail-value">👥 ${v.capacity} чел.</div></div>` : ""}
-      ${v.fee ? `<div class="detail-section"><div class="detail-label">Гонорар</div><div class="detail-value">💰 ${v.fee}</div></div>` : ""}
-      ${v.contactName ? `<div class="detail-section"><div class="detail-label">Контактное лицо</div><div class="detail-value">${v.contactName}${v.contactRole ? ` · ${v.contactRole}` : ""}</div></div>` : ""}
-
-      <div class="detail-section">
-        <div class="detail-label">Контакты</div>
-        <div class="contacts-block">${contactsHTML}</div>
-      </div>
-    </div>`;
+  document.getElementById('venue-detail').classList.add('open');
+  document.getElementById('venue-detail').scrollTop = 0;
 }
 
-// SAVED
-function buildSaved() {
-  if (state.saved.length === 0) return `
-    <div class="empty-state">
-      <div class="emoji">☆</div>
-      <p style="margin-top:8px">Нажмите ★ на заведении чтобы сохранить</p>
-    </div>`;
-  const cards = state.saved.map(v => buildVenueCard(v)).join("");
-  return `
-    <div class="result-count" style="padding-top:14px">${state.saved.length} сохранено</div>
-    <div class="venues-list">${cards}</div>`;
+function closeVenue() {
+  document.getElementById('venue-detail').classList.remove('open');
 }
 
-// TEMPLATES
-function buildTemplates() {
-  const cards = TEMPLATES.map((t, i) => `
+let detailCurrentIdx = {};
+function detailNext(id, n) {
+  detailCurrentIdx[id] = ((detailCurrentIdx[id]||0)+1)%n;
+  updateDetailCarousel(id, n);
+}
+function detailPrev(id, n) {
+  detailCurrentIdx[id] = ((detailCurrentIdx[id]||0)-1+n)%n;
+  updateDetailCarousel(id, n);
+}
+function updateDetailCarousel(id, n) {
+  const idx = detailCurrentIdx[id]||0;
+  for (let i=0;i<n;i++) {
+    const s = document.getElementById(`ds_${id}_${i}`);
+    const d = document.getElementById(`dd_${id}_${i}`);
+    if(s) s.classList.toggle('active',i===idx);
+    if(d) { d.style.width = i===idx?'20px':'6px'; d.style.background = i===idx?'#fff':'rgba(255,255,255,.3)'; }
+  }
+  const c = document.getElementById(`detailCounter_${id}`);
+  if(c) c.textContent = `${idx+1}/${n}`;
+}
+
+// ══════════════════════════════════════════════
+//  SAVED
+// ══════════════════════════════════════════════
+function toggleSave(id) {
+  if (savedIds.includes(id)) savedIds = savedIds.filter(x=>x!==id);
+  else savedIds.push(id);
+  const btn = document.getElementById('saveBtn_'+id);
+  if(btn) btn.textContent = savedIds.includes(id)?'★':'☆';
+  showToast(savedIds.includes(id)?'★ Добавлено в избранное':'Удалено из избранного');
+  if (activeTab==='saved') renderSaved();
+}
+
+function renderSaved() {
+  const saved = [...venues,...services].filter(v=>savedIds.includes(v.id));
+  const el = document.getElementById('savedList');
+  if (!saved.length) { el.innerHTML='<div class="empty-state"><div class="empty-icon">☆</div><p>Нажмите ★ на заведении</p></div>'; return; }
+  el.innerHTML = saved.map(v => venueCardHTML(v)).join('');
+}
+
+// ══════════════════════════════════════════════
+//  TEMPLATES
+// ══════════════════════════════════════════════
+function renderTemplates() {
+  document.getElementById('tplCount').textContent = `${templates.length}/10`;
+  const el = document.getElementById('templatesList');
+  el.innerHTML = templates.map(t => `
     <div class="template-card">
       <div class="template-title">${t.title}</div>
-      <div class="template-desc">${t.desc}</div>
-      <button class="template-copy" data-action="copy-template" data-idx="${i}">Скопировать</button>
-    </div>`).join("");
-  return `
-    <div class="section-title" style="padding-top:14px">Шаблоны для букинга</div>
-    <div class="templates-list">${cards}</div>`;
-}
-
-// ACCOUNT
-function buildAccount() {
-  return `
-    <div style="padding:20px">
-      <div style="background:#1a1500;border:1px solid var(--gold);border-radius:16px;padding:20px;text-align:center;margin-bottom:16px">
-        <div style="font-size:40px;margin-bottom:8px">🎧</div>
-        <div style="font-weight:800;font-size:17px;margin-bottom:4px">DJ Profile</div>
-        <div style="color:var(--muted);font-size:13px;margin-bottom:14px">dj.user@gmail.com</div>
-        <div style="background:var(--gold);color:#000;border-radius:10px;padding:9px 20px;display:inline-block;font-weight:800;font-size:13px">✓ PRO активна</div>
+      <div class="template-preview">${t.text}</div>
+      <div class="template-actions">
+        <button class="tpl-btn" id="copyBtn_${t.id}" onclick="copyTpl(${t.id})">📋 Копировать</button>
+        <button class="tpl-btn edit" onclick="openTplEditor(${t.id})">✏️ Изменить</button>
+        <button class="tpl-btn del" onclick="deleteTpl(${t.id})">🗑</button>
       </div>
-      <div style="background:var(--bg2);border-radius:14px;overflow:hidden;margin-bottom:12px">
-        <div style="padding:12px 16px;border-bottom:1px solid var(--bg3)">
-          <div style="color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase">Статистика</div>
-        </div>
-        ${[["🌍","Стран",COUNTRIES.length],["🎵","Заведений",state.venues.length],["★","Сохранено",state.saved.length]].map(([icon,label,val]) => `
-        <div style="display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bg3)">
-          <span style="color:var(--muted);font-size:14px">${icon} ${label}</span>
-          <span style="font-weight:700">${val}</span>
-        </div>`).join("")}
+    </div>`).join('');
+}
+
+function copyTpl(id) {
+  const t = templates.find(x=>x.id===id);
+  if(!t) return;
+  if(navigator.clipboard) navigator.clipboard.writeText(t.text);
+  const btn = document.getElementById('copyBtn_'+id);
+  if(btn){btn.textContent='✓ Скопировано';btn.classList.add('copy-done');}
+  setTimeout(()=>{if(btn){btn.textContent='📋 Копировать';btn.classList.remove('copy-done');}},2000);
+}
+
+function deleteTpl(id) {
+  templates = templates.filter(t=>t.id!==id);
+  renderTemplates();
+}
+
+function openTplEditor(id) {
+  editingTplId = id;
+  const t = id ? templates.find(x=>x.id===id) : null;
+  document.getElementById('tplEditorTitle').textContent = id ? 'Редактировать' : 'Новый шаблон';
+  document.getElementById('tplTitleInput').value = t ? t.title : '';
+  document.getElementById('tplTextInput').value = t ? t.text : '';
+  document.getElementById('tpl-list').classList.add('hidden');
+  document.getElementById('tpl-editor').classList.add('open');
+}
+
+function closeTplEditor() {
+  document.getElementById('tpl-list').classList.remove('hidden');
+  document.getElementById('tpl-editor').classList.remove('open');
+}
+
+function saveTpl() {
+  const title = document.getElementById('tplTitleInput').value.trim() || 'Новый шаблон';
+  const text = document.getElementById('tplTextInput').value.trim();
+  if (editingTplId) {
+    templates = templates.map(t => t.id===editingTplId ? {...t,title,text} : t);
+  } else {
+    templates.push({id:Date.now(),title,text});
+  }
+  closeTplEditor();
+  renderTemplates();
+  showToast('✓ Шаблон сохранён');
+}
+
+// ══════════════════════════════════════════════
+//  PROFILE
+// ══════════════════════════════════════════════
+function renderProfileStats() {
+  const el = document.getElementById('profileStats');
+  el.innerHTML = [
+    ['🌐 Страны', COUNTRIES.length],
+    ['🎵 Заведения', venues.length],
+    ['🔧 Сервисы', services.length],
+    ['★ Сохранено', savedIds.length],
+  ].map(([l,v])=>`<div class="stat-row"><span class="stat-row-label">${l}</span><span class="stat-row-val">${v}</span></div>`).join('');
+
+  document.getElementById('profileProBtn').innerHTML = isPro
+    ? '<span class="profile-pro-btn">✓ PRO активна</span>'
+    : `<button class="profile-get-btn" onclick="goSplash()">Выбрать план</button>`;
+}
+
+// ══════════════════════════════════════════════
+//  ADMIN
+// ══════════════════════════════════════════════
+function openAdmin() {
+  document.getElementById('admin-screen').classList.add('open');
+  renderAdminList();
+}
+function closeAdmin() {
+  document.getElementById('admin-screen').classList.remove('open');
+}
+function switchAdminTab(tab) {
+  adminSection = tab;
+  document.getElementById('adminTabVenues').classList.toggle('active', tab==='venues');
+  document.getElementById('adminTabServices').classList.toggle('active', tab==='services');
+  editingAdminItem = null;
+  document.getElementById('adminFormView').style.display = 'none';
+  document.getElementById('adminListView').style.display = 'block';
+  renderAdminList();
+}
+function renderAdminList() {
+  const list = adminSection==='venues' ? venues : services;
+  document.getElementById('adminListView').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;margin-top:8px;">
+      <span style="color:#555;font-size:12px;">${list.length} записей</span>
+      <button class="admin-edit-btn" onclick="openAdminForm(null)">+ Добавить</button>
+    </div>` +
+    list.map(v=>`<div class="admin-list-item">
+      <div class="admin-item-info">
+        <div class="admin-item-name">${v.name}</div>
+        <div class="admin-item-meta">${v.type} · ${v.city} · ★${v.rating}</div>
       </div>
-      <div style="background:var(--bg2);border-radius:14px;overflow:hidden">
-        <div style="padding:12px 16px;border-bottom:1px solid var(--bg3)">
-          <div style="color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase">Поддержка</div>
-        </div>
-        <a href="mailto:evgeny.sound@gmail.com" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--bg3);text-decoration:none;color:inherit">
-          <span style="font-size:18px">✉️</span>
-          <div style="flex:1"><div style="color:var(--muted);font-size:10px">EMAIL</div><div style="color:#ccc;font-size:13px">evgeny.sound@gmail.com</div></div>
-          <span style="color:var(--muted2)">→</span>
-        </a>
-        <a href="https://t.me/djmap_support" target="_blank" style="display:flex;align-items:center;gap:12px;padding:13px 16px;text-decoration:none;color:inherit">
-          <span style="font-size:18px">✈️</span>
-          <div style="flex:1"><div style="color:var(--muted);font-size:10px">TELEGRAM</div><div style="color:#ccc;font-size:13px">@djmap_support</div></div>
-          <span style="color:var(--muted2)">→</span>
-        </a>
+      <div class="admin-item-actions">
+        <button class="admin-edit-btn" onclick="openAdminForm(${v.id})">✏️</button>
+        <button class="admin-del-btn" onclick="deleteAdminItem(${v.id})">🗑</button>
       </div>
-      <div style="margin-top:12px;background:var(--bg2);border-radius:14px;overflow:hidden">
-        ${[
-          ["📄","Политика конфиденциальности","djmap-privacy.html"],
-          ["💰","Возврат средств","djmap-refund.html"],
-          ["📋","Условия использования","djmap-terms.html"],
-        ].map(([icon,label,url]) => `
-        <a href="${url}" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--bg3);text-decoration:none;color:inherit">
-          <span style="font-size:18px">${icon}</span>
-          <div style="flex:1;color:#ccc;font-size:13px">${label}</div>
-          <span style="color:var(--muted2)">→</span>
-        </a>`).join("")}
-      </div>
-    </div>`;
+    </div>`).join('');
 }
 
-// BOTTOM NAV
-function buildBottomNav() {
-  const tabs = [
-    ["countries", "🎵", "Заведения"],
-    ["service",   "🔧", "Сервис"],
-    ["saved",     "★",  "Избранное"],
-    ["templates", "📄", "Шаблоны"],
-    ["account",   "👤", "Профиль"],
-  ];
-  const btns = tabs.map(([id, icon, label]) => `
-    <button class="nav-btn ${(state.tab===id&&!state.selectedVenue)?"active":""}" data-action="nav" data-tab="${id}">
-      <span class="nav-icon">${icon}</span>
-      <span class="nav-label">${label}</span>
-    </button>`).join("");
-  return `<div class="bottom-nav">${btns}</div>`;
+function openAdminForm(id) {
+  editingAdminItem = id ? (adminSection==='venues'?venues:services).find(v=>v.id===id) : null;
+  const v = editingAdminItem;
+  const countries_opts = COUNTRIES.map(c=>`<option value="${c.id}" ${v&&v.country===c.id?'selected':''}>${c.flag} ${c.name}</option>`).join('');
+  const types = adminSection==='venues'?['Nightclub','Beach Club','Rooftop Bar','Bar & Club','Club','Lounge']:['Music Shop','Service Center'];
+  const type_opts = types.map(t=>`<option value="${t}" ${v&&v.type===t?'selected':''}>${t}</option>`).join('');
+  document.getElementById('adminFormView').innerHTML = `
+    <button class="back-btn" onclick="closeAdminForm()" style="margin:12px 0;">← К списку</button>
+    <h3 style="font-size:15px;font-weight:800;margin-bottom:8px;">${id?'Редактировать':'Добавить'}</h3>
+    <label class="form-label">СТРАНА</label>
+    <select class="form-select" id="af_country">${countries_opts}</select>
+    <label class="form-label">НАЗВАНИЕ</label>
+    <input class="form-input" id="af_name" value="${v?v.name:''}">
+    <label class="form-label">ТИП</label>
+    <select class="form-select" id="af_type">${type_opts}</select>
+    <label class="form-label">ГОРОД</label>
+    <input class="form-input" id="af_city" value="${v?v.city:''}">
+    <label class="form-label">РАЙОН</label>
+    <input class="form-input" id="af_area" value="${v?v.area:''}">
+    <label class="form-label">РЕЙТИНГ</label>
+    <input class="form-input" id="af_rating" type="number" step="0.1" min="0" max="5" value="${v?v.rating:4.5}">
+    <label class="form-label">ОПИСАНИЕ</label>
+    <input class="form-input" id="af_desc" value="${v?v.description:''}">
+    <label class="form-label">INSTAGRAM</label>
+    <input class="form-input" id="af_ig" value="${v?v.instagram||'':''}">
+    ${adminSection==='venues'?`
+    <label class="form-label">ГОНОРАР</label>
+    <input class="form-input" id="af_fee" value="${v?v.fee||'':''}">
+    <label class="form-label">ЖАНРЫ (через запятую)</label>
+    <input class="form-input" id="af_genre" value="${v?(v.genre||[]).join(', '):''}">
+    `:`
+    <label class="form-label">БРЕНДЫ</label>
+    <input class="form-input" id="af_brands" value="${v?v.brands||'':''}">
+    <label class="form-label">ЧАСЫ РАБОТЫ</label>
+    <input class="form-input" id="af_hours" value="${v?v.workingHours||'':''}">
+    `}
+    <div class="form-checkbox"><input type="checkbox" id="af_premium" ${v&&v.isPremium?'checked':''}><label for="af_premium">HOT / Premium</label></div>
+    <button class="form-save-btn" onclick="saveAdminItem()">✓ Сохранить</button>`;
+  document.getElementById('adminListView').style.display = 'none';
+  document.getElementById('adminFormView').style.display = 'block';
 }
 
-// ─── EVENTS ───────────────────────────────────────────────
-function attachEvents() {
-  document.addEventListener("click", handleClick, { once: true });
-  const searchInput = document.querySelector('[data-action="search"]');
-  if (searchInput) {
-    searchInput.addEventListener("input", e => {
-      state.search = e.target.value;
-      render();
-    });
-  }
+function closeAdminForm() {
+  document.getElementById('adminFormView').style.display = 'none';
+  document.getElementById('adminListView').style.display = 'block';
 }
 
-function handleClick(e) {
-  const el = e.target.closest("[data-action]");
-  if (!el) { attachEvents(); return; }
-
-  const action = el.dataset.action;
-
-  if (action === "nav") {
-    state.tab = el.dataset.tab;
-    state.selectedCountry = null;
-    state.selectedVenue = null;
-    state.filterType = "All";
-    state.filterCity = "All";
-    state.search = "";
-    render(); return;
+function saveAdminItem() {
+  const parsed = {
+    country: document.getElementById('af_country').value,
+    name: document.getElementById('af_name').value,
+    type: document.getElementById('af_type').value,
+    city: document.getElementById('af_city').value,
+    area: document.getElementById('af_area').value,
+    rating: parseFloat(document.getElementById('af_rating').value)||4.5,
+    description: document.getElementById('af_desc').value,
+    instagram: document.getElementById('af_ig').value,
+    isPremium: document.getElementById('af_premium').checked,
+    contacts: editingAdminItem ? editingAdminItem.contacts||[] : [],
+  };
+  if (adminSection==='venues') {
+    parsed.fee = document.getElementById('af_fee').value;
+    parsed.genre = document.getElementById('af_genre').value.split(',').map(s=>s.trim()).filter(Boolean);
+    parsed.nights = editingAdminItem ? editingAdminItem.nights||[] : [];
+    if (editingAdminItem) venues = venues.map(v=>v.id===editingAdminItem.id?{...parsed,id:editingAdminItem.id}:v);
+    else venues.push({...parsed,id:Date.now()});
+  } else {
+    parsed.brands = document.getElementById('af_brands').value;
+    parsed.workingHours = document.getElementById('af_hours').value;
+    if (editingAdminItem) services = services.map(s=>s.id===editingAdminItem.id?{...parsed,id:editingAdminItem.id}:s);
+    else services.push({...parsed,id:Date.now()});
   }
-
-  if (action === "select-country") {
-    state.selectedCountry = el.dataset.id;
-    state.tab = "venues";
-    state.filterType = "All";
-    state.filterCity = "All";
-    render(); return;
-  }
-
-  if (action === "select-country-service") {
-    state.selectedCountry = el.dataset.id;
-    state.tab = "service";
-    state.filterType = "All";
-    render(); return;
-  }
-
-  if (action === "back-countries") {
-    state.selectedCountry = null;
-    state.tab = "countries";
-    render(); return;
-  }
-
-  if (action === "back-countries-service") {
-    state.selectedCountry = null;
-    state.tab = "service";
-    render(); return;
-  }
-
-  if (action === "back-venue") {
-    state.selectedVenue = null;
-    render(); return;
-  }
-
-  if (action === "open-venue") {
-    const name = decodeURIComponent(el.dataset.name);
-    state.selectedVenue = state.venues.find(v => v.name === name) || state.saved.find(v => v.name === name);
-    render(); return;
-  }
-
-  if (action === "toggle-save") {
-    e.stopPropagation();
-    const name = decodeURIComponent(el.dataset.name);
-    const venue = state.venues.find(v => v.name === name) || state.saved.find(v => v.name === name);
-    if (venue) toggleSave(venue);
-    return;
-  }
-
-  if (action === "filter-type") {
-    state.filterType = el.dataset.val;
-    render(); return;
-  }
-
-  if (action === "filter-city") {
-    state.filterCity = el.dataset.val;
-    render(); return;
-  }
-
-  if (action === "copy-template") {
-    const t = TEMPLATES[parseInt(el.dataset.idx)];
-    copyToClipboard(t.text, el);
-    attachEvents(); return;
-  }
-
-  attachEvents();
+  showToast(editingAdminItem?'✓ Обновлено':'✓ Добавлено');
+  closeAdminForm();
+  renderAdminList();
+  renderCountriesGrid();
+  renderServiceCountriesGrid();
+  document.getElementById('venueCountBadge').textContent = `● ${venues.length} venue`;
 }
 
-// ─── INIT ─────────────────────────────────────────────────
-loadData();
+function deleteAdminItem(id) {
+  if (adminSection==='venues') venues = venues.filter(v=>v.id!==id);
+  else services = services.filter(s=>s.id!==id);
+  showToast('Удалено');
+  renderAdminList();
+  renderCountriesGrid();
+  renderServiceCountriesGrid();
+}
+
+// ══════════════════════════════════════════════
+//  SECRET ADMIN TAP
+// ══════════════════════════════════════════════
+document.getElementById('splashLogo').addEventListener('click', ()=>{
+  logoTaps++;
+  if(logoTaps>=5){logoTaps=0;const pw=prompt('Admin password:');if(pw===ADMIN_PASSWORD){enterApp(true);setTimeout(openAdmin,100);}}
+});
+
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+updateSVGBg('splash');
 </script>
 </body>
 </html>
