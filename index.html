@@ -958,7 +958,7 @@ const TYPE_COLORS = {
 };
 
 let venues = [];
-let services = [];
+let services = []; // Always empty until dedicated service sheet is configured
 let savedIds = [];
 let isPro = false;
 let activeTab = 'countries';
@@ -991,6 +991,8 @@ let editingAdminItem = null;
 //  NAVIGATION
 // ══════════════════════════════════════════════
 function enterApp(pro) {
+  // Explicitly block services data from main venues sheet
+  window.servicesFromSheet = null;
   isPro = pro;
   document.getElementById('splash').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
