@@ -975,6 +975,7 @@ let sortBy = 'rating';
 // Google Sheets config — вставьте ID своей таблицы
 // SHEET_ID and data loading handled by data.js
 const SHEET_SERVICE_TAB = 'service';
+// Set this when ready: const SERVICE_SHEET_ID = 'your-service-sheet-id';
 let logoTaps = 0;
 let currentPlan = null;
 let templates = [
@@ -1205,11 +1206,12 @@ const SVC_CATEGORY_MAP = {
 
 // Загрузка из Google Sheets (таблица service)
 async function loadServicesFromSheet() {
-  // Service data loads from its own dedicated sheet (configure when ready)
-  if (typeof SHEET_ID === 'undefined') return;
+  // Service section uses its own dedicated Google Sheet (separate from venues)
+  // To enable: define SERVICE_SHEET_ID at the top of this script
+  if (typeof SERVICE_SHEET_ID === 'undefined' || !SERVICE_SHEET_ID) return;
   document.getElementById('svcLoading').style.display = 'block';
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_SERVICE_TAB)}`;
+    const url = `https://docs.google.com/spreadsheets/d/${SERVICE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_SERVICE_TAB)}`;
     const res = await fetch(url);
     const text = await res.text();
     const json = JSON.parse(text.substring(47).slice(0,-2));
