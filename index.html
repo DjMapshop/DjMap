@@ -1023,8 +1023,8 @@ function goSplash() {
 
 function selectPlan(plan, price) {
   currentPlan = {plan, price};
-  const names = {city:'1 город', country:'1 страна', all:'Все страны'};
-  const descs = {city:'Один город на выбор', country:'Все города одной страны', all:'Полный доступ — 9 стран'};
+  const names = {city:T('plan1name'), country:T('plan2name'), all:T('plan3name')};
+  const descs = {city:T('plan1desc'), country:T('plan2desc'), all:T('plan3desc')};
   const colors = {city:'linear-gradient(135deg,#374151,#1f2937)', country:`linear-gradient(135deg,#5b3a00,${GOLD})`, all:`linear-gradient(135deg,${GOLD},#8b6914)`};
   document.getElementById('paymentPlanName').textContent = names[plan];
   document.getElementById('paymentPlanDesc').textContent = descs[plan];
@@ -1041,7 +1041,7 @@ function closePayment() {
 function completePurchase() {
   closePayment();
   enterApp(true);
-  showToast('✓ Оплата прошла успешно!');
+  showToast('✓ ' + T('paymentOk'));
 }
 
 function switchTab(tab) {
@@ -1452,7 +1452,7 @@ function openVenue(id) {
           <div style="flex:1"><div class="channel-label">${ch.label.toUpperCase()}</div><div class="channel-val">${c[ch.key]}</div></div>
           <span class="channel-arrow" style="color:var(--gold);">→</span>
         </div>
-      </a>`).join('') : '<div style="color:#555;font-size:12px;padding:8px;text-align:center;">🔒 Доступно в PRO версии</div>'}
+      </a>`).join('') : `<div style="color:#555;font-size:12px;padding:8px;text-align:center;">🔒 ${T('proOnly')}</div>`}
     </div>`;
   }).join('');
 
@@ -2305,7 +2305,15 @@ const TRANSLATIONS = {
     rentalEmailTitle:'EQUIPMENT RENTAL REQUEST', fSentVia:'Sent via DJ MAP App',
     mixing_mastering:'Mixing & Mastering',
     aboutUs:'About us', contactUs:'Contact us',
-    aboutUsText:"We make a DJ's life easier and more exciting. We share our expertise and a contact database we have been building for you over 10 years.\n\nOur database contains only verified contacts and links. All contact information has been agreed upon and verified.\n\nOur product has no advertising goals.\n\nIf you have questions, suggestions, comments, or would like to give feedback — we would be happy to help.\n\nWith respect, the DJ MAP team.",
+    aboutUsText:`We make a DJ's life easier and more exciting. We share our expertise and a contact database we have been building for you over 10 years.
+
+Our database contains only verified contacts and links. All contact information has been agreed upon and verified.
+
+Our product has no advertising goals.
+
+If you have questions, suggestions, comments, or would like to give feedback — we would be happy to help.
+
+With respect, the DJ MAP team.`,
     cuSubject:'SUBJECT', cuSubjectPh:'Subject...', cuMessage:'MESSAGE', cuMessagePh:'Write your message...',
     fErrSubject:'Please enter a subject', fErrMessage:'Please write a message',
   },
@@ -2382,7 +2390,15 @@ const TRANSLATIONS = {
     rentalEmailTitle:'ЗАПРОС НА АРЕНДУ ОБОРУДОВАНИЯ', fSentVia:'Отправлено через DJ MAP App',
     mixing_mastering:'Mixing & Mastering',
     aboutUs:'О нас', contactUs:'Связаться с нами',
-    aboutUsText:'Наша компания делает жизнь диджея удобной и интересной. Мы делимся наработками и базой контактов, которую мы собирали для вас в течение 10 лет.\n\nВ нашей базе вы найдёте только проверенные контакты и ссылки. Вся контактная информация согласована и верифицирована.\n\nНаш продукт не несёт рекламных целей.\n\nЕсли у вас есть вопросы, предложения, замечания или вы хотите дать обратную связь — мы будем рады вам помочь.\n\nС уважением, команда DJ MAP.',
+    aboutUsText:`Наша компания делает жизнь диджея удобной и интересной. Мы делимся наработками и базой контактов, которую мы собирали для вас в течение 10 лет.
+
+В нашей базе вы найдёте только проверенные контакты и ссылки. Вся контактная информация согласована и верифицирована.
+
+Наш продукт не несёт рекламных целей.
+
+Если у вас есть вопросы, предложения, замечания или вы хотите дать обратную связь — мы будем рады вам помочь.
+
+С уважением, команда DJ MAP.`,
     cuSubject:'ТЕМА', cuSubjectPh:'Тема письма...', cuMessage:'СООБЩЕНИЕ', cuMessagePh:'Напишите ваше сообщение...',
     fErrSubject:'Укажите тему письма', fErrMessage:'Напишите сообщение',
   },
@@ -2459,7 +2475,15 @@ const TRANSLATIONS = {
     rentalEmailTitle:'คำขอเช่าอุปกรณ์', fSentVia:'ส่งผ่าน DJ MAP App',
     mixing_mastering:'Mixing & Mastering',
     aboutUs:'เกี่ยวกับเรา', contactUs:'ติดต่อเรา',
-    aboutUsText:'บริษัทของเราทำให้ชีวิต DJ สะดวกและน่าสนใจยิ่งขึ้น เราแบ่งปันความรู้และฐานข้อมูลผู้ติดต่อที่เราสร้างมาเพื่อคุณกว่า 10 ปี\n\nในฐานข้อมูลของเราคุณจะพบเฉพาะผู้ติดต่อและลิงก์ที่ผ่านการตรวจสอบแล้ว ข้อมูลติดต่อทั้งหมดได้รับการตกลงและยืนยันแล้ว\n\nผลิตภัณฑ์ของเราไม่มีจุดประสงค์ทางโฆษณา\n\nหากคุณมีคำถาม ข้อเสนอแนะ ความคิดเห็น หรือต้องการให้ข้อเสนอแนะ — เรายินดีที่จะช่วยเหลือคุณ\n\nด้วยความนับถือ ทีม DJ MAP',
+    aboutUsText:`บริษัทของเราทำให้ชีวิต DJ สะดวกและน่าสนใจยิ่งขึ้น เราแบ่งปันความรู้และฐานข้อมูลผู้ติดต่อที่เราสร้างมาเพื่อคุณกว่า 10 ปี
+
+ในฐานข้อมูลของเราคุณจะพบเฉพาะผู้ติดต่อและลิงก์ที่ผ่านการตรวจสอบแล้ว ข้อมูลติดต่อทั้งหมดได้รับการตกลงและยืนยันแล้ว
+
+ผลิตภัณฑ์ของเราไม่มีจุดประสงค์ทางโฆษณา
+
+หากคุณมีคำถาม ข้อเสนอแนะ ความคิดเห็น หรือต้องการให้ข้อเสนอแนะ — เรายินดีที่จะช่วยเหลือคุณ
+
+ด้วยความนับถือ ทีม DJ MAP`,
     cuSubject:'หัวเรื่อง', cuSubjectPh:'หัวเรื่อง...', cuMessage:'ข้อความ', cuMessagePh:'เขียนข้อความของคุณ...',
     fErrSubject:'กรุณาใส่หัวเรื่อง', fErrMessage:'กรุณาเขียนข้อความ',
   },
