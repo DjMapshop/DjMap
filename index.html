@@ -95,7 +95,26 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .venue-carousel{position:relative;width:100%;height:200px;border-radius:12px 12px 0 0;overflow:hidden;}
 .carousel-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;}
 .carousel-slide.active{opacity:1;}
-.carousel-emoji{font-size:34px;}
+.carousel-emoji{font-size:34px;position:relative;z-index:1;}
+.carousel-name-overlay{
+  position:absolute;
+  bottom:36px;
+  left:0;right:0;
+  text-align:center;
+  z-index:10;
+  pointer-events:none;
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:0.5px;
+  line-height:1.2;
+  padding:0 12px;
+  color:#8b5e0a;
+  -webkit-text-stroke:1.5px #000;
+  text-stroke:1.5px #000;
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7),
+    0 0 20px rgba(0,0,0,0.5);
+}
 .carousel-dots{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);display:flex;gap:5px;}
 .carousel-dot{height:5px;border-radius:3px;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;}
 .hot-badge{position:absolute;top:7px;left:7px;background:var(--gold);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:#000;}
@@ -214,6 +233,82 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .admin-edit-btn{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);color:var(--gold);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
 .admin-del-btn{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;border-radius:8px;padding:6px 10px;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;}
 
+/* Service category buttons */
+.svc-cat-row{display:flex;gap:8px;padding:12px 20px 4px;}
+.svc-cat-btn{flex:1;padding:10px 6px;border-radius:12px;border:1px solid #1a1a2e;background:#0f0f18;color:#444;font-size:9px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;line-height:1.3;text-align:center;}
+.svc-cat-btn .svc-cat-icon{display:flex;align-items:center;justify-content:center;color:#555;transition:color .2s;}
+.svc-cat-btn.active-shop{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.6);color:#c9a84c;}
+.svc-cat-btn.active-shop .svc-cat-icon{color:#c9a84c;}
+.svc-cat-btn.active-service{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.6);color:#c9a84c;}
+.svc-cat-btn.active-service .svc-cat-icon{color:#c9a84c;}
+.svc-cat-btn.active-rental{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.6);color:#c9a84c;}
+.svc-cat-btn.active-rental .svc-cat-icon{color:#c9a84c;}
+/* Service sort bar */
+.svc-sort-bar{display:flex;align-items:center;gap:8px;padding:6px 20px 4px;flex-wrap:wrap;}
+.svc-sort-label{font-size:10px;color:#444;letter-spacing:1px;white-space:nowrap;}
+.svc-sort-select{background:#0f0f18;border:1px solid #1a1a2e;border-radius:9px;color:#ccc;font-size:11px;font-family:'Inter',sans-serif;padding:5px 10px;outline:none;cursor:pointer;}
+.svc-sort-select:focus{border-color:rgba(201,168,76,.4);}
+/* Service card with logo */
+.svc-card{background:#0f0f18;border:1px solid #1a1a2e;border-radius:14px;padding:13px;margin-bottom:11px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:border-color .2s;}
+.svc-card:hover{border-color:rgba(201,168,76,.3);}
+.svc-card.premium{border-color:rgba(201,168,76,.3);}
+.svc-logo{width:58px;height:58px;border-radius:12px;object-fit:cover;flex-shrink:0;background:linear-gradient(135deg,#1a1a2e,#0f0f18);display:flex;align-items:center;justify-content:center;font-size:24px;border:1px solid #1a1a2e;}
+.svc-logo img{width:100%;height:100%;border-radius:12px;object-fit:cover;}
+.svc-info{flex:1;min-width:0;}
+.svc-type-badge{border-radius:4px;padding:2px 7px;font-size:9px;font-weight:700;text-transform:uppercase;display:inline-block;margin-bottom:3px;}
+.svc-name{font-weight:800;font-size:13px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.svc-loc{color:#444;font-size:11px;margin-bottom:3px;}
+.svc-brands{color:#60a5fa;font-size:10px;}
+/* Rental form modal */
+#rentalModal,#createFormModal{position:fixed;inset:0;z-index:300;display:none;flex-direction:column;}
+#rentalModal.open,#createFormModal.open{display:flex;}
+.rental-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);}
+.rental-sheet{position:relative;z-index:1;margin-top:auto;background:#0a0a10;border-radius:22px 22px 0 0;border-top:1px solid #1a1a2e;padding:0 0 44px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.rental-handle{width:36px;height:4px;background:#2a2a2a;border-radius:2px;margin:12px auto 0;}
+.rental-head{padding:16px 20px 4px;display:flex;align-items:center;justify-content:space-between;}
+.rental-title{font-weight:900;font-size:18px;}
+.rental-close{background:rgba(255,255,255,.08);border:none;color:#888;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;}
+.rental-body{padding:8px 20px 0;}
+.rf-label{font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:5px;margin-top:14px;}
+.rf-input{width:100%;background:#0f0f18;border:1px solid #1a1a2e;border-radius:10px;padding:11px 13px;color:#fff;font-size:13px;font-family:'Inter',sans-serif;outline:none;box-sizing:border-box;}
+.rf-input:focus{border-color:rgba(201,168,76,.5);}
+.rf-input::placeholder{color:#333;}
+.rf-select{width:100%;background:#0f0f18;border:1px solid #1a1a2e;border-radius:10px;padding:11px 13px;color:#fff;font-size:13px;font-family:'Inter',sans-serif;outline:none;box-sizing:border-box;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23444' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;}
+.rf-select:focus{border-color:rgba(201,168,76,.5);}
+.rf-textarea{width:100%;background:#0f0f18;border:1px solid #1a1a2e;border-radius:10px;padding:11px 13px;color:#fff;font-size:13px;font-family:'Inter',sans-serif;outline:none;box-sizing:border-box;resize:none;min-height:80px;}
+.rf-textarea:focus{border-color:rgba(201,168,76,.5);}
+.rf-textarea::placeholder{color:#333;}
+.rf-toggle-row{display:flex;align-items:center;justify-content:space-between;background:#0f0f18;border:1px solid #1a1a2e;border-radius:10px;padding:12px 14px;}
+.rf-toggle-label{font-size:13px;color:#ccc;}
+.rf-toggle{position:relative;width:44px;height:26px;flex-shrink:0;}
+.rf-toggle input{opacity:0;width:0;height:0;position:absolute;}
+.rf-toggle-slider{position:absolute;inset:0;background:#1a1a2e;border-radius:13px;cursor:pointer;transition:.3s;}
+.rf-toggle-slider:before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#444;border-radius:50%;transition:.3s;}
+.rf-toggle input:checked ~ .rf-toggle-slider{background:rgba(201,168,76,.25);border:1px solid var(--gold);}
+.rf-toggle input:checked ~ .rf-toggle-slider:before{transform:translateX(18px);background:var(--gold);}
+.rf-interests{display:flex;flex-wrap:wrap;gap:7px;}
+.rf-interest-chip{background:#0f0f18;border:1px solid #1a1a2e;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:700;color:#444;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;user-select:none;}
+.rf-interest-chip.active{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.6);color:var(--gold);}
+.rf-submit{width:100%;margin-top:20px;padding:15px;border-radius:14px;background:linear-gradient(135deg,var(--gold),#8b6914);border:none;color:#000;font-weight:900;font-size:15px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;}
+.rf-submit:active{opacity:.8;}
+.cf-file-wrap{background:#0f0f18;border:1px solid #1a1a2e;border-radius:10px;padding:10px 13px;display:flex;flex-direction:column;gap:8px;}
+.cf-file-input{display:none;}
+.cf-file-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;align-self:flex-start;}
+.cf-file-list{display:flex;flex-direction:column;gap:1px;}
+.cf-file-name{font-size:11px;color:#444;}
+
+/* Create tab note — золотой акцент */
+#tab-create svg { stroke: #5a4a1a; transition: stroke .2s; }
+#tab-create.active svg { stroke: var(--gold); filter: drop-shadow(0 0 6px rgba(201,168,76,.5)); }
+#tab-create.active { color: var(--gold); }
+.create-section-label{font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.create-card{width:100%;background:#0f0f18;border:1px solid #1a1a2e;border-radius:14px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:13px;cursor:pointer;font-family:'Inter',sans-serif;text-align:left;transition:border-color .2s;}
+.create-card:hover{border-color:rgba(201,168,76,.35);}
+.create-card-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;}
+.create-card-info{flex:1;min-width:0;}
+.create-card-title{font-weight:800;font-size:13px;color:#fff;margin-bottom:2px;}
+.create-card-desc{font-size:11px;color:#444;line-height:1.4;}
+.create-card-arrow{color:#2a2a2a;font-size:16px;flex-shrink:0;}
 /* Toast */
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(15,15,24,.95);border:1px solid rgba(201,168,76,.3);border-radius:12px;padding:10px 20px;font-size:13px;color:var(--gold);z-index:999;pointer-events:none;opacity:0;transition:opacity .3s;white-space:nowrap;}
 #toast.show{opacity:1;}
@@ -346,18 +441,58 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
       <div class="screen-head">
         <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Сервис</div></div>
       </div>
-      <div id="serviceCountriesWrap">
-        <div class="countries-grid" id="serviceCountriesGrid"></div>
+      <!-- Sort bar — над кнопками -->
+      <div class="svc-sort-bar">
+        <span class="svc-sort-label">СТРАНА</span>
+        <select class="svc-sort-select" id="svcCountrySort" onchange="renderServiceListNew()">
+          <option value="All">Все страны</option>
+        </select>
+        <span class="svc-sort-label">ГОРОД</span>
+        <select class="svc-sort-select" id="svcCitySort" onchange="renderServiceListNew()">
+          <option value="All">Все города</option>
+        </select>
       </div>
-      <div id="serviceListWrap" style="display:none;">
-        <div style="display:flex;align-items:center;gap:9px;margin:11px 20px;">
-          <button class="back-btn" onclick="backToServiceCountries()">← Страны</button>
-          <span id="selectedServiceCountryLabel" style="font-weight:700;font-size:14px;"></span>
-        </div>
-        <div class="filter-row" id="serviceTypeFilters"></div>
-        <div class="filter-row" id="serviceCityFilters"></div>
-        <div class="venue-list" id="serviceList"></div>
+      <!-- Category buttons -->
+      <div class="svc-cat-row">
+        <button class="svc-cat-btn" id="svcCatShop" onclick="setSvcCategory('shop')">
+          <span class="svc-cat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="12" cy="12" r="1" fill="currentColor"/>
+              <path d="M12 2 Q14 6 12 8 Q10 6 12 2" fill="currentColor" opacity=".5"/>
+              <path d="M22 12 Q18 14 16 12 Q18 10 22 12" fill="currentColor" opacity=".5"/>
+              <path d="M12 22 Q10 18 12 16 Q14 18 12 22" fill="currentColor" opacity=".5"/>
+              <path d="M2 12 Q6 10 8 12 Q6 14 2 12" fill="currentColor" opacity=".5"/>
+            </svg>
+          </span>
+          <span>Магазины</span>
+        </button>
+        <button class="svc-cat-btn" id="svcCatService" onclick="setSvcCategory('service')">
+          <span class="svc-cat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </span>
+          <span>Сервис центр</span>
+        </button>
+        <button class="svc-cat-btn" id="svcCatRental" onclick="setSvcCategory('rental')">
+          <span class="svc-cat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+              <path d="M19.07 4.93a10 10 0 010 14.14"/>
+              <path d="M15.54 8.46a5 5 0 010 7.07"/>
+            </svg>
+          </span>
+          <span>Аренда оборудования</span>
+        </button>
       </div>
+      <!-- Loading indicator -->
+      <div id="svcLoading" style="text-align:center;padding:30px;color:#444;font-size:13px;display:none;">
+        <div style="font-size:24px;margin-bottom:8px;">⏳</div>Загрузка...
+      </div>
+      <!-- Service list -->
+      <div id="serviceListNew" style="padding:0 20px;"></div>
     </div>
 
     <!-- SAVED screen -->
@@ -388,6 +523,140 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
           <textarea class="tpl-input" rows="9" id="tplTextInput" placeholder="Введите текст..."></textarea>
           <button class="tpl-save-btn" onclick="saveTpl()">✓ Сохранить</button>
         </div>
+      </div>
+    </div>
+
+    <!-- CREATE screen -->
+    <div class="screen" id="screen-create">
+      <div class="screen-head">
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Создать</div></div>
+      </div>
+      <div style="padding:0 20px 20px;">
+
+        <div class="create-section-label">📄 Промо материалы</div>
+        <button class="create-card" onclick="openCreateItem('presskit-pdf')">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#1e3a5f,#3b82f6);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15h6M9 11h6"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title">Создать пресс кит PDF</div>
+            <div class="create-card-desc">Профессиональный пресс кит для букинга</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
+        <button class="create-card" onclick="openCreateItem('presskit-web')">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#14532d,#22c55e);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title">Создать пресс кит Web Page</div>
+            <div class="create-card-desc">Онлайн страница с вашим портфолио</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
+        <button class="create-card" onclick="openCreateItem('media-links')">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#4c1d95,#a855f7);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title">Медиа ссылки и страницы артиста</div>
+            <div class="create-card-desc">Beatport, RA, SoundCloud, Spotify и другие</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
+        <div class="create-section-label" style="margin-top:20px;">🎬 Производство контента</div>
+        <button class="create-card" onclick="openCreateItem('photo-video')">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#831843,#f43f5e);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title">Фото / Видео сессия</div>
+            <div class="create-card-desc">Профессиональная съёмка для артиста</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
+        <button class="create-card" onclick="openCreateItem('set-recording')">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#1c1917,#c9a84c);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title">Запись сета с выступления</div>
+            <div class="create-card-desc">Live запись вашего перформанса</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
+        <button class="create-card" onclick="openCreateItem('stream-recording')">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#0c4a6e,#0ea5e9);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title">Запись стрима</div>
+            <div class="create-card-desc">Онлайн стрим и его запись</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
+        <div class="create-section-label" style="margin-top:20px;">🎵 Музыка и обучение</div>
+        <button class="create-card" onclick="openCreateItem('ghost-production')">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#1e1e2e,#6366f1);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title">Гост Продакшн</div>
+            <div class="create-card-desc">Профессиональное написание треков</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
+        <button class="create-card" onclick="openCreateItem('dj-education')">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#3f1c00,#f97316);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14a9 9 0 0118 0"/><rect x="2" y="14" width="4" height="6" rx="2" fill="currentColor" stroke="none"/><rect x="18" y="14" width="4" height="6" rx="2" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title">Обучение DJ</div>
+            <div class="create-card-desc">Курсы диджеинга от профессионалов</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
+        <button class="create-card" onclick="openCreateItem('music-education')">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#064e3b,#10b981);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><line x1="9" y1="9" x2="21" y2="7"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title">Обучение создания музыки</div>
+            <div class="create-card-desc">Продакшн, сведение, мастеринг</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
+        <button class="create-card" onclick="openCreateItem('distribution')">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#1a0a3e,#7c3aed);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title">Дистрибьюция / Выпуск трека</div>
+            <div class="create-card-desc">Spotify, Apple Music, Beatport и другие</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
+        <button class="create-card" onclick="openCreateItem('mixing-mastering')">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#0f172a,#38bdf8);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title">Mixing & Mastering</div>
+            <div class="create-card-desc">Профессиональное сведение и мастеринг</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
       </div>
     </div>
 
@@ -458,10 +727,104 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       <span>Шаблоны</span>
     </button>
+    <button class="nav-tab" id="tab-create" onclick="switchTab('create')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18V5" stroke-width="2"/>
+        <path d="M9 5 L18 3 L18 11 L9 13" stroke-width="1.6"/>
+        <circle cx="6.5" cy="18" r="2.5" fill="currentColor" stroke="none"/>
+        <circle cx="15.5" cy="11" r="2.5" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>Создать</span>
+    </button>
     <button class="nav-tab" id="tab-account" onclick="switchTab('account')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       <span>Профиль</span>
     </button>
+  </div>
+</div>
+
+<!-- RENTAL FORM MODAL -->
+<div id="rentalModal">
+  <div class="rental-backdrop" onclick="closeRentalForm()"></div>
+  <div class="rental-sheet">
+    <div class="rental-handle"></div>
+    <div class="rental-head">
+      <div class="rental-title">🎚️ Аренда оборудования</div>
+      <button class="rental-close" onclick="closeRentalForm()">✕</button>
+    </div>
+    <div class="rental-body">
+
+      <label class="rf-label">Страна</label>
+      <select class="rf-select" id="rf_country">
+        <option value="">— Выберите страну —</option>
+        <option>Таиланд 🇹🇭</option>
+        <option>Вьетнам 🇻🇳</option>
+        <option>Камбоджа 🇰🇭</option>
+        <option>Индия 🇮🇳</option>
+        <option>Малайзия 🇲🇾</option>
+        <option>Япония 🇯🇵</option>
+        <option>Китай 🇨🇳</option>
+        <option>Корея 🇰🇷</option>
+        <option>Индонезия 🇮🇩</option>
+      </select>
+
+      <label class="rf-label">Город</label>
+      <input class="rf-input" id="rf_city" placeholder="Например: Bangkok, Bali..." type="text">
+
+      <label class="rf-label">Дата начала аренды</label>
+      <input class="rf-input" id="rf_date" placeholder="ДД.ММ.ГГГГ" type="date">
+
+      <label class="rf-label">Количество дней</label>
+      <input class="rf-input" id="rf_days" placeholder="Например: 3" type="number" min="1" max="365">
+
+      <label class="rf-label">Нужна ли доставка?</label>
+      <div class="rf-toggle-row">
+        <span class="rf-toggle-label">Да, нужна доставка</span>
+        <label class="rf-toggle">
+          <input type="checkbox" id="rf_delivery">
+          <div class="rf-toggle-slider"></div>
+        </label>
+      </div>
+
+      <label class="rf-label">Что интересует?</label>
+      <div class="rf-interests" id="rf_interests">
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Pioneer CDJ</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Pioneer DJM микшер</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Vinyl Decks</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">RMX</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Keyboard</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Stand</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Controller</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Колонки / Sound System</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Сабвуфер</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Микрофон</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Световое оборудование</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Dj Booth / Стойка</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Полный комплект</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Другое</div>
+      </div>
+
+      <label class="rf-label">Комментарий к запросу</label>
+      <textarea class="rf-textarea" id="rf_comment" placeholder="Опишите ваш запрос, особые пожелания..."></textarea>
+
+      <button class="rf-submit" id="rf_submitBtn" onclick="submitRentalForm()">
+        📩 Отправить запрос
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- CREATE FORM MODAL -->
+<div id="createFormModal">
+  <div class="rental-backdrop" onclick="closeCreateForm()"></div>
+  <div class="rental-sheet">
+    <div class="rental-handle"></div>
+    <div class="rental-head">
+      <div class="rental-title" id="cf_title">Запрос</div>
+      <button class="rental-close" onclick="closeCreateForm()">✕</button>
+    </div>
+    <div class="rental-body" id="cf_body"></div>
   </div>
 </div>
 
@@ -514,17 +877,18 @@ const TYPE_GRADIENTS = {
   'Lounge':         ['linear-gradient(135deg,#431407,#f97316)','linear-gradient(135deg,#7c2d12,#fb923c)','linear-gradient(135deg,#9a3412,#fdba74)'],
   'Music Shop':     ['linear-gradient(135deg,#1e3a5f,#3b82f6)','linear-gradient(135deg,#1e40af,#60a5fa)','linear-gradient(135deg,#1d4ed8,#93c5fd)'],
   'Service Center': ['linear-gradient(135deg,#3f1c00,#92400e)','linear-gradient(135deg,#78350f,#d97706)','linear-gradient(135deg,#451a03,#f59e0b)'],
+  'Rental':         ['linear-gradient(135deg,#064e3b,#10b981)','linear-gradient(135deg,#065f46,#34d399)','linear-gradient(135deg,#047857,#6ee7b7)'],
 };
 const PHOTO_EMOJIS = {
   'Nightclub':['🎛️','💡','🎶'],'Beach Club':['🏖️','🌅','🍹'],
   'Rooftop Bar':['🌃','✨','🥂'],'Bar & Club':['🍸','🎵','🌿'],
   'Club':['💃','🎤','🔊'],'Lounge':['🛋️','🕯️','🎼'],
-  'Music Shop':['🎸','🎹','🎚️'],'Service Center':['🔧','⚙️','🛠️'],
+  'Music Shop':['🎸','🎹','🎚️'],'Service Center':['🔧','⚙️','🛠️'],'Rental':['🎚️','🔊','🎛️'],
 };
 const TYPE_COLORS = {
   'Nightclub':'#a855f7','Beach Club':'#06b6d4','Rooftop Bar':'#c9a84c',
   'Bar & Club':'#84cc16','Club':'#ec4899','Lounge':'#f97316',
-  'Music Shop':'#3b82f6','Service Center':'#d97706'
+  'Music Shop':'#3b82f6','Service Center':'#d97706','Rental':'#10b981'
 };
 
 let venues = [];
@@ -539,7 +903,12 @@ let venueCityFilter = 'All';
 let venueGenreFilter = 'All';
 let serviceTypeFilter = 'All';
 let serviceCityFilter = 'All';
+let svcCategory = 'shop'; // 'shop' | 'service' | 'rental'
 let sortBy = 'rating';
+
+// Google Sheets config — вставьте ID своей таблицы
+const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID';
+const SHEET_SERVICE_TAB = 'service';
 let logoTaps = 0;
 let currentPlan = null;
 let templates = [
@@ -576,10 +945,11 @@ function enterApp(pro) {
   document.getElementById('app').classList.remove('hidden');
   document.getElementById('proBadge').style.display = pro ? 'inline-block' : 'none';
   renderCountriesGrid();
-  renderServiceCountriesGrid();
   renderSaved();
   renderTemplates();
   renderProfileStats();
+  setSvcCategory('shop');
+  loadServicesFromSheet();
   updateSVGBg('venues');
 }
 
@@ -622,6 +992,10 @@ function switchTab(tab) {
   if (tab === 'saved') renderSaved();
   if (tab === 'templates') renderTemplates();
   if (tab === 'account') renderProfileStats();
+  if (tab === 'service') {
+    setSvcCategory(svcCategory);
+    loadServicesFromSheet();
+  }
 }
 
 // ══════════════════════════════════════════════
@@ -631,6 +1005,7 @@ const BG_CONFIGS = {
   splash:    {lines:[{x1:'0%',y1:'30%',x2:'40%',y2:'10%',op:.18},{x1:'60%',y1:'0%',x2:'100%',y2:'45%',op:.14},{x1:'20%',y1:'100%',x2:'80%',y2:'60%',op:.12}],glow:[{cx:'50%',cy:'20%',r:'35%',op:.06}]},
   countries: {lines:[{x1:'0%',y1:'15%',x2:'30%',y2:'5%',op:.15},{x1:'70%',y1:'0%',x2:'100%',y2:'30%',op:.12},{x1:'0%',y1:'80%',x2:'50%',y2:'95%',op:.10}],glow:[{cx:'85%',cy:'12%',r:'28%',op:.05}]},
   service:   {lines:[{x1:'100%',y1:'20%',x2:'60%',y2:'5%',op:.15},{x1:'0%',y1:'10%',x2:'35%',y2:'30%',op:.12},{x1:'40%',y1:'90%',x2:'100%',y2:'75%',op:.10}],glow:[{cx:'15%',cy:'15%',r:'30%',op:.05}]},
+  create:    {lines:[{x1:'30%',y1:'0%',x2:'70%',y2:'15%',op:.18},{x1:'0%',y1:'50%',x2:'20%',y2:'20%',op:.13},{x1:'80%',y1:'90%',x2:'100%',y2:'60%',op:.11}],glow:[{cx:'60%',cy:'8%',r:'32%',op:.07}]},
   saved:     {lines:[{x1:'50%',y1:'0%',x2:'100%',y2:'25%',op:.14},{x1:'0%',y1:'40%',x2:'25%',y2:'10%',op:.12},{x1:'10%',y1:'85%',x2:'60%',y2:'100%',op:.10}],glow:[{cx:'75%',cy:'8%',r:'32%',op:.05}]},
   templates: {lines:[{x1:'0%',y1:'5%',x2:'45%',y2:'20%',op:.14},{x1:'55%',y1:'0%',x2:'100%',y2:'15%',op:.12},{x1:'30%',y1:'95%',x2:'90%',y2:'80%',op:.10}],glow:[{cx:'25%',cy:'10%',r:'30%',op:.05}]},
   account:   {lines:[{x1:'0%',y1:'25%',x2:'50%',y2:'5%',op:.15},{x1:'50%',y1:'5%',x2:'100%',y2:'20%',op:.13},{x1:'20%',y1:'90%',x2:'80%',y2:'100%',op:.10}],glow:[{cx:'50%',cy:'5%',r:'40%',op:.06}]},
@@ -715,59 +1090,170 @@ function renderVenueList() {
 }
 
 // ══════════════════════════════════════════════
-//  SERVICE
+//  SERVICE — Google Sheets loader
 // ══════════════════════════════════════════════
-function renderServiceCountriesGrid() {
-  const g = document.getElementById('serviceCountriesGrid');
-  g.innerHTML = COUNTRIES.map(c => {
-    const cnt = services.filter(s => s.country === c.id).length;
-    if (cnt === 0) return '';
-    return `<div class="country-card" onclick="selectServiceCountry('${c.id}')">
-      <div class="country-flag">${c.flag}</div>
-      <div class="country-name">${c.name}</div>
-      <div class="country-count">${cnt} объектов</div>
-    </div>`;
-  }).join('');
+
+// Маппинг типов из таблицы → категория
+const SVC_CATEGORY_MAP = {
+  'Music Shop': 'shop',
+  'Shop': 'shop',
+  'Магазин': 'shop',
+  'Service Center': 'service',
+  'Сервис': 'service',
+  'Сервисный центр': 'service',
+  'Rental': 'rental',
+  'Аренда': 'rental',
+  'Equipment Rental': 'rental',
+  'Аренда оборудования': 'rental',
+};
+
+// Загрузка из Google Sheets (таблица service)
+async function loadServicesFromSheet() {
+  if (!SHEET_ID || SHEET_ID === 'YOUR_GOOGLE_SHEET_ID') return;
+  document.getElementById('svcLoading').style.display = 'block';
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_SERVICE_TAB)}`;
+    const res = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.substring(47).slice(0,-2));
+    const cols = json.table.cols.map(c => (c.label||'').toLowerCase().trim());
+    const rows = json.table.rows;
+    const parsed = rows.map((row, idx) => {
+      const get = (name) => {
+        const i = cols.indexOf(name);
+        return i >= 0 && row.c[i] ? String(row.c[i].v||'').trim() : '';
+      };
+      const type = get('type') || get('category') || 'Music Shop';
+      return {
+        id: 'svc_' + idx,
+        name: get('name'),
+        type,
+        category: SVC_CATEGORY_MAP[type] || 'shop',
+        city: get('city'),
+        area: get('area') || get('district') || '',
+        country: get('country'),
+        rating: parseFloat(get('rating')) || 4.0,
+        description: get('description') || get('desc') || '',
+        instagram: get('instagram'),
+        brands: get('brands') || get('brand') || '',
+        workingHours: get('hours') || get('workinghours') || '',
+        photo1: get('photo1') || get('logo') || '',
+        isPremium: get('premium') === 'true' || get('hot') === 'true',
+        contacts: [],
+      };
+    }).filter(s => s.name);
+    if (parsed.length > 0) services = parsed;
+  } catch(e) {
+    console.warn('Sheets load failed:', e);
+  }
+  document.getElementById('svcLoading').style.display = 'none';
+  buildSvcSortDropdowns();
+  renderServiceListNew();
 }
 
-function selectServiceCountry(id) {
-  selectedServiceCountry = COUNTRIES.find(c => c.id === id);
-  serviceTypeFilter = 'All'; serviceCityFilter = 'All';
-  document.getElementById('serviceCountriesWrap').style.display = 'none';
-  document.getElementById('serviceListWrap').style.display = 'block';
-  document.getElementById('selectedServiceCountryLabel').textContent = selectedServiceCountry.flag + ' ' + selectedServiceCountry.name;
-  buildServiceFilters();
-  renderServiceList();
+function setSvcCategory(cat) {
+  svcCategory = cat;
+  // Update button styles
+  const btns = {shop:'svcCatShop', service:'svcCatService', rental:'svcCatRental'};
+  const cls = {shop:'active-shop', service:'active-service', rental:'active-rental'};
+  Object.keys(btns).forEach(k => {
+    const el = document.getElementById(btns[k]);
+    el.className = 'svc-cat-btn' + (k === cat ? ' ' + cls[k] : '');
+  });
+  buildSvcSortDropdowns();
+  renderServiceListNew();
 }
 
-function backToServiceCountries() {
-  selectedServiceCountry = null;
-  document.getElementById('serviceCountriesWrap').style.display = 'block';
-  document.getElementById('serviceListWrap').style.display = 'none';
+function buildSvcSortDropdowns() {
+  const catMap = {shop:'shop', service:'service', rental:'rental'};
+  const filtered = services.filter(s => (SVC_CATEGORY_MAP[s.type] || s.category) === svcCategory);
+  // Countries
+  const countries = [...new Set(filtered.map(s => s.country).filter(Boolean))].sort();
+  const cSel = document.getElementById('svcCountrySort');
+  const prevC = cSel.value;
+  cSel.innerHTML = '<option value="All">Все страны</option>' +
+    countries.map(c => {
+      const flag = (COUNTRIES.find(x => x.id === c) || {}).flag || '';
+      const name = (COUNTRIES.find(x => x.id === c) || {}).name || c;
+      return `<option value="${c}" ${prevC===c?'selected':''}>${flag} ${name}</option>`;
+    }).join('');
+  // Cities (filtered by country if selected)
+  const cVal = cSel.value;
+  const cityFiltered = cVal === 'All' ? filtered : filtered.filter(s => s.country === cVal);
+  const cities = [...new Set(cityFiltered.map(s => s.city).filter(Boolean))].sort();
+  const citySel = document.getElementById('svcCitySort');
+  const prevCity = citySel.value;
+  citySel.innerHTML = '<option value="All">Все города</option>' +
+    cities.map(c => `<option value="${c}" ${prevCity===c?'selected':''}>${c}</option>`).join('');
 }
 
-function buildServiceFilters() {
-  const css = services.filter(s => s.country === selectedServiceCountry.id);
-  const types = ['All',...new Set(css.map(s=>s.type))];
-  const cities = ['All',...new Set(css.map(s=>s.city))];
-  document.getElementById('serviceTypeFilters').innerHTML = types.map(t =>
-    `<button class="filter-chip ${serviceTypeFilter===t?'active':''}" onclick="setServiceTypeFilter('${t}')">${t==='All'?'🎵 Все':t}</button>`).join('');
-  document.getElementById('serviceCityFilters').innerHTML = cities.map(c =>
-    `<button class="filter-chip ${serviceCityFilter===c?'active':''}" onclick="setServiceCityFilter('${c}')">${c==='All'?'Все города':c}</button>`).join('');
+function renderServiceListNew() {
+  const countryVal = document.getElementById('svcCountrySort').value;
+  const cityVal = document.getElementById('svcCitySort').value;
+  // Rebuild city dropdown when country changes
+  buildSvcSortDropdowns();
+  // Re-read city after rebuild
+  const cityVal2 = document.getElementById('svcCitySort').value;
+
+  let list = services.filter(s => (SVC_CATEGORY_MAP[s.type] || s.category) === svcCategory);
+  if (countryVal !== 'All') list = list.filter(s => s.country === countryVal);
+  if (cityVal2 !== 'All') list = list.filter(s => s.city === cityVal2);
+  list.sort((a,b) => b.rating - a.rating);
+
+  const el = document.getElementById('serviceListNew');
+  if (list.length === 0) {
+    const labels = {shop:'магазинов', service:'сервис центров', rental:'пунктов аренды'};
+    const rentalCta = svcCategory === 'rental'
+      ? `<div style="margin-top:16px;"><button onclick="openRentalForm()" style="background:linear-gradient(135deg,var(--gold),#8b6914);border:none;color:#000;font-size:13px;font-weight:800;padding:12px 28px;border-radius:12px;cursor:pointer;font-family:'Inter',sans-serif;">📩 Отправить запрос на аренду</button></div>`
+      : '';
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>Нет ${labels[svcCategory] || 'объектов'}</p>${rentalCta}</div>`;
+    return;
+  }
+  el.innerHTML = list.map(s => svcCardHTML(s)).join('');
 }
 
-function setServiceTypeFilter(t){serviceTypeFilter=t;buildServiceFilters();renderServiceList();}
-function setServiceCityFilter(c){serviceCityFilter=c;buildServiceFilters();renderServiceList();}
+function svcCardHTML(s) {
+  const color = TYPE_COLORS[s.type] || '#c9a84c';
+  const countryObj = COUNTRIES.find(c => c.id === s.country);
+  const flag = countryObj ? countryObj.flag : '';
+  const countryName = countryObj ? countryObj.name : s.country;
+  const catEmoji = {shop:'🎸', service:'🔧', rental:'🎚️'};
+  const cat = SVC_CATEGORY_MAP[s.type] || s.category || 'shop';
+  const logoHTML = s.photo1
+    ? `<div class="svc-logo"><img src="${s.photo1}" alt="${s.name}" onerror="this.parentElement.innerHTML='${catEmoji[cat]||'🎵'}'"></div>`
+    : `<div class="svc-logo" style="font-size:24px;">${catEmoji[cat]||'🎵'}</div>`;
 
-function renderServiceList() {
-  if (!selectedServiceCountry) return;
-  let list = services.filter(s => s.country === selectedServiceCountry.id);
-  if (serviceTypeFilter !== 'All') list = list.filter(s => s.type === serviceTypeFilter);
-  if (serviceCityFilter !== 'All') list = list.filter(s => s.city === serviceCityFilter);
-  const el = document.getElementById('serviceList');
-  if (list.length===0) { el.innerHTML='<div class="empty-state"><div class="empty-icon">🔧</div><p>Нет объектов</p></div>'; return; }
-  el.innerHTML = list.map(v => venueCardHTML(v)).join('');
+  // Аренда — открываем форму запроса
+  const clickAction = cat === 'rental'
+    ? `openRentalForm()`
+    : `openVenue('${s.id}')`;
+
+  // Для аренды показываем кнопку запроса
+  const rentalBtn = cat === 'rental'
+    ? `<div style="margin-top:8px;"><button onclick="event.stopPropagation();openRentalForm()" style="background:linear-gradient(135deg,var(--gold),#8b6914);border:none;color:#000;font-size:10px;font-weight:800;padding:5px 12px;border-radius:7px;cursor:pointer;font-family:'Inter',sans-serif;">📩 Запросить</button></div>`
+    : '';
+
+  return `<div class="svc-card ${s.isPremium?'premium':''}" onclick="${clickAction}">
+    ${logoHTML}
+    <div class="svc-info">
+      <span class="svc-type-badge" style="background:${color}22;color:${color};">${s.type}</span>
+      <div class="svc-name">${s.name}</div>
+      <div class="svc-loc">📍 ${[s.area,s.city].filter(Boolean).join(', ')} · ${flag} ${countryName}</div>
+      ${s.brands ? `<div class="svc-brands">🎵 ${s.brands}</div>` : ''}
+      ${s.workingHours ? `<div style="color:#555;font-size:10px;">🕐 ${s.workingHours}</div>` : ''}
+      ${rentalBtn}
+    </div>
+  </div>`;
 }
+
+// Старые функции — оставляем как заглушки для совместимости
+function renderServiceCountriesGrid() { renderServiceListNew(); }
+function selectServiceCountry(id) {}
+function backToServiceCountries() {}
+function buildServiceFilters() {}
+function setServiceTypeFilter(t) {}
+function setServiceCityFilter(c) {}
+function renderServiceList() { renderServiceListNew(); }
 
 // ══════════════════════════════════════════════
 //  VENUE CARD HTML
@@ -778,18 +1264,24 @@ function venueCardHTML(v) {
   const color = TYPE_COLORS[v.type] || GOLD;
   const photos = v.photos && v.photos.length ? v.photos : [];
 
-  // Если есть фото — показываем фото, иначе emoji-градиент
   const slideCount = photos.length > 0 ? photos.length : grads.length;
+
+  // Если есть фото — только фото, без emoji поверх
   const slides = photos.length > 0
     ? photos.map((url, i) =>
         `<div class="carousel-slide ${i===0?'active':''}" style="background:${grads[i%grads.length]};position:relative;">
-          <img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
         </div>`).join('')
     : grads.map((g, i) =>
-        `<div class="carousel-slide ${i===0?'active':''}" style="background:${g}"><span class="carousel-emoji">${emojis[i]}</span></div>`).join('');
+        `<div class="carousel-slide ${i===0?'active':''}" style="background:${g}">
+          <span class="carousel-emoji">${emojis[i]}</span>
+        </div>`).join('');
 
   const dots = Array.from({length: slideCount}, (_, i) =>
     `<div class="carousel-dot" style="width:${i===0?14:5}px;"></div>`).join('');
+
+  // Название поверх карусели — крупно, тёмно-золотой с чёрным контуром
+  const nameOverlay = `<div class="carousel-name-overlay">${v.name}</div>`;
 
   return `<div class="venue-card ${v.isPremium?'premium':''}" onclick="openVenue(${v.id})">
     <div class="venue-carousel" id="vc_${v.id}" 
@@ -797,6 +1289,7 @@ function venueCardHTML(v) {
       ontouchstart="vcTouchStart(event,this)" 
       ontouchend="vcTouchEnd(event,this)">
       ${slides}
+      ${nameOverlay}
       <div class="carousel-dots" id="vcd_${v.id}">${dots}</div>
       ${v.isPremium?'<div class="hot-badge">HOT</div>':''}
     </div>
@@ -815,12 +1308,12 @@ function venueCardHTML(v) {
 //  VENUE DETAIL
 // ══════════════════════════════════════════════
 function openVenue(id) {
-  const v = [...venues,...services].find(x=>x.id===id);
+  const v = [...venues,...services].find(x=>String(x.id)===String(id));
   if (!v) return;
   const grads = TYPE_GRADIENTS[v.type] || TYPE_GRADIENTS['Nightclub'];
   const emojis = PHOTO_EMOJIS[v.type] || ['🎵','🎶','🎛️'];
   const color = TYPE_COLORS[v.type] || GOLD;
-  const photos = v.photos && v.photos.length ? v.photos : [];
+  const photos = v.photos && v.photos.length ? v.photos : (v.photo1 ? [v.photo1] : []);
   let slideIdx = 0;
 
   // Carousel — реальные фото если есть, иначе emoji-градиент
@@ -1197,6 +1690,88 @@ function showToast(msg) {
 }
 
 // ══════════════════════════════════════════════
+// ══════════════════════════════════════════════
+//  RENTAL FORM
+// ══════════════════════════════════════════════
+function openRentalForm() {
+  document.getElementById('rentalModal').classList.add('open');
+  // Сброс формы
+  document.getElementById('rf_country').value = '';
+  document.getElementById('rf_city').value = '';
+  document.getElementById('rf_date').value = '';
+  document.getElementById('rf_days').value = '';
+  document.getElementById('rf_delivery').checked = false;
+  document.getElementById('rf_comment').value = '';
+  document.querySelectorAll('.rf-interest-chip').forEach(c => c.classList.remove('active'));
+  const btn = document.getElementById('rf_submitBtn');
+  btn.textContent = '📩 Отправить запрос';
+  btn.disabled = false;
+  btn.style.opacity = '1';
+}
+
+function closeRentalForm() {
+  document.getElementById('rentalModal').classList.remove('open');
+}
+
+function toggleChip(el) {
+  el.classList.toggle('active');
+}
+
+function submitRentalForm() {
+  const country  = document.getElementById('rf_country').value;
+  const city     = document.getElementById('rf_city').value.trim();
+  const date     = document.getElementById('rf_date').value;
+  const days     = document.getElementById('rf_days').value;
+  const delivery = document.getElementById('rf_delivery').checked;
+  const comment  = document.getElementById('rf_comment').value.trim();
+  const interests = [...document.querySelectorAll('.rf-interest-chip.active')].map(c => c.textContent).join(', ');
+
+  // Валидация
+  if (!country) { showToast('⚠️ Выберите страну'); return; }
+  if (!city)    { showToast('⚠️ Укажите город');  return; }
+  if (!date)    { showToast('⚠️ Укажите дату');   return; }
+  if (!days || days < 1) { showToast('⚠️ Укажите количество дней'); return; }
+
+  // Форматируем дату красиво
+  let dateStr = date;
+  try {
+    const d = new Date(date);
+    dateStr = d.toLocaleDateString('ru-RU', {day:'2-digit', month:'2-digit', year:'numeric'});
+  } catch(e) {}
+
+  const body = [
+    '🎚️ ЗАПРОС НА АРЕНДУ ОБОРУДОВАНИЯ',
+    '',
+    `📍 Страна: ${country}`,
+    `🏙️ Город: ${city}`,
+    `📅 Дата начала: ${dateStr}`,
+    `⏱️ Количество дней: ${days}`,
+    `🚚 Доставка: ${delivery ? 'Да' : 'Нет'}`,
+    `🎛️ Оборудование: ${interests || 'не указано'}`,
+    '',
+    `💬 Комментарий: ${comment || '—'}`,
+    '',
+    '---',
+    'Отправлено через DJ MAP App',
+  ].join('\n');
+
+  const mailto = `mailto:djmap.shop@gmail.com`
+    + `?subject=${encodeURIComponent('Аренда оборудования')}`
+    + `&body=${encodeURIComponent(body)}`;
+
+  // Открываем почтовый клиент
+  window.location.href = mailto;
+
+  // Обновляем кнопку
+  const btn = document.getElementById('rf_submitBtn');
+  btn.textContent = '✓ Запрос отправлен';
+  btn.style.opacity = '0.6';
+  btn.disabled = true;
+
+  showToast('✓ Запрос готов к отправке!');
+  setTimeout(() => closeRentalForm(), 1800);
+}
+
 //  VENUE CARD SWIPE
 // ══════════════════════════════════════════════
 let vcTouchX = 0;
@@ -1215,6 +1790,368 @@ function vcTouchEnd(e, el) {
   el.querySelectorAll('.carousel-slide').forEach((s,i) => s.classList.toggle('active', i===idx));
   const dotsEl = document.getElementById('vcd_'+id);
   if (dotsEl) dotsEl.querySelectorAll('.carousel-dot').forEach((d,i) => d.style.width = i===idx?'14px':'5px');
+}
+
+// ══════════════════════════════════════════════
+//  CREATE
+// ══════════════════════════════════════════════
+// ══════════════════════════════════════════════
+//  CREATE FORMS
+// ══════════════════════════════════════════════
+
+const CREATE_CONFIG = {
+  'presskit-pdf':      { title:'Создать пресс кит PDF',           subject:'Пресс кит PDF',             form:'promo' },
+  'presskit-web':      { title:'Создать пресс кит Web Page',      subject:'Пресс кит Web Page',        form:'promo' },
+  'media-links':       { title:'Медиа ссылки и страницы артиста', subject:'Медиа ссылки артиста',      form:'promo' },
+  'photo-video':       { title:'Фото / Видео сессия',             subject:'Фото / Видео сессия',       form:'content' },
+  'set-recording':     { title:'Запись сета с выступления',       subject:'Запись сета',               form:'content' },
+  'stream-recording':  { title:'Запись стрима',                   subject:'Запись стрима',             form:'content' },
+  'ghost-production':  { title:'Гост Продакшн',                   subject:'Гост Продакшн',             form:'ghost' },
+  'dj-education':      { title:'Обучение DJ',                     subject:'Обучение DJ',               form:'education' },
+  'music-education':   { title:'Обучение создания музыки',        subject:'Обучение создания музыки',  form:'education' },
+  'distribution':      { title:'Дистрибьюция / Выпуск трека',     subject:'Дистрибьюция / Выпуск трека', form:'distribution' },
+  'mixing-mastering':  { title:'Mixing & Mastering',              subject:'Mixing & Mastering',         form:'mixing' },
+};
+
+let currentCreateKey = null;
+
+// ── FILE UPLOAD WIDGET (до 10 файлов) ─────────
+
+function fileUploadWidget() {
+  return `
+    <label class="rf-label">Прикрепить файлы <span style="color:#444;font-size:9px;letter-spacing:0;">(до 10 файлов: фото, аудио, PDF, ZIP)</span></label>
+    <div class="cf-file-wrap" style="flex-direction:column;align-items:flex-start;gap:8px;">
+      <label class="cf-file-btn" for="cf_file">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Выбрать файлы
+      </label>
+      <input type="file" id="cf_file" class="cf-file-input" accept="image/*,audio/*,.pdf,.zip,.mp3,.wav,.aiff,.flac" multiple onchange="showFileNames(this)">
+      <div class="cf-file-list" id="cf_fileList"><span style="color:#333;font-size:11px;">Файлы не выбраны</span></div>
+    </div>`;
+}
+
+// ── HTML BUILDERS ──────────────────────────────
+
+function buildPromoForm() {
+  return `
+    <label class="rf-label">Имя</label>
+    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+
+    <label class="rf-label">Имя артиста</label>
+    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним..." type="text">
+
+    <label class="rf-label">Подробно о вас и вашем запросе</label>
+    <textarea class="rf-textarea" id="cf_about" rows="4" placeholder="Расскажите о себе, опыте, целях..."></textarea>
+
+    <label class="rf-label">Ваши ссылки</label>
+    <textarea class="rf-textarea" id="cf_links" rows="3" placeholder="SoundCloud, Beatport, Instagram, сайт..."></textarea>
+
+    ${fileUploadWidget()}
+
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+}
+
+function buildContentForm() {
+  return `
+    <label class="rf-label">Имя</label>
+    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+
+    <label class="rf-label">Имя артиста</label>
+    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним..." type="text">
+
+    <label class="rf-label">Страна</label>
+    <select class="rf-select" id="cf_country">
+      <option value="">— Выберите страну —</option>
+      <option>Таиланд 🇹🇭</option><option>Вьетнам 🇻🇳</option><option>Камбоджа 🇰🇭</option>
+      <option>Индия 🇮🇳</option><option>Малайзия 🇲🇾</option><option>Япония 🇯🇵</option>
+      <option>Китай 🇨🇳</option><option>Корея 🇰🇷</option><option>Индонезия 🇮🇩</option>
+      <option>Другая страна</option>
+    </select>
+
+    <label class="rf-label">Город</label>
+    <input class="rf-input" id="cf_city" placeholder="Город съёмки..." type="text">
+
+    <label class="rf-label">Предполагаемая дата <span style="color:#444;font-size:9px;letter-spacing:0;">(не обязательно)</span></label>
+    <input class="rf-input" id="cf_date" type="date">
+
+    <label class="rf-label">Детали запроса</label>
+    <textarea class="rf-textarea" id="cf_details" rows="4" placeholder="Опишите подробно, что вы хотите: формат, стиль, локации, пожелания..."></textarea>
+
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+}
+
+function buildGhostForm() {
+  return `
+    <label class="rf-label">Имя</label>
+    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+
+    <label class="rf-label">Имя артиста</label>
+    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним..." type="text">
+
+    <label class="rf-label">Жанр / жанры музыки</label>
+    <input class="rf-input" id="cf_genre" placeholder="Например: Techno, House, Afro..." type="text">
+
+    <label class="rf-label">Референсы <span style="color:#444;font-size:9px;letter-spacing:0;">(имена артистов и треков)</span></label>
+    <textarea class="rf-textarea" id="cf_refs" rows="3" placeholder="Например: Solomun — Kreatur, Chris Liebing..."></textarea>
+
+    <label class="rf-label">Ваши лейблы <span style="color:#444;font-size:9px;letter-spacing:0;">(не обязательно)</span></label>
+    <input class="rf-input" id="cf_labels" placeholder="Например: Diynamic, Drumcode..." type="text">
+
+    <label class="rf-label">Сроки <span style="color:#444;font-size:9px;letter-spacing:0;">(не обязательно)</span></label>
+    <input class="rf-input" id="cf_deadline" placeholder="Например: в течение месяца..." type="text">
+
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+}
+
+function buildEducationForm() {
+  return `
+    <label class="rf-label">Имя</label>
+    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+
+    <label class="rf-label">Имя артиста</label>
+    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним (если есть)..." type="text">
+
+    <label class="rf-label">Ваш уровень</label>
+    <div class="rf-interests" id="cf_level_chips">
+      <div class="rf-interest-chip" onclick="selectLevel(this,'Начальный')">🌱 Начальный</div>
+      <div class="rf-interest-chip" onclick="selectLevel(this,'Средний')">⚡ Средний</div>
+      <div class="rf-interest-chip" onclick="selectLevel(this,'Высокий')">🔥 Высокий</div>
+    </div>
+    <input type="hidden" id="cf_level" value="">
+
+    <label class="rf-label">Формат обучения</label>
+    <div class="rf-interests" id="cf_format_chips">
+      <div class="rf-interest-chip" onclick="toggleChip(this)">💻 Онлайн</div>
+      <div class="rf-interest-chip" onclick="toggleChip(this)">🏠 Офлайн</div>
+    </div>
+
+    <label class="rf-label">Что вы хотите получить от обучения?</label>
+    <textarea class="rf-textarea" id="cf_goals" rows="4" placeholder="Опишите навыки и цели, которых хотите достичь..."></textarea>
+
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+}
+
+function buildDistributionForm() {
+  return `
+    <label class="rf-label">Имя</label>
+    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+
+    <label class="rf-label">Имя артиста</label>
+    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним..." type="text">
+
+    <label class="rf-label">Жанр / жанры музыки</label>
+    <input class="rf-input" id="cf_genre" placeholder="Например: Techno, House, Afro..." type="text">
+
+    <label class="rf-label">Ваши лейблы <span style="color:#444;font-size:9px;letter-spacing:0;">(если есть релизы)</span></label>
+    <input class="rf-input" id="cf_labels" placeholder="Например: Diynamic, Drumcode..." type="text">
+
+    <label class="rf-label">Ссылка на трек / материал</label>
+    <input class="rf-input" id="cf_tracklink" placeholder="SoundCloud, Dropbox, WeTransfer..." type="text">
+
+    <label class="rf-label">Детали запроса</label>
+    <textarea class="rf-textarea" id="cf_details" rows="4" placeholder="Опишите трек, планы на релиз, платформы..."></textarea>
+
+    ${fileUploadWidget()}
+
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+}
+
+function buildMixingForm() {
+  return `
+    <label class="rf-label">Имя</label>
+    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+
+    <label class="rf-label">Имя артиста</label>
+    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним..." type="text">
+
+    <label class="rf-label">Жанр трека</label>
+    <input class="rf-input" id="cf_genre" placeholder="Например: Techno, Deep House, Melodic..." type="text">
+
+    <label class="rf-label">Ваши лейблы <span style="color:#444;font-size:9px;letter-spacing:0;">(если есть релизы)</span></label>
+    <input class="rf-input" id="cf_labels" placeholder="Например: Diynamic, Drumcode..." type="text">
+
+    <label class="rf-label">Ссылка на трек</label>
+    <input class="rf-input" id="cf_tracklink" placeholder="SoundCloud, Dropbox, WeTransfer..." type="text">
+
+    <label class="rf-label">Описание</label>
+    <textarea class="rf-textarea" id="cf_details" rows="4" placeholder="Опишите трек, референсы по звуку, пожелания по сведению..."></textarea>
+
+    ${fileUploadWidget()}
+
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+}
+
+// ── OPEN / CLOSE ───────────────────────────────
+
+function openCreateItem(key) {
+  const cfg = CREATE_CONFIG[key];
+  if (!cfg) return;
+  currentCreateKey = key;
+  document.getElementById('cf_title').textContent = cfg.title;
+  const formBuilders = {
+    promo:        buildPromoForm,
+    content:      buildContentForm,
+    ghost:        buildGhostForm,
+    education:    buildEducationForm,
+    distribution: buildDistributionForm,
+    mixing:       buildMixingForm,
+  };
+  document.getElementById('cf_body').innerHTML = (formBuilders[cfg.form] || buildPromoForm)();
+  document.getElementById('createFormModal').classList.add('open');
+}
+
+function closeCreateForm() {
+  document.getElementById('createFormModal').classList.remove('open');
+  currentCreateKey = null;
+}
+
+// ── HELPERS ────────────────────────────────────
+
+function showFileNames(input) {
+  const listEl = document.getElementById('cf_fileList');
+  if (!listEl) return;
+  const files = [...input.files].slice(0, 10);
+  if (!files.length) {
+    listEl.innerHTML = '<span style="color:#333;font-size:11px;">Файлы не выбраны</span>';
+    return;
+  }
+  listEl.innerHTML = files.map((f, i) =>
+    `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
+      <span style="color:var(--gold);font-size:11px;">${i+1}.</span>
+      <span style="color:#ccc;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${f.name}</span>
+      <span style="color:#444;font-size:10px;">${(f.size/1024/1024).toFixed(1)}MB</span>
+    </div>`
+  ).join('');
+  if (input.files.length > 10) {
+    listEl.innerHTML += `<div style="color:#f87171;font-size:10px;margin-top:4px;">⚠️ Выбрано первые 10 из ${input.files.length} файлов</div>`;
+  }
+}
+
+// Оставляем для совместимости с rental формой
+function showFileName(input) { showFileNames(input); }
+
+function selectLevel(el, val) {
+  document.querySelectorAll('#cf_level_chips .rf-interest-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('cf_level').value = val;
+}
+
+function g(id) {
+  const el = document.getElementById(id);
+  return el ? (el.value || '').trim() : '';
+}
+
+// ── SUBMIT ─────────────────────────────────────
+
+function submitCreateForm() {
+  const cfg = CREATE_CONFIG[currentCreateKey];
+  if (!cfg) return;
+
+  const name   = g('cf_name');
+  const artist = g('cf_artist');
+  if (!name)   { showToast('⚠️ Укажите ваше имя'); return; }
+  if (!artist) { showToast('⚠️ Укажите имя артиста'); return; }
+
+  let lines = [
+    `📋 ЗАПРОС: ${cfg.subject}`,
+    '',
+    `👤 Имя: ${name}`,
+    `🎧 Имя артиста: ${artist}`,
+  ];
+
+  if (cfg.form === 'promo') {
+    const about = g('cf_about');
+    const links = g('cf_links');
+    if (about) lines.push(`\n📝 О себе и запросе:\n${about}`);
+    if (links) lines.push(`\n🔗 Ссылки:\n${links}`);
+    const fileEl = document.getElementById('cf_file');
+    if (fileEl && fileEl.files.length) {
+      const names = [...fileEl.files].slice(0,10).map(f=>f.name).join(', ');
+      lines.push(`\n📎 Файлы (${Math.min(fileEl.files.length,10)}): ${names}`);
+    }
+  }
+
+  if (cfg.form === 'content') {
+    const country = g('cf_country');
+    const city    = g('cf_city');
+    const date    = g('cf_date');
+    const details = g('cf_details');
+    if (!country) { showToast('⚠️ Выберите страну'); return; }
+    if (!city)    { showToast('⚠️ Укажите город'); return; }
+    lines.push(`📍 Страна: ${country}`, `🏙️ Город: ${city}`);
+    if (date) { let d=date; try{d=new Date(date).toLocaleDateString('ru-RU');}catch(e){} lines.push(`📅 Дата: ${d}`); }
+    if (details) lines.push(`\n🎬 Детали:\n${details}`);
+  }
+
+  if (cfg.form === 'ghost') {
+    const genre    = g('cf_genre');
+    const refs     = g('cf_refs');
+    const labels   = g('cf_labels');
+    const deadline = g('cf_deadline');
+    if (!genre) { showToast('⚠️ Укажите жанр музыки'); return; }
+    lines.push(`🎵 Жанр: ${genre}`);
+    if (refs)     lines.push(`🎼 Референсы: ${refs}`);
+    if (labels)   lines.push(`🏷️ Лейблы: ${labels}`);
+    if (deadline) lines.push(`⏱️ Сроки: ${deadline}`);
+  }
+
+  if (cfg.form === 'education') {
+    const level  = g('cf_level');
+    const goals  = g('cf_goals');
+    const format = [...document.querySelectorAll('#cf_format_chips .rf-interest-chip.active')].map(c=>c.textContent).join(', ');
+    if (!level) { showToast('⚠️ Выберите ваш уровень'); return; }
+    lines.push(`📊 Уровень: ${level}`);
+    if (format) lines.push(`💻 Формат: ${format}`);
+    if (goals)  lines.push(`\n🎯 Цели обучения:\n${goals}`);
+  }
+
+  if (cfg.form === 'distribution') {
+    const genre    = g('cf_genre');
+    const labels   = g('cf_labels');
+    const link     = g('cf_tracklink');
+    const details  = g('cf_details');
+    if (!genre) { showToast('⚠️ Укажите жанр'); return; }
+    lines.push(`🎵 Жанр: ${genre}`);
+    if (labels)  lines.push(`🏷️ Лейблы: ${labels}`);
+    if (link)    lines.push(`🔗 Ссылка на трек: ${link}`);
+    if (details) lines.push(`\n📝 Детали:\n${details}`);
+    const fileEl = document.getElementById('cf_file');
+    if (fileEl && fileEl.files.length) {
+      const names = [...fileEl.files].slice(0,10).map(f=>f.name).join(', ');
+      lines.push(`\n📎 Файлы (${Math.min(fileEl.files.length,10)}): ${names}`);
+    }
+  }
+
+  if (cfg.form === 'mixing') {
+    const genre   = g('cf_genre');
+    const labels  = g('cf_labels');
+    const link    = g('cf_tracklink');
+    const details = g('cf_details');
+    if (!genre) { showToast('⚠️ Укажите жанр трека'); return; }
+    lines.push(`🎵 Жанр: ${genre}`);
+    if (labels)  lines.push(`🏷️ Лейблы: ${labels}`);
+    if (link)    lines.push(`🔗 Ссылка на трек: ${link}`);
+    if (details) lines.push(`\n🎚️ Описание:\n${details}`);
+    const fileEl = document.getElementById('cf_file');
+    if (fileEl && fileEl.files.length) {
+      const names = [...fileEl.files].slice(0,10).map(f=>f.name).join(', ');
+      lines.push(`\n📎 Файлы (${Math.min(fileEl.files.length,10)}): ${names}`);
+    }
+  }
+
+  lines.push('', '---', 'Отправлено через DJ MAP App');
+
+  const body = lines.join('\n');
+  const mailto = `mailto:djmap.shop@gmail.com`
+    + `?subject=${encodeURIComponent(cfg.subject)}`
+    + `&body=${encodeURIComponent(body)}`;
+
+  window.location.href = mailto;
+
+  const btn = document.getElementById('cf_submitBtn');
+  if (btn) { btn.textContent = '✓ Запрос отправлен'; btn.style.opacity = '0.6'; btn.disabled = true; }
+  showToast('✓ Запрос готов к отправке!');
+  setTimeout(() => closeCreateForm(), 1800);
 }
 
 // ══════════════════════════════════════════════
