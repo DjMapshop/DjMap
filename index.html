@@ -11,6 +11,11 @@
 html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:#050508;color:#fff;}
 :root{--gold:#c9a84c;--gold2:#8b6914;--bg:#050508;--dark:#0a0a10;--card:#0f0f18;--border:#1a1a2e;}
 
+/* Language switcher */
+.lang-btn{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.06);border:1px solid #1a1a2e;border-radius:20px;padding:6px 10px;display:flex;align-items:center;gap:5px;cursor:pointer;font-family:'Inter',sans-serif;color:#888;font-size:11px;font-weight:700;letter-spacing:.5px;transition:all .2s;z-index:10;}
+.lang-btn:hover{border-color:rgba(201,168,76,.4);color:var(--gold);}
+#langFlag{font-size:14px;line-height:1;}
+
 /* ── SPLASH ── */
 #splash{position:fixed;inset:0;background:#050508;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 24px;text-align:center;z-index:200;overflow:hidden;}
 #splash.hidden{display:none;}
@@ -343,32 +348,39 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 
 <!-- SPLASH SCREEN -->
 <div id="splash">
+  <!-- Language switcher -->
+  <button class="lang-btn" id="langBtn" onclick="cycleLang()">
+    <span id="langFlag">🇬🇧</span>
+    <span id="langCode">EN</span>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </button>
+
   <img src="logo.png" alt="DJ MAP" class="splash-logo" id="splashLogo" onerror="this.style.background='linear-gradient(135deg,#c9a84c,#8b6914)';this.style.display='flex';this.style.alignItems='center';this.style.justifyContent='center';this.innerHTML='🎛️';">
-  <div class="splash-eyebrow">Venue Guide</div>
+  <div class="splash-eyebrow" data-i18n="eyebrow">Venue Guide</div>
   <h1 class="splash-title">DJ MAP</h1>
-  <p class="splash-sub">Контакты клубов, баров, rooftop-ов и бич-клубов — 9 стран Азии</p>
+  <p class="splash-sub" data-i18n="sub">Club, bar, rooftop &amp; beach club contacts — 9 countries in Asia</p>
   <div class="splash-flags">🇹🇭🇻🇳🇰🇭🇮🇳🇲🇾🇯🇵🇨🇳🇰🇷🇮🇩</div>
   <div class="splash-plans">
-    <div class="splash-label">Выберите план</div>
+    <div class="splash-label" data-i18n="choosePlan">Choose plan</div>
     <button class="plan-btn plan-city" onclick="selectPlan('city','$50')">
-      <div><div class="plan-name">1 город</div><div class="plan-desc">Один город на выбор</div></div>
-      <div><span class="plan-price">$50</span><span class="plan-year">/год</span></div>
+      <div><div class="plan-name" data-i18n="plan1name">1 City</div><div class="plan-desc" data-i18n="plan1desc">One city of your choice</div></div>
+      <div><span class="plan-price">$50</span><span class="plan-year" data-i18n="perYear">/year</span></div>
     </button>
     <button class="plan-btn plan-country" onclick="selectPlan('country','$100')">
-      <div><div class="plan-name">1 страна</div><div class="plan-desc">Все города одной страны</div></div>
-      <div><span class="plan-price">$100</span><span class="plan-year">/год</span></div>
+      <div><div class="plan-name" data-i18n="plan2name">1 Country</div><div class="plan-desc" data-i18n="plan2desc">All cities in one country</div></div>
+      <div><span class="plan-price">$100</span><span class="plan-year" data-i18n="perYear">/year</span></div>
     </button>
     <button class="plan-btn plan-all" onclick="selectPlan('all','$200')">
-      <div><div class="plan-name">Все страны</div><div class="plan-desc">Полный доступ — 9 стран</div></div>
-      <div><span class="plan-price">$200</span><span class="plan-year">/год</span></div>
+      <div><div class="plan-name" data-i18n="plan3name">All Countries</div><div class="plan-desc" data-i18n="plan3desc">Full access — 9 countries</div></div>
+      <div><span class="plan-price">$200</span><span class="plan-year" data-i18n="perYear">/year</span></div>
     </button>
-    <button class="btn-demo" onclick="enterApp(false)">Демо без контактов</button>
-    <button class="btn-pro" onclick="enterApp(true)">🔑 Войти в тестовом режиме (PRO)</button>
+    <button class="btn-demo" onclick="enterApp(false)" data-i18n="demo">Demo without contacts</button>
+    <button class="btn-pro" onclick="enterApp(true)">🔑 <span data-i18n="proLogin">Enter in test mode (PRO)</span></button>
   </div>
   <div class="splash-stats">
-    <div><span class="stat-val">9</span><span class="stat-lab">Стран</span></div>
-    <div><span class="stat-val">500+</span><span class="stat-lab">Заведений</span></div>
-    <div><span class="stat-val">24/7</span><span class="stat-lab">Обновлений</span></div>
+    <div><span class="stat-val">9</span><span class="stat-lab" data-i18n="statCountries">Countries</span></div>
+    <div><span class="stat-val">500+</span><span class="stat-lab" data-i18n="statVenues">Venues</span></div>
+    <div><span class="stat-val">24/7</span><span class="stat-lab" data-i18n="statUpdates">Updates</span></div>
   </div>
 </div>
 
@@ -381,17 +393,17 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
   </div>
   <div class="payment-body">
     <div class="payment-plan-card" id="paymentCard">
-      <div class="payment-plan-name" id="paymentPlanName">Все страны</div>
-      <div class="payment-plan-desc" id="paymentPlanDesc">Полный доступ — 9 стран</div>
+      <div class="payment-plan-name" id="paymentPlanName">All Countries</div>
+      <div class="payment-plan-desc" id="paymentPlanDesc">Full access — 9 countries</div>
       <div class="payment-plan-price" id="paymentPrice">$200</div>
-      <div class="payment-plan-year">/год</div>
+      <div class="payment-plan-year" data-i18n="perYear">/year</div>
     </div>
     <div class="payment-methods">
-      <button class="method-btn" onclick="completePurchase()">💳 Оплатить картой</button>
+      <button class="method-btn" onclick="completePurchase()">💳 <span data-i18n="payCard">Pay by card</span></button>
       <button class="method-btn" onclick="completePurchase()">🍎 Apple Pay</button>
       <button class="method-btn" onclick="completePurchase()">🤖 Google Pay</button>
     </div>
-    <button class="payment-back" onclick="closePayment()">Отмена</button>
+    <button class="payment-back" onclick="closePayment()" data-i18n="cancel">Cancel</button>
   </div>
 </div>
 
@@ -402,7 +414,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
       <img src="logo.png" alt="DJ MAP" style="width:32px;height:32px;border-radius:8px;object-fit:cover;" onerror="this.style.display='none'">
       <div>
         <div class="header-logo-text">DJ MAP</div>
-        <div class="header-logo-sub">Venue Guide</div>
+        <div class="header-logo-sub" data-i18n="eyebrow">Venue Guide</div>
       </div>
     </div>
     <div class="header-right">
@@ -415,22 +427,22 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
     <!-- COUNTRIES screen -->
     <div class="screen active" id="screen-countries">
       <div class="screen-head">
-        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Заведения</div></div>
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title" data-i18n="navVenues">Venues</div></div>
       </div>
       <div class="countries-grid" id="countriesGrid"></div>
       <!-- Venue list (shown when country selected) -->
       <div id="venueListWrap" style="display:none;">
         <div style="display:flex;align-items:center;gap:9px;margin:11px 20px;">
-          <button class="back-btn" onclick="backToCountries()">← Страны</button>
+          <button class="back-btn" onclick="backToCountries()">← <span data-i18n="countries">Countries</span></button>
           <span id="selectedCountryLabel" style="font-weight:700;font-size:14px;"></span>
         </div>
         <div class="filter-row" id="venueTypeFilters"></div>
         <div class="filter-row" id="venueCityFilters"></div>
         <div class="filter-row" id="venueGenreFilters"></div>
-        <div class="search-wrap"><input class="search-input" placeholder="🔍 Поиск заведений..." id="venueSearch" oninput="renderVenueList()"></div>
+        <div class="search-wrap"><input class="search-input" data-i18n-placeholder="searchVenues" placeholder="🔍 Search venues..." id="venueSearch" oninput="renderVenueList()"></div>
         <div class="sort-row">
-          <button class="filter-chip active" id="sortRating" onclick="setSort('rating')">★ По рейтингу</button>
-          <button class="filter-chip" id="sortName" onclick="setSort('name')">А-Я По имени</button>
+          <button class="filter-chip active" id="sortRating" onclick="setSort('rating')">★ <span data-i18n="sortRating">By rating</span></button>
+          <button class="filter-chip" id="sortName" onclick="setSort('name')">A-Z <span data-i18n="sortName">By name</span></button>
         </div>
         <div class="venue-list" id="venueList"></div>
       </div>
@@ -439,17 +451,17 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
     <!-- SERVICE screen -->
     <div class="screen" id="screen-service">
       <div class="screen-head">
-        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Сервис</div></div>
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title" data-i18n="navService">Service</div></div>
       </div>
       <!-- Sort bar — над кнопками -->
       <div class="svc-sort-bar">
-        <span class="svc-sort-label">СТРАНА</span>
+        <span class="svc-sort-label" data-i18n="country">COUNTRY</span>
         <select class="svc-sort-select" id="svcCountrySort" onchange="renderServiceListNew()">
-          <option value="All">Все страны</option>
+          <option value="All" data-i18n="allCountries">All countries</option>
         </select>
-        <span class="svc-sort-label">ГОРОД</span>
+        <span class="svc-sort-label" data-i18n="city">CITY</span>
         <select class="svc-sort-select" id="svcCitySort" onchange="renderServiceListNew()">
-          <option value="All">Все города</option>
+          <option value="All" data-i18n="allCities">All cities</option>
         </select>
       </div>
       <!-- Category buttons -->
@@ -466,7 +478,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
               <path d="M2 12 Q6 10 8 12 Q6 14 2 12" fill="currentColor" opacity=".5"/>
             </svg>
           </span>
-          <span>Магазины</span>
+          <span data-i18n="catShop">Shops</span>
         </button>
         <button class="svc-cat-btn" id="svcCatService" onclick="setSvcCategory('service')">
           <span class="svc-cat-icon">
@@ -474,7 +486,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
               <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
             </svg>
           </span>
-          <span>Сервис центр</span>
+          <span data-i18n="catServiceCenter">Service Center</span>
         </button>
         <button class="svc-cat-btn" id="svcCatRental" onclick="setSvcCategory('rental')">
           <span class="svc-cat-icon">
@@ -484,12 +496,12 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
               <path d="M15.54 8.46a5 5 0 010 7.07"/>
             </svg>
           </span>
-          <span>Аренда оборудования</span>
+          <span data-i18n="catRental">Equipment Rental</span>
         </button>
       </div>
       <!-- Loading indicator -->
       <div id="svcLoading" style="text-align:center;padding:30px;color:#444;font-size:13px;display:none;">
-        <div style="font-size:24px;margin-bottom:8px;">⏳</div>Загрузка...
+        <div style="font-size:24px;margin-bottom:8px;">⏳</div><span data-i18n="loading">Loading...</span>
       </div>
       <!-- Service list -->
       <div id="serviceListNew" style="padding:0 20px;"></div>
@@ -498,7 +510,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
     <!-- SAVED screen -->
     <div class="screen" id="screen-saved">
       <div class="screen-head">
-        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Избранное</div></div>
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title" data-i18n="navSaved">Saved</div></div>
       </div>
       <div class="venue-list" id="savedList"></div>
     </div>
@@ -506,22 +518,22 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
     <!-- TEMPLATES screen -->
     <div class="screen" id="screen-templates">
       <div class="screen-head">
-        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Мои шаблоны</div></div>
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title" data-i18n="navTemplates">My Templates</div></div>
         <span style="color:#444;font-size:12px;" id="tplCount">0/10</span>
       </div>
       <div style="padding:0 20px;">
         <div id="tpl-list">
-          <button class="tpl-new-btn" onclick="openTplEditor(null)">+ Создать шаблон</button>
+          <button class="tpl-new-btn" onclick="openTplEditor(null)">+ <span data-i18n="newTemplate">New template</span></button>
           <div id="templatesList"></div>
         </div>
         <div id="tpl-editor">
-          <button class="back-btn" onclick="closeTplEditor()" style="margin-bottom:16px;">← Назад</button>
-          <h3 style="font-size:16px;font-weight:800;margin-bottom:16px;" id="tplEditorTitle">Новый шаблон</h3>
-          <label class="tpl-label">НАЗВАНИЕ</label>
-          <input class="tpl-input" id="tplTitleInput" placeholder="Название шаблона...">
-          <label class="tpl-label">ТЕКСТ СООБЩЕНИЯ</label>
-          <textarea class="tpl-input" rows="9" id="tplTextInput" placeholder="Введите текст..."></textarea>
-          <button class="tpl-save-btn" onclick="saveTpl()">✓ Сохранить</button>
+          <button class="back-btn" onclick="closeTplEditor()" style="margin-bottom:16px;">← <span data-i18n="back">Back</span></button>
+          <h3 style="font-size:16px;font-weight:800;margin-bottom:16px;" id="tplEditorTitle" data-i18n="newTemplate">New template</h3>
+          <label class="tpl-label" data-i18n="tplName">NAME</label>
+          <input class="tpl-input" id="tplTitleInput" data-i18n-placeholder="tplNamePh" placeholder="Template name...">
+          <label class="tpl-label" data-i18n="tplText">MESSAGE TEXT</label>
+          <textarea class="tpl-input" rows="9" id="tplTextInput" data-i18n-placeholder="tplTextPh" placeholder="Enter text..."></textarea>
+          <button class="tpl-save-btn" onclick="saveTpl()">✓ <span data-i18n="save">Save</span></button>
         </div>
       </div>
     </div>
@@ -529,18 +541,18 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
     <!-- CREATE screen -->
     <div class="screen" id="screen-create">
       <div class="screen-head">
-        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Создать</div></div>
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title" data-i18n="navCreate">Create</div></div>
       </div>
       <div style="padding:0 20px 20px;">
 
-        <div class="create-section-label">📄 Промо материалы</div>
+        <div class="create-section-label" data-i18n="secPromo">📄 Promo Materials</div>
         <button class="create-card" onclick="openCreateItem('presskit-pdf')">
           <div class="create-card-icon" style="background:linear-gradient(135deg,#1e3a5f,#3b82f6);">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15h6M9 11h6"/></svg>
           </div>
           <div class="create-card-info">
-            <div class="create-card-title">Создать пресс кит PDF</div>
-            <div class="create-card-desc">Профессиональный пресс кит для букинга</div>
+            <div class="create-card-title" data-i18n="c_presskit_pdf">Create Press Kit PDF</div>
+            <div class="create-card-desc" data-i18n="c_presskit_pdf_d">Professional press kit for booking</div>
           </div>
           <div class="create-card-arrow">→</div>
         </button>
@@ -550,8 +562,8 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
           </div>
           <div class="create-card-info">
-            <div class="create-card-title">Создать пресс кит Web Page</div>
-            <div class="create-card-desc">Онлайн страница с вашим портфолио</div>
+            <div class="create-card-title" data-i18n="c_presskit_web">Create Press Kit Web Page</div>
+            <div class="create-card-desc" data-i18n="c_presskit_web_d">Online portfolio page</div>
           </div>
           <div class="create-card-arrow">→</div>
         </button>
@@ -561,20 +573,20 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
           </div>
           <div class="create-card-info">
-            <div class="create-card-title">Медиа ссылки и страницы артиста</div>
-            <div class="create-card-desc">Beatport, RA, SoundCloud, Spotify и другие</div>
+            <div class="create-card-title" data-i18n="c_media_links">Artist Media Links & Pages</div>
+            <div class="create-card-desc" data-i18n="c_media_links_d">Beatport, RA, SoundCloud, Spotify and more</div>
           </div>
           <div class="create-card-arrow">→</div>
         </button>
 
-        <div class="create-section-label" style="margin-top:20px;">🎬 Производство контента</div>
+        <div class="create-section-label" style="margin-top:20px;" data-i18n="secContent">🎬 Content Production</div>
         <button class="create-card" onclick="openCreateItem('photo-video')">
           <div class="create-card-icon" style="background:linear-gradient(135deg,#831843,#f43f5e);">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
           </div>
           <div class="create-card-info">
-            <div class="create-card-title">Фото / Видео сессия</div>
-            <div class="create-card-desc">Профессиональная съёмка для артиста</div>
+            <div class="create-card-title" data-i18n="c_photo_video">Photo / Video Session</div>
+            <div class="create-card-desc" data-i18n="c_photo_video_d">Professional shoot for the artist</div>
           </div>
           <div class="create-card-arrow">→</div>
         </button>
@@ -584,8 +596,8 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
           </div>
           <div class="create-card-info">
-            <div class="create-card-title">Запись сета с выступления</div>
-            <div class="create-card-desc">Live запись вашего перформанса</div>
+            <div class="create-card-title" data-i18n="c_set_rec">Live Set Recording</div>
+            <div class="create-card-desc" data-i18n="c_set_rec_d">Live recording of your performance</div>
           </div>
           <div class="create-card-arrow">→</div>
         </button>
@@ -595,20 +607,20 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
           </div>
           <div class="create-card-info">
-            <div class="create-card-title">Запись стрима</div>
-            <div class="create-card-desc">Онлайн стрим и его запись</div>
+            <div class="create-card-title" data-i18n="c_stream">Stream Recording</div>
+            <div class="create-card-desc" data-i18n="c_stream_d">Online stream and recording</div>
           </div>
           <div class="create-card-arrow">→</div>
         </button>
 
-        <div class="create-section-label" style="margin-top:20px;">🎵 Музыка и обучение</div>
+        <div class="create-section-label" style="margin-top:20px;" data-i18n="secMusic">🎵 Music & Education</div>
         <button class="create-card" onclick="openCreateItem('ghost-production')">
           <div class="create-card-icon" style="background:linear-gradient(135deg,#1e1e2e,#6366f1);">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
           </div>
           <div class="create-card-info">
-            <div class="create-card-title">Гост Продакшн</div>
-            <div class="create-card-desc">Профессиональное написание треков</div>
+            <div class="create-card-title" data-i18n="c_ghost">Ghost Production</div>
+            <div class="create-card-desc" data-i18n="c_ghost_d">Professional track writing</div>
           </div>
           <div class="create-card-arrow">→</div>
         </button>
@@ -618,8 +630,8 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14a9 9 0 0118 0"/><rect x="2" y="14" width="4" height="6" rx="2" fill="currentColor" stroke="none"/><rect x="18" y="14" width="4" height="6" rx="2" fill="currentColor" stroke="none"/></svg>
           </div>
           <div class="create-card-info">
-            <div class="create-card-title">Обучение DJ</div>
-            <div class="create-card-desc">Курсы диджеинга от профессионалов</div>
+            <div class="create-card-title" data-i18n="c_dj_edu">DJ Education</div>
+            <div class="create-card-desc" data-i18n="c_dj_edu_d">DJ courses from professionals</div>
           </div>
           <div class="create-card-arrow">→</div>
         </button>
@@ -629,8 +641,8 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><line x1="9" y1="9" x2="21" y2="7"/></svg>
           </div>
           <div class="create-card-info">
-            <div class="create-card-title">Обучение создания музыки</div>
-            <div class="create-card-desc">Продакшн, сведение, мастеринг</div>
+            <div class="create-card-title" data-i18n="c_music_edu">Music Production Education</div>
+            <div class="create-card-desc" data-i18n="c_music_edu_d">Production, mixing, mastering</div>
           </div>
           <div class="create-card-arrow">→</div>
         </button>
@@ -640,8 +652,8 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           </div>
           <div class="create-card-info">
-            <div class="create-card-title">Дистрибьюция / Выпуск трека</div>
-            <div class="create-card-desc">Spotify, Apple Music, Beatport и другие</div>
+            <div class="create-card-title" data-i18n="c_distrib">Distribution / Release</div>
+            <div class="create-card-desc" data-i18n="c_distrib_d">Spotify, Apple Music, Beatport and more</div>
           </div>
           <div class="create-card-arrow">→</div>
         </button>
@@ -652,7 +664,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
           </div>
           <div class="create-card-info">
             <div class="create-card-title">Mixing & Mastering</div>
-            <div class="create-card-desc">Профессиональное сведение и мастеринг</div>
+            <div class="create-card-desc" data-i18n="c_mixing_d">Professional mixing and mastering</div>
           </div>
           <div class="create-card-arrow">→</div>
         </button>
@@ -663,7 +675,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
     <!-- ACCOUNT screen -->
     <div class="screen" id="screen-account">
       <div class="screen-head">
-        <div><div class="screen-sub">DJ MAP</div><div class="screen-title">Профиль</div></div>
+        <div><div class="screen-sub">DJ MAP</div><div class="screen-title" data-i18n="navAccount">Profile</div></div>
       </div>
       <div style="padding:0 20px 20px;">
         <div class="profile-avatar-box">
@@ -674,37 +686,37 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
         </div>
         <div id="profileStats"></div>
         <div class="profile-section">
-          <div class="profile-section-head"><div class="profile-section-label">Поддержка</div></div>
-          <div class="profile-row">
-            <span class="profile-row-icon">✉️</span>
-            <div class="profile-row-label"><div class="profile-row-label-top">EMAIL</div>djmap@gmail.com</div>
+          <div class="profile-section-head"><div class="profile-section-label" data-i18n="support">Support</div></div>
+          <div class="profile-row" onclick="openAboutUs()" style="cursor:pointer;">
+            <span class="profile-row-icon">ℹ️</span>
+            <div class="profile-row-label" data-i18n="aboutUs">About us</div>
             <span class="profile-row-arrow">→</span>
           </div>
-          <div class="profile-row" style="border-bottom:none;">
-            <span class="profile-row-icon">✈️</span>
-            <div class="profile-row-label"><div class="profile-row-label-top">TELEGRAM</div>@djmap_support</div>
+          <div class="profile-row" style="border-bottom:none;cursor:pointer;" onclick="openContactUs()">
+            <span class="profile-row-icon">✉️</span>
+            <div class="profile-row-label" data-i18n="contactUs">Contact us</div>
             <span class="profile-row-arrow">→</span>
           </div>
         </div>
         <div class="profile-section" style="margin-top:12px;">
-          <div class="profile-section-head"><div class="profile-section-label">Правовая информация</div></div>
+          <div class="profile-section-head"><div class="profile-section-label" data-i18n="legal">Legal</div></div>
           <a href="djmap-privacy.html" class="profile-row" style="text-decoration:none;display:flex;">
             <span class="profile-row-icon">📄</span>
-            <div class="profile-row-label" style="color:#ccc;">Политика конфиденциальности</div>
+            <div class="profile-row-label" style="color:#ccc;"><span data-i18n="privacy">Privacy Policy</span></div>
             <span class="profile-row-arrow">→</span>
           </a>
           <a href="djmap-refund.html" class="profile-row" style="text-decoration:none;display:flex;">
             <span class="profile-row-icon">💰</span>
-            <div class="profile-row-label" style="color:#ccc;">Возврат средств</div>
+            <div class="profile-row-label" style="color:#ccc;"><span data-i18n="refund">Refund Policy</span></div>
             <span class="profile-row-arrow">→</span>
           </a>
           <a href="djmap-terms.html" class="profile-row" style="text-decoration:none;display:flex;border-bottom:none;">
             <span class="profile-row-icon">📋</span>
-            <div class="profile-row-label" style="color:#ccc;">Условия использования</div>
+            <div class="profile-row-label" style="color:#ccc;"><span data-i18n="terms">Terms of Use</span></div>
             <span class="profile-row-arrow">→</span>
           </a>
         </div>
-        <button class="logout-btn" onclick="goSplash()">Выйти</button>
+        <button class="logout-btn" onclick="goSplash()"><span data-i18n="logout">Log out</span></button>
       </div>
     </div>
   </div>
@@ -713,19 +725,19 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
   <div class="bottom-nav">
     <button class="nav-tab active" id="tab-countries" onclick="switchTab('countries')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
-      <span>Заведения</span>
+      <span data-i18n="navVenues">Venues</span>
     </button>
     <button class="nav-tab" id="tab-service" onclick="switchTab('service')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14a9 9 0 0118 0"/><rect x="2" y="14" width="4" height="6" rx="2" fill="currentColor" stroke="none"/><rect x="18" y="14" width="4" height="6" rx="2" fill="currentColor" stroke="none"/></svg>
-      <span>Сервис</span>
+      <span data-i18n="navService">Service</span>
     </button>
     <button class="nav-tab" id="tab-saved" onclick="switchTab('saved')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      <span>Избранное</span>
+      <span data-i18n="navSaved">Saved</span>
     </button>
     <button class="nav-tab" id="tab-templates" onclick="switchTab('templates')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      <span>Шаблоны</span>
+      <span data-i18n="navTemplates">Templates</span>
     </button>
     <button class="nav-tab" id="tab-create" onclick="switchTab('create')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -734,11 +746,11 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
         <circle cx="6.5" cy="18" r="2.5" fill="currentColor" stroke="none"/>
         <circle cx="15.5" cy="11" r="2.5" fill="currentColor" stroke="none"/>
       </svg>
-      <span>Создать</span>
+      <span data-i18n="navCreate">Create</span>
     </button>
     <button class="nav-tab" id="tab-account" onclick="switchTab('account')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      <span>Профиль</span>
+      <span data-i18n="navAccount">Profile</span>
     </button>
   </div>
 </div>
@@ -749,67 +761,65 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
   <div class="rental-sheet">
     <div class="rental-handle"></div>
     <div class="rental-head">
-      <div class="rental-title">🎚️ Аренда оборудования</div>
+      <div class="rental-title" id="rentalTitle">🎚️ Equipment Rental</div>
       <button class="rental-close" onclick="closeRentalForm()">✕</button>
     </div>
     <div class="rental-body">
 
-      <label class="rf-label">Страна</label>
+      <label class="rf-label" id="rf_l_country">Country</label>
       <select class="rf-select" id="rf_country">
-        <option value="">— Выберите страну —</option>
-        <option>Таиланд 🇹🇭</option>
-        <option>Вьетнам 🇻🇳</option>
-        <option>Камбоджа 🇰🇭</option>
-        <option>Индия 🇮🇳</option>
-        <option>Малайзия 🇲🇾</option>
-        <option>Япония 🇯🇵</option>
-        <option>Китай 🇨🇳</option>
-        <option>Корея 🇰🇷</option>
-        <option>Индонезия 🇮🇩</option>
+        <option value="">— Select country —</option>
+        <option>Thailand 🇹🇭</option>
+        <option>Vietnam 🇻🇳</option>
+        <option>Cambodia 🇰🇭</option>
+        <option>India 🇮🇳</option>
+        <option>Malaysia 🇲🇾</option>
+        <option>Japan 🇯🇵</option>
+        <option>China 🇨🇳</option>
+        <option>Korea 🇰🇷</option>
+        <option>Indonesia 🇮🇩</option>
       </select>
 
-      <label class="rf-label">Город</label>
-      <input class="rf-input" id="rf_city" placeholder="Например: Bangkok, Bali..." type="text">
+      <label class="rf-label" id="rf_l_city">City</label>
+      <input class="rf-input" id="rf_city" placeholder="e.g. Bangkok, Bali..." type="text">
 
-      <label class="rf-label">Дата начала аренды</label>
-      <input class="rf-input" id="rf_date" placeholder="ДД.ММ.ГГГГ" type="date">
+      <label class="rf-label" id="rf_l_date">Rental start date</label>
+      <input class="rf-input" id="rf_date" type="date">
 
-      <label class="rf-label">Количество дней</label>
-      <input class="rf-input" id="rf_days" placeholder="Например: 3" type="number" min="1" max="365">
+      <label class="rf-label" id="rf_l_days">Number of days</label>
+      <input class="rf-input" id="rf_days" placeholder="e.g. 3" type="number" min="1" max="365">
 
-      <label class="rf-label">Нужна ли доставка?</label>
+      <label class="rf-label" id="rf_l_delivery">Delivery needed?</label>
       <div class="rf-toggle-row">
-        <span class="rf-toggle-label">Да, нужна доставка</span>
+        <span class="rf-toggle-label" id="rf_l_deliverytxt">Yes, I need delivery</span>
         <label class="rf-toggle">
           <input type="checkbox" id="rf_delivery">
           <div class="rf-toggle-slider"></div>
         </label>
       </div>
 
-      <label class="rf-label">Что интересует?</label>
+      <label class="rf-label" id="rf_l_interests">What are you interested in?</label>
       <div class="rf-interests" id="rf_interests">
         <div class="rf-interest-chip" onclick="toggleChip(this)">Pioneer CDJ</div>
-        <div class="rf-interest-chip" onclick="toggleChip(this)">Pioneer DJM микшер</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Pioneer DJM Mixer</div>
         <div class="rf-interest-chip" onclick="toggleChip(this)">Vinyl Decks</div>
         <div class="rf-interest-chip" onclick="toggleChip(this)">RMX</div>
         <div class="rf-interest-chip" onclick="toggleChip(this)">Keyboard</div>
         <div class="rf-interest-chip" onclick="toggleChip(this)">Stand</div>
         <div class="rf-interest-chip" onclick="toggleChip(this)">Controller</div>
-        <div class="rf-interest-chip" onclick="toggleChip(this)">Колонки / Sound System</div>
-        <div class="rf-interest-chip" onclick="toggleChip(this)">Сабвуфер</div>
-        <div class="rf-interest-chip" onclick="toggleChip(this)">Микрофон</div>
-        <div class="rf-interest-chip" onclick="toggleChip(this)">Световое оборудование</div>
-        <div class="rf-interest-chip" onclick="toggleChip(this)">Dj Booth / Стойка</div>
-        <div class="rf-interest-chip" onclick="toggleChip(this)">Полный комплект</div>
-        <div class="rf-interest-chip" onclick="toggleChip(this)">Другое</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Speakers / Sound System</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Subwoofer</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Microphone</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Lighting Equipment</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">DJ Booth</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Full Setup</div>
+        <div class="rf-interest-chip" onclick="toggleChip(this)">Other</div>
       </div>
 
-      <label class="rf-label">Комментарий к запросу</label>
-      <textarea class="rf-textarea" id="rf_comment" placeholder="Опишите ваш запрос, особые пожелания..."></textarea>
+      <label class="rf-label" id="rf_l_comment">Comment</label>
+      <textarea class="rf-textarea" id="rf_comment" placeholder="Describe your request, special requirements..."></textarea>
 
-      <button class="rf-submit" id="rf_submitBtn" onclick="submitRentalForm()">
-        📩 Отправить запрос
-      </button>
+      <button class="rf-submit" id="rf_submitBtn" onclick="submitRentalForm()">📩 Send request</button>
 
     </div>
   </div>
@@ -821,10 +831,62 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
   <div class="rental-sheet">
     <div class="rental-handle"></div>
     <div class="rental-head">
-      <div class="rental-title" id="cf_title">Запрос</div>
+      <div class="rental-title" id="cf_title">Request</div>
       <button class="rental-close" onclick="closeCreateForm()">✕</button>
     </div>
     <div class="rental-body" id="cf_body"></div>
+  </div>
+</div>
+
+<!-- ABOUT US MODAL -->
+<div id="aboutUsModal" style="position:fixed;inset:0;z-index:300;display:none;flex-direction:column;">
+  <div class="rental-backdrop" onclick="closeAboutUs()"></div>
+  <div class="rental-sheet">
+    <div class="rental-handle"></div>
+    <div class="rental-head">
+      <div class="rental-title" id="aboutUsTitle">ℹ️ About us</div>
+      <button class="rental-close" onclick="closeAboutUs()">✕</button>
+    </div>
+    <div style="padding:8px 20px 32px;">
+      <div style="text-align:center;margin-bottom:20px;">
+        <img src="logo.png" alt="DJ MAP" style="width:72px;height:72px;border-radius:18px;object-fit:cover;border:1px solid #1a1a2e;" onerror="this.style.display='none'">
+      </div>
+      <div style="font-size:22px;font-weight:900;text-align:center;margin-bottom:6px;">DJ MAP</div>
+      <div style="font-size:11px;color:var(--gold);letter-spacing:3px;text-align:center;margin-bottom:20px;">VENUE GUIDE</div>
+      <p id="aboutUsText" style="font-size:13px;color:#888;line-height:1.7;text-align:center;margin-bottom:20px;">
+        DJ MAP is the ultimate venue guide for DJs and artists touring Asia. We connect artists with clubs, bars, rooftops and beach clubs across 9 countries — Thailand, Vietnam, Cambodia, India, Malaysia, Japan, China, Korea and Indonesia.
+      </p>
+      <div style="background:#0f0f18;border:1px solid #1a1a2e;border-radius:12px;padding:14px;margin-bottom:10px;">
+        <div style="font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:6px;">EMAIL</div>
+        <div style="font-size:13px;color:#ccc;">djmap.shop@gmail.com</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT US MODAL -->
+<div id="contactUsModal" style="position:fixed;inset:0;z-index:300;display:none;flex-direction:column;">
+  <div class="rental-backdrop" onclick="closeContactUs()"></div>
+  <div class="rental-sheet">
+    <div class="rental-handle"></div>
+    <div class="rental-head">
+      <div class="rental-title" id="contactUsTitle">✉️ Contact us</div>
+      <button class="rental-close" onclick="closeContactUs()">✕</button>
+    </div>
+    <div class="rental-body">
+
+      <label class="rf-label" id="cu_l_name" data-i18n="fName">NAME</label>
+      <input class="rf-input" id="cu_name" data-i18n-placeholder="fNamePh" placeholder="Your name...">
+
+      <label class="rf-label" id="cu_l_subject" data-i18n="cuSubject">SUBJECT</label>
+      <input class="rf-input" id="cu_subject" data-i18n-placeholder="cuSubjectPh" placeholder="Subject...">
+
+      <label class="rf-label" id="cu_l_msg" data-i18n="cuMessage">MESSAGE</label>
+      <textarea class="rf-textarea" id="cu_message" rows="5" data-i18n-placeholder="cuMessagePh" placeholder="Write your message..."></textarea>
+
+      <button class="rf-submit" id="cu_submitBtn" onclick="submitContactUs()">📩 <span data-i18n="fSubmit">Send request</span></button>
+
+    </div>
   </div>
 </div>
 
@@ -912,9 +974,9 @@ const SHEET_SERVICE_TAB = 'service';
 let logoTaps = 0;
 let currentPlan = null;
 let templates = [
-  {id:1,title:'Запрос на букинг',text:'Добрый день! Меня зовут [Имя], я диджей. Хотел бы обсудить возможность выступления в вашем заведении. Играю в жанре [жанр], опыт [N] лет. Когда удобно поговорить?'},
-  {id:2,title:'Follow-up после знакомства',text:'Привет! Мы встречались на [событие]. Хотел бы обсудить сотрудничество. Готов поделиться миксом и райдером. Когда удобно поговорить?'},
-  {id:3,title:'Запрос на резидентство',text:'Добрый день! Я ищу возможность для постоянного резидентства. Играю в жанре [жанр], опыт [N] лет. Могу предоставить миксы и пресс-кит.'},
+  {id:1,title:'Booking Request',text:'Hello! My name is [Name], I am a DJ. I would like to discuss the possibility of performing at your venue. I play [genre], with [N] years of experience. When would be a good time to talk?'},
+  {id:2,title:'Follow-up after meeting',text:'Hi! We met at [event]. I would love to discuss a potential collaboration. I am happy to share a mix and my rider. When is a good time to chat?'},
+  {id:3,title:'Residency Request',text:'Hello! I am looking for a regular residency opportunity. I play [genre], with [N] years of experience. I can provide mixes and a press kit.'},
 ];
 let editingTplId = null;
 let adminSection = 'venues';
@@ -1028,8 +1090,8 @@ function renderCountriesGrid() {
     const cnt = venues.filter(v => v.country === c.id).length;
     return `<div class="country-card" onclick="selectCountry('${c.id}')">
       <div class="country-flag">${c.flag}</div>
-      <div class="country-name">${c.name}</div>
-      <div class="country-count">${cnt} заведений</div>
+      <div class="country-name">${T('country_'+c.id) || c.name}</div>
+      <div class="country-count">${cnt} ${T('venueObjects')}</div>
     </div>`;
   }).join('');
 }
@@ -1039,7 +1101,7 @@ function selectCountry(id) {
   venueTypeFilter = 'All'; venueCityFilter = 'All'; venueGenreFilter = 'All'; sortBy = 'rating';
   document.getElementById('countriesGrid').style.display = 'none';
   document.getElementById('venueListWrap').style.display = 'block';
-  document.getElementById('selectedCountryLabel').textContent = selectedCountry.flag + ' ' + selectedCountry.name;
+  document.getElementById('selectedCountryLabel').textContent = selectedCountry.flag + ' ' + (T('country_'+selectedCountry.id) || selectedCountry.name);
   buildVenueFilters();
   renderVenueList();
 }
@@ -1057,11 +1119,11 @@ function buildVenueFilters() {
   const cities = ['All',...selectedCountry.cities.filter(c => cvs.some(v=>v.city===c))];
   const genres = ['All',...new Set(cvs.flatMap(v=>v.genre||[]))];
   document.getElementById('venueTypeFilters').innerHTML = types.map(t =>
-    `<button class="filter-chip ${venueTypeFilter===t?'active':''}" onclick="setVenueTypeFilter('${t}')">${t==='All'?'🎵 Все':t}</button>`).join('');
+    `<button class="filter-chip ${venueTypeFilter===t?'active':''}" onclick="setVenueTypeFilter('${t}')">${t==='All'?'🎵 '+T('allVenues'):(T('type_'+t)||t)}</button>`).join('');
   document.getElementById('venueCityFilters').innerHTML = cities.map(c =>
-    `<button class="filter-chip ${venueCityFilter===c?'active':''}" onclick="setVenueCityFilter('${c}')">${c==='All'?'Все города':c}</button>`).join('');
+    `<button class="filter-chip ${venueCityFilter===c?'active':''}" onclick="setVenueCityFilter('${c}')">${c==='All'?T('allCities'):c}</button>`).join('');
   document.getElementById('venueGenreFilters').innerHTML = genres.map(g =>
-    `<button class="filter-chip ${venueGenreFilter===g?'active':''}" onclick="setVenueGenreFilter('${g}')">${g==='All'?'Все жанры':g}</button>`).join('');
+    `<button class="filter-chip ${venueGenreFilter===g?'active':''}" onclick="setVenueGenreFilter('${g}')">${g==='All'?T('allGenres'):g}</button>`).join('');
 }
 
 function setVenueTypeFilter(t){venueTypeFilter=t;buildVenueFilters();renderVenueList();}
@@ -1085,7 +1147,7 @@ function renderVenueList() {
   if (sortBy==='rating') list.sort((a,b)=>b.rating-a.rating);
   else list.sort((a,b)=>a.name.localeCompare(b.name));
   const el = document.getElementById('venueList');
-  if (list.length===0) { el.innerHTML='<div class="empty-state"><div class="empty-icon">🎵</div><p>Нет заведений</p></div>'; return; }
+  if (list.length===0) { el.innerHTML='<div class="empty-state"><div class="empty-icon">🎵</div><p>'+T('noVenues')+'</p></div>'; return; }
   el.innerHTML = list.map(v => venueCardHTML(v)).join('');
 }
 
@@ -1171,7 +1233,7 @@ function buildSvcSortDropdowns() {
   const countries = [...new Set(filtered.map(s => s.country).filter(Boolean))].sort();
   const cSel = document.getElementById('svcCountrySort');
   const prevC = cSel.value;
-  cSel.innerHTML = '<option value="All">Все страны</option>' +
+  cSel.innerHTML = '<option value="All">'+T('allCountries')+'</option>' +
     countries.map(c => {
       const flag = (COUNTRIES.find(x => x.id === c) || {}).flag || '';
       const name = (COUNTRIES.find(x => x.id === c) || {}).name || c;
@@ -1183,7 +1245,7 @@ function buildSvcSortDropdowns() {
   const cities = [...new Set(cityFiltered.map(s => s.city).filter(Boolean))].sort();
   const citySel = document.getElementById('svcCitySort');
   const prevCity = citySel.value;
-  citySel.innerHTML = '<option value="All">Все города</option>' +
+  citySel.innerHTML = '<option value="All">'+T('allCities')+'</option>' +
     cities.map(c => `<option value="${c}" ${prevCity===c?'selected':''}>${c}</option>`).join('');
 }
 
@@ -1202,11 +1264,11 @@ function renderServiceListNew() {
 
   const el = document.getElementById('serviceListNew');
   if (list.length === 0) {
-    const labels = {shop:'магазинов', service:'сервис центров', rental:'пунктов аренды'};
+    const labels = {shop:T('noShops'), service:T('noServiceCenters'), rental:T('noRental')};
     const rentalCta = svcCategory === 'rental'
-      ? `<div style="margin-top:16px;"><button onclick="openRentalForm()" style="background:linear-gradient(135deg,var(--gold),#8b6914);border:none;color:#000;font-size:13px;font-weight:800;padding:12px 28px;border-radius:12px;cursor:pointer;font-family:'Inter',sans-serif;">📩 Отправить запрос на аренду</button></div>`
+      ? `<div style="margin-top:16px;"><button onclick="openRentalForm()" style="background:linear-gradient(135deg,var(--gold),#8b6914);border:none;color:#000;font-size:13px;font-weight:800;padding:12px 28px;border-radius:12px;cursor:pointer;font-family:'Inter',sans-serif;">${T('requestRental')}</button></div>`
       : '';
-    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>Нет ${labels[svcCategory] || 'объектов'}</p>${rentalCta}</div>`;
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>Нет ${labels[svcCategory] || T('serviceObjects')}</p>${rentalCta}</div>`;
     return;
   }
   el.innerHTML = list.map(s => svcCardHTML(s)).join('');
@@ -1230,7 +1292,7 @@ function svcCardHTML(s) {
 
   // Для аренды показываем кнопку запроса
   const rentalBtn = cat === 'rental'
-    ? `<div style="margin-top:8px;"><button onclick="event.stopPropagation();openRentalForm()" style="background:linear-gradient(135deg,var(--gold),#8b6914);border:none;color:#000;font-size:10px;font-weight:800;padding:5px 12px;border-radius:7px;cursor:pointer;font-family:'Inter',sans-serif;">📩 Запросить</button></div>`
+    ? `<div style="margin-top:8px;"><button onclick="event.stopPropagation();openRentalForm()" style="background:linear-gradient(135deg,var(--gold),#8b6914);border:none;color:#000;font-size:10px;font-weight:800;padding:5px 12px;border-radius:7px;cursor:pointer;font-family:'Inter',sans-serif;">📩 ${T("requestRental")}</button></div>`
     : '';
 
   return `<div class="svc-card ${s.isPremium?'premium':''}" onclick="${clickAction}">
@@ -1476,9 +1538,9 @@ function renderTemplates() {
       <div class="template-title">${t.title}</div>
       <div class="template-preview">${t.text}</div>
       <div class="template-actions">
-        <button class="tpl-btn" id="copyBtn_${t.id}" onclick="copyTpl(${t.id})">📋 Копировать</button>
-        <button class="tpl-btn edit" onclick="openTplEditor(${t.id})">✏️ Изменить</button>
-        <button class="tpl-btn del" onclick="deleteTpl(${t.id})">🗑</button>
+        <button class="tpl-btn" id="copyBtn_${t.id}" onclick="copyTpl(${t.id})">${T('tplCopy')}</button>
+        <button class="tpl-btn edit" onclick="openTplEditor(${t.id})">✏️ ${T('tplEdit')}</button>
+        <button class="tpl-btn del" onclick="deleteTpl(${t.id})">🗑 ${T('tplDel')}</button>
       </div>
     </div>`).join('');
 }
@@ -1488,8 +1550,8 @@ function copyTpl(id) {
   if(!t) return;
   if(navigator.clipboard) navigator.clipboard.writeText(t.text);
   const btn = document.getElementById('copyBtn_'+id);
-  if(btn){btn.textContent='✓ Скопировано';btn.classList.add('copy-done');}
-  setTimeout(()=>{if(btn){btn.textContent='📋 Копировать';btn.classList.remove('copy-done');}},2000);
+  if(btn){btn.textContent=T('tplCopied');btn.classList.add('copy-done');}
+  setTimeout(()=>{if(btn){btn.textContent=T('tplCopy');btn.classList.remove('copy-done');}},2000);
 }
 
 function deleteTpl(id) {
@@ -1500,7 +1562,7 @@ function deleteTpl(id) {
 function openTplEditor(id) {
   editingTplId = id;
   const t = id ? templates.find(x=>x.id===id) : null;
-  document.getElementById('tplEditorTitle').textContent = id ? 'Редактировать' : 'Новый шаблон';
+  document.getElementById('tplEditorTitle').textContent = id ? T('tplEdit') : T('newTemplate');
   document.getElementById('tplTitleInput').value = t ? t.title : '';
   document.getElementById('tplTextInput').value = t ? t.text : '';
   document.getElementById('tpl-list').classList.add('hidden');
@@ -1513,7 +1575,7 @@ function closeTplEditor() {
 }
 
 function saveTpl() {
-  const title = document.getElementById('tplTitleInput').value.trim() || 'Новый шаблон';
+  const title = document.getElementById('tplTitleInput').value.trim() || T('newTemplate');
   const text = document.getElementById('tplTextInput').value.trim();
   if (editingTplId) {
     templates = templates.map(t => t.id===editingTplId ? {...t,title,text} : t);
@@ -1522,7 +1584,7 @@ function saveTpl() {
   }
   closeTplEditor();
   renderTemplates();
-  showToast('✓ Шаблон сохранён');
+  showToast('✓ ' + T('save'));
 }
 
 // ══════════════════════════════════════════════
@@ -1531,15 +1593,15 @@ function saveTpl() {
 function renderProfileStats() {
   const el = document.getElementById('profileStats');
   el.innerHTML = [
-    ['🌐 Страны', COUNTRIES.length],
-    ['🎵 Заведения', venues.length],
-    ['🔧 Сервисы', services.length],
-    ['★ Сохранено', savedIds.length],
+    ['🌐 ' + T('statCountries'), COUNTRIES.length],
+    ['🎵 ' + T('navVenues'), venues.length],
+    ['🔧 ' + T('navService'), services.length],
+    ['★ ' + T('navSaved'), savedIds.length],
   ].map(([l,v])=>`<div class="stat-row"><span class="stat-row-label">${l}</span><span class="stat-row-val">${v}</span></div>`).join('');
 
   document.getElementById('profileProBtn').innerHTML = isPro
-    ? '<span class="profile-pro-btn">✓ PRO активна</span>'
-    : `<button class="profile-get-btn" onclick="goSplash()">Выбрать план</button>`;
+    ? '<span class="profile-pro-btn">✓ ' + T('proActive') + '</span>'
+    : `<button class="profile-get-btn" onclick="goSplash()">${T('choosePlan')}</button>`;
 }
 
 // ══════════════════════════════════════════════
@@ -1588,7 +1650,7 @@ function openAdminForm(id) {
   const type_opts = types.map(t=>`<option value="${t}" ${v&&v.type===t?'selected':''}>${t}</option>`).join('');
   document.getElementById('adminFormView').innerHTML = `
     <button class="back-btn" onclick="closeAdminForm()" style="margin:12px 0;">← К списку</button>
-    <h3 style="font-size:15px;font-weight:800;margin-bottom:8px;">${id?'Редактировать':'Добавить'}</h3>
+    <h3 style="font-size:15px;font-weight:800;margin-bottom:8px;">${id?T('tplEdit'):'Добавить'}</h3>
     <label class="form-label">СТРАНА</label>
     <select class="form-select" id="af_country">${countries_opts}</select>
     <label class="form-label">НАЗВАНИЕ</label>
@@ -1695,7 +1757,7 @@ function showToast(msg) {
 // ══════════════════════════════════════════════
 function openRentalForm() {
   document.getElementById('rentalModal').classList.add('open');
-  // Сброс формы
+  document.getElementById('rentalTitle').textContent = '🎚️ ' + T('catRental');
   document.getElementById('rf_country').value = '';
   document.getElementById('rf_city').value = '';
   document.getElementById('rf_date').value = '';
@@ -1704,7 +1766,7 @@ function openRentalForm() {
   document.getElementById('rf_comment').value = '';
   document.querySelectorAll('.rf-interest-chip').forEach(c => c.classList.remove('active'));
   const btn = document.getElementById('rf_submitBtn');
-  btn.textContent = '📩 Отправить запрос';
+  btn.textContent = '📩 ' + T('fSubmit');
   btn.disabled = false;
   btn.style.opacity = '1';
 }
@@ -1727,36 +1789,36 @@ function submitRentalForm() {
   const interests = [...document.querySelectorAll('.rf-interest-chip.active')].map(c => c.textContent).join(', ');
 
   // Валидация
-  if (!country) { showToast('⚠️ Выберите страну'); return; }
-  if (!city)    { showToast('⚠️ Укажите город');  return; }
-  if (!date)    { showToast('⚠️ Укажите дату');   return; }
-  if (!days || days < 1) { showToast('⚠️ Укажите количество дней'); return; }
+  if (!country) { showToast('⚠️ ' + T('fErrCountry')); return; }
+  if (!city)    { showToast('⚠️ ' + T('fErrCity'));  return; }
+  if (!date)    { showToast('⚠️ ' + T('fErrDate'));    return; }
+  if (!days || days < 1) { showToast('⚠️ ' + T('fErrDays')); return; }
 
   // Форматируем дату красиво
   let dateStr = date;
   try {
     const d = new Date(date);
-    dateStr = d.toLocaleDateString('ru-RU', {day:'2-digit', month:'2-digit', year:'numeric'});
+    dateStr = d.toLocaleDateString(currentLang === 'ru' ? 'ru-RU' : 'en-US', {day:'2-digit', month:'2-digit', year:'numeric'});
   } catch(e) {}
 
   const body = [
-    '🎚️ ЗАПРОС НА АРЕНДУ ОБОРУДОВАНИЯ',
+    T('rentalEmailTitle'),
     '',
-    `📍 Страна: ${country}`,
-    `🏙️ Город: ${city}`,
-    `📅 Дата начала: ${dateStr}`,
-    `⏱️ Количество дней: ${days}`,
-    `🚚 Доставка: ${delivery ? 'Да' : 'Нет'}`,
-    `🎛️ Оборудование: ${interests || 'не указано'}`,
+    `📍 ${T('fCountry')}: ${country}`,
+    `🏙️ ${T('fCity')}: ${city}`,
+    `📅 ${T('fRentalDate')}: ${dateStr}`,
+    `⏱️ ${T('fRentalDays')}: ${days}`,
+    `🚚 ${T('fDelivery')}: ${delivery ? T('fYes') : T('fNo')}`,
+    `🎛️ ${T('fEquipment')}: ${interests || T('fNotSpecified')}`,
     '',
-    `💬 Комментарий: ${comment || '—'}`,
+    `💬 ${T('fComment')}: ${comment || '—'}`,
     '',
     '---',
-    'Отправлено через DJ MAP App',
+    T('fSentVia'),
   ].join('\n');
 
   const mailto = `mailto:djmap.shop@gmail.com`
-    + `?subject=${encodeURIComponent('Аренда оборудования')}`
+    + `?subject=${encodeURIComponent(T('catRental'))}`
     + `&body=${encodeURIComponent(body)}`;
 
   // Открываем почтовый клиент
@@ -1764,11 +1826,11 @@ function submitRentalForm() {
 
   // Обновляем кнопку
   const btn = document.getElementById('rf_submitBtn');
-  btn.textContent = '✓ Запрос отправлен';
+  btn.textContent = '✓ ' + T('fSent');
   btn.style.opacity = '0.6';
   btn.disabled = true;
 
-  showToast('✓ Запрос готов к отправке!');
+  showToast('✓ ' + T('fSentOk'));
   setTimeout(() => closeRentalForm(), 1800);
 }
 
@@ -1800,185 +1862,189 @@ function vcTouchEnd(e, el) {
 // ══════════════════════════════════════════════
 
 const CREATE_CONFIG = {
-  'presskit-pdf':      { title:'Создать пресс кит PDF',           subject:'Пресс кит PDF',             form:'promo' },
-  'presskit-web':      { title:'Создать пресс кит Web Page',      subject:'Пресс кит Web Page',        form:'promo' },
-  'media-links':       { title:'Медиа ссылки и страницы артиста', subject:'Медиа ссылки артиста',      form:'promo' },
-  'photo-video':       { title:'Фото / Видео сессия',             subject:'Фото / Видео сессия',       form:'content' },
-  'set-recording':     { title:'Запись сета с выступления',       subject:'Запись сета',               form:'content' },
-  'stream-recording':  { title:'Запись стрима',                   subject:'Запись стрима',             form:'content' },
-  'ghost-production':  { title:'Гост Продакшн',                   subject:'Гост Продакшн',             form:'ghost' },
-  'dj-education':      { title:'Обучение DJ',                     subject:'Обучение DJ',               form:'education' },
-  'music-education':   { title:'Обучение создания музыки',        subject:'Обучение создания музыки',  form:'education' },
-  'distribution':      { title:'Дистрибьюция / Выпуск трека',     subject:'Дистрибьюция / Выпуск трека', form:'distribution' },
-  'mixing-mastering':  { title:'Mixing & Mastering',              subject:'Mixing & Mastering',         form:'mixing' },
+  'presskit-pdf':      { titleKey:'c_presskit_pdf', subjectKey:'c_presskit_pdf', form:'promo' },
+  'presskit-web':      { titleKey:'c_presskit_web', subjectKey:'c_presskit_web', form:'promo' },
+  'media-links':       { titleKey:'c_media_links',  subjectKey:'c_media_links',  form:'promo' },
+  'photo-video':       { titleKey:'c_photo_video',  subjectKey:'c_photo_video',  form:'content' },
+  'set-recording':     { titleKey:'c_set_rec',      subjectKey:'c_set_rec',      form:'content' },
+  'stream-recording':  { titleKey:'c_stream',       subjectKey:'c_stream',       form:'content' },
+  'ghost-production':  { titleKey:'c_ghost',        subjectKey:'c_ghost',        form:'ghost' },
+  'dj-education':      { titleKey:'c_dj_edu',       subjectKey:'c_dj_edu',       form:'education' },
+  'music-education':   { titleKey:'c_music_edu',    subjectKey:'c_music_edu',    form:'education' },
+  'distribution':      { titleKey:'c_distrib',      subjectKey:'c_distrib',      form:'distribution' },
+  'mixing-mastering':  { titleKey:'mixing_mastering', subjectKey:'mixing_mastering', form:'mixing' },
 };
 
 let currentCreateKey = null;
 
-// ── FILE UPLOAD WIDGET (до 10 файлов) ─────────
+// ── FILE UPLOAD WIDGET ─────────────────────────
 
 function fileUploadWidget() {
   return `
-    <label class="rf-label">Прикрепить файлы <span style="color:#444;font-size:9px;letter-spacing:0;">(до 10 файлов: фото, аудио, PDF, ZIP)</span></label>
+    <label class="rf-label">${T('fUpload')} <span style="color:#444;font-size:9px;letter-spacing:0;">${T('fUploadHint')}</span></label>
     <div class="cf-file-wrap" style="flex-direction:column;align-items:flex-start;gap:8px;">
       <label class="cf-file-btn" for="cf_file">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Выбрать файлы
+        ${T('fChooseFiles')}
       </label>
       <input type="file" id="cf_file" class="cf-file-input" accept="image/*,audio/*,.pdf,.zip,.mp3,.wav,.aiff,.flac" multiple onchange="showFileNames(this)">
-      <div class="cf-file-list" id="cf_fileList"><span style="color:#333;font-size:11px;">Файлы не выбраны</span></div>
+      <div class="cf-file-list" id="cf_fileList"><span style="color:#333;font-size:11px;">${T('fNoFiles')}</span></div>
     </div>`;
+}
+
+// ── COUNTRY OPTIONS ────────────────────────────
+
+function countryOptions() {
+  return `<option value="">— ${T('fSelectCountry')} —</option>
+    <option>Thailand 🇹🇭</option><option>Vietnam 🇻🇳</option><option>Cambodia 🇰🇭</option>
+    <option>India 🇮🇳</option><option>Malaysia 🇲🇾</option><option>Japan 🇯🇵</option>
+    <option>China 🇨🇳</option><option>Korea 🇰🇷</option><option>Indonesia 🇮🇩</option>
+    <option>${T('fOtherCountry')}</option>`;
 }
 
 // ── HTML BUILDERS ──────────────────────────────
 
 function buildPromoForm() {
   return `
-    <label class="rf-label">Имя</label>
-    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+    <label class="rf-label">${T('fName')}</label>
+    <input class="rf-input" id="cf_name" placeholder="${T('fNamePh')}" type="text">
 
-    <label class="rf-label">Имя артиста</label>
-    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним..." type="text">
+    <label class="rf-label">${T('fArtist')}</label>
+    <input class="rf-input" id="cf_artist" placeholder="${T('fArtistPh')}" type="text">
 
-    <label class="rf-label">Подробно о вас и вашем запросе</label>
-    <textarea class="rf-textarea" id="cf_about" rows="4" placeholder="Расскажите о себе, опыте, целях..."></textarea>
+    <label class="rf-label">${T('fAbout')}</label>
+    <textarea class="rf-textarea" id="cf_about" rows="4" placeholder="${T('fAboutPh')}"></textarea>
 
-    <label class="rf-label">Ваши ссылки</label>
-    <textarea class="rf-textarea" id="cf_links" rows="3" placeholder="SoundCloud, Beatport, Instagram, сайт..."></textarea>
+    <label class="rf-label">${T('fLinks')}</label>
+    <textarea class="rf-textarea" id="cf_links" rows="3" placeholder="SoundCloud, Beatport, Instagram..."></textarea>
 
     ${fileUploadWidget()}
 
-    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 ${T('fSubmit')}</button>`;
 }
 
 function buildContentForm() {
   return `
-    <label class="rf-label">Имя</label>
-    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+    <label class="rf-label">${T('fName')}</label>
+    <input class="rf-input" id="cf_name" placeholder="${T('fNamePh')}" type="text">
 
-    <label class="rf-label">Имя артиста</label>
-    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним..." type="text">
+    <label class="rf-label">${T('fArtist')}</label>
+    <input class="rf-input" id="cf_artist" placeholder="${T('fArtistPh')}" type="text">
 
-    <label class="rf-label">Страна</label>
-    <select class="rf-select" id="cf_country">
-      <option value="">— Выберите страну —</option>
-      <option>Таиланд 🇹🇭</option><option>Вьетнам 🇻🇳</option><option>Камбоджа 🇰🇭</option>
-      <option>Индия 🇮🇳</option><option>Малайзия 🇲🇾</option><option>Япония 🇯🇵</option>
-      <option>Китай 🇨🇳</option><option>Корея 🇰🇷</option><option>Индонезия 🇮🇩</option>
-      <option>Другая страна</option>
-    </select>
+    <label class="rf-label">${T('fCountry')}</label>
+    <select class="rf-select" id="cf_country">${countryOptions()}</select>
 
-    <label class="rf-label">Город</label>
-    <input class="rf-input" id="cf_city" placeholder="Город съёмки..." type="text">
+    <label class="rf-label">${T('fCity')}</label>
+    <input class="rf-input" id="cf_city" placeholder="${T('fCityPh')}" type="text">
 
-    <label class="rf-label">Предполагаемая дата <span style="color:#444;font-size:9px;letter-spacing:0;">(не обязательно)</span></label>
+    <label class="rf-label">${T('fDate')} <span style="color:#444;font-size:9px;letter-spacing:0;">(${T('fOptional')})</span></label>
     <input class="rf-input" id="cf_date" type="date">
 
-    <label class="rf-label">Детали запроса</label>
-    <textarea class="rf-textarea" id="cf_details" rows="4" placeholder="Опишите подробно, что вы хотите: формат, стиль, локации, пожелания..."></textarea>
+    <label class="rf-label">${T('fDetails')}</label>
+    <textarea class="rf-textarea" id="cf_details" rows="4" placeholder="${T('fDetailsPh')}"></textarea>
 
-    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 ${T('fSubmit')}</button>`;
 }
 
 function buildGhostForm() {
   return `
-    <label class="rf-label">Имя</label>
-    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+    <label class="rf-label">${T('fName')}</label>
+    <input class="rf-input" id="cf_name" placeholder="${T('fNamePh')}" type="text">
 
-    <label class="rf-label">Имя артиста</label>
-    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним..." type="text">
+    <label class="rf-label">${T('fArtist')}</label>
+    <input class="rf-input" id="cf_artist" placeholder="${T('fArtistPh')}" type="text">
 
-    <label class="rf-label">Жанр / жанры музыки</label>
-    <input class="rf-input" id="cf_genre" placeholder="Например: Techno, House, Afro..." type="text">
+    <label class="rf-label">${T('fGenre')}</label>
+    <input class="rf-input" id="cf_genre" placeholder="Techno, House, Afro..." type="text">
 
-    <label class="rf-label">Референсы <span style="color:#444;font-size:9px;letter-spacing:0;">(имена артистов и треков)</span></label>
-    <textarea class="rf-textarea" id="cf_refs" rows="3" placeholder="Например: Solomun — Kreatur, Chris Liebing..."></textarea>
+    <label class="rf-label">${T('fRefs')} <span style="color:#444;font-size:9px;letter-spacing:0;">(${T('fArtistTrack')})</span></label>
+    <textarea class="rf-textarea" id="cf_refs" rows="3" placeholder="Solomun — Kreatur, Chris Liebing..."></textarea>
 
-    <label class="rf-label">Ваши лейблы <span style="color:#444;font-size:9px;letter-spacing:0;">(не обязательно)</span></label>
-    <input class="rf-input" id="cf_labels" placeholder="Например: Diynamic, Drumcode..." type="text">
+    <label class="rf-label">${T('fLabels')} <span style="color:#444;font-size:9px;letter-spacing:0;">(${T('fOptional')})</span></label>
+    <input class="rf-input" id="cf_labels" placeholder="Diynamic, Drumcode..." type="text">
 
-    <label class="rf-label">Сроки <span style="color:#444;font-size:9px;letter-spacing:0;">(не обязательно)</span></label>
-    <input class="rf-input" id="cf_deadline" placeholder="Например: в течение месяца..." type="text">
+    <label class="rf-label">${T('fDeadline')} <span style="color:#444;font-size:9px;letter-spacing:0;">(${T('fOptional')})</span></label>
+    <input class="rf-input" id="cf_deadline" placeholder="${T('fDeadlinePh')}" type="text">
 
-    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 ${T('fSubmit')}</button>`;
 }
 
 function buildEducationForm() {
   return `
-    <label class="rf-label">Имя</label>
-    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+    <label class="rf-label">${T('fName')}</label>
+    <input class="rf-input" id="cf_name" placeholder="${T('fNamePh')}" type="text">
 
-    <label class="rf-label">Имя артиста</label>
-    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним (если есть)..." type="text">
+    <label class="rf-label">${T('fArtist')}</label>
+    <input class="rf-input" id="cf_artist" placeholder="${T('fArtistPh2')}" type="text">
 
-    <label class="rf-label">Ваш уровень</label>
+    <label class="rf-label">${T('fLevel')}</label>
     <div class="rf-interests" id="cf_level_chips">
-      <div class="rf-interest-chip" onclick="selectLevel(this,'Начальный')">🌱 Начальный</div>
-      <div class="rf-interest-chip" onclick="selectLevel(this,'Средний')">⚡ Средний</div>
-      <div class="rf-interest-chip" onclick="selectLevel(this,'Высокий')">🔥 Высокий</div>
+      <div class="rf-interest-chip" onclick="selectLevel(this,'${T('lvlBeginner')}')">🌱 ${T('lvlBeginner')}</div>
+      <div class="rf-interest-chip" onclick="selectLevel(this,'${T('lvlMedium')}')">⚡ ${T('lvlMedium')}</div>
+      <div class="rf-interest-chip" onclick="selectLevel(this,'${T('lvlAdvanced')}')">🔥 ${T('lvlAdvanced')}</div>
     </div>
     <input type="hidden" id="cf_level" value="">
 
-    <label class="rf-label">Формат обучения</label>
+    <label class="rf-label">${T('fFormat')}</label>
     <div class="rf-interests" id="cf_format_chips">
-      <div class="rf-interest-chip" onclick="toggleChip(this)">💻 Онлайн</div>
-      <div class="rf-interest-chip" onclick="toggleChip(this)">🏠 Офлайн</div>
+      <div class="rf-interest-chip" onclick="toggleChip(this)">💻 ${T('fOnline')}</div>
+      <div class="rf-interest-chip" onclick="toggleChip(this)">🏠 ${T('fOffline')}</div>
     </div>
 
-    <label class="rf-label">Что вы хотите получить от обучения?</label>
-    <textarea class="rf-textarea" id="cf_goals" rows="4" placeholder="Опишите навыки и цели, которых хотите достичь..."></textarea>
+    <label class="rf-label">${T('fGoals')}</label>
+    <textarea class="rf-textarea" id="cf_goals" rows="4" placeholder="${T('fGoalsPh')}"></textarea>
 
-    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 ${T('fSubmit')}</button>`;
 }
 
 function buildDistributionForm() {
   return `
-    <label class="rf-label">Имя</label>
-    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+    <label class="rf-label">${T('fName')}</label>
+    <input class="rf-input" id="cf_name" placeholder="${T('fNamePh')}" type="text">
 
-    <label class="rf-label">Имя артиста</label>
-    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним..." type="text">
+    <label class="rf-label">${T('fArtist')}</label>
+    <input class="rf-input" id="cf_artist" placeholder="${T('fArtistPh')}" type="text">
 
-    <label class="rf-label">Жанр / жанры музыки</label>
-    <input class="rf-input" id="cf_genre" placeholder="Например: Techno, House, Afro..." type="text">
+    <label class="rf-label">${T('fGenre')}</label>
+    <input class="rf-input" id="cf_genre" placeholder="Techno, House, Afro..." type="text">
 
-    <label class="rf-label">Ваши лейблы <span style="color:#444;font-size:9px;letter-spacing:0;">(если есть релизы)</span></label>
-    <input class="rf-input" id="cf_labels" placeholder="Например: Diynamic, Drumcode..." type="text">
+    <label class="rf-label">${T('fLabels')} <span style="color:#444;font-size:9px;letter-spacing:0;">(${T('fIfReleases')})</span></label>
+    <input class="rf-input" id="cf_labels" placeholder="Diynamic, Drumcode..." type="text">
 
-    <label class="rf-label">Ссылка на трек / материал</label>
+    <label class="rf-label">${T('fTrackLink')}</label>
     <input class="rf-input" id="cf_tracklink" placeholder="SoundCloud, Dropbox, WeTransfer..." type="text">
 
-    <label class="rf-label">Детали запроса</label>
-    <textarea class="rf-textarea" id="cf_details" rows="4" placeholder="Опишите трек, планы на релиз, платформы..."></textarea>
+    <label class="rf-label">${T('fDetails')}</label>
+    <textarea class="rf-textarea" id="cf_details" rows="4" placeholder="${T('fDistribPh')}"></textarea>
 
     ${fileUploadWidget()}
 
-    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 ${T('fSubmit')}</button>`;
 }
 
 function buildMixingForm() {
   return `
-    <label class="rf-label">Имя</label>
-    <input class="rf-input" id="cf_name" placeholder="Ваше имя..." type="text">
+    <label class="rf-label">${T('fName')}</label>
+    <input class="rf-input" id="cf_name" placeholder="${T('fNamePh')}" type="text">
 
-    <label class="rf-label">Имя артиста</label>
-    <input class="rf-input" id="cf_artist" placeholder="DJ Name / псевдоним..." type="text">
+    <label class="rf-label">${T('fArtist')}</label>
+    <input class="rf-input" id="cf_artist" placeholder="${T('fArtistPh')}" type="text">
 
-    <label class="rf-label">Жанр трека</label>
-    <input class="rf-input" id="cf_genre" placeholder="Например: Techno, Deep House, Melodic..." type="text">
+    <label class="rf-label">${T('fGenreTrack')}</label>
+    <input class="rf-input" id="cf_genre" placeholder="Techno, Deep House, Melodic..." type="text">
 
-    <label class="rf-label">Ваши лейблы <span style="color:#444;font-size:9px;letter-spacing:0;">(если есть релизы)</span></label>
-    <input class="rf-input" id="cf_labels" placeholder="Например: Diynamic, Drumcode..." type="text">
+    <label class="rf-label">${T('fLabels')} <span style="color:#444;font-size:9px;letter-spacing:0;">(${T('fIfReleases')})</span></label>
+    <input class="rf-input" id="cf_labels" placeholder="Diynamic, Drumcode..." type="text">
 
-    <label class="rf-label">Ссылка на трек</label>
+    <label class="rf-label">${T('fTrackLink')}</label>
     <input class="rf-input" id="cf_tracklink" placeholder="SoundCloud, Dropbox, WeTransfer..." type="text">
 
-    <label class="rf-label">Описание</label>
-    <textarea class="rf-textarea" id="cf_details" rows="4" placeholder="Опишите трек, референсы по звуку, пожелания по сведению..."></textarea>
+    <label class="rf-label">${T('fDescription')}</label>
+    <textarea class="rf-textarea" id="cf_details" rows="4" placeholder="${T('fMixingPh')}"></textarea>
 
     ${fileUploadWidget()}
 
-    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 Отправить запрос</button>`;
+    <button class="rf-submit" id="cf_submitBtn" onclick="submitCreateForm()">📩 ${T('fSubmit')}</button>`;
 }
 
 // ── OPEN / CLOSE ───────────────────────────────
@@ -1987,7 +2053,7 @@ function openCreateItem(key) {
   const cfg = CREATE_CONFIG[key];
   if (!cfg) return;
   currentCreateKey = key;
-  document.getElementById('cf_title').textContent = cfg.title;
+  document.getElementById('cf_title').textContent = T(cfg.titleKey) || cfg.titleKey;
   const formBuilders = {
     promo:        buildPromoForm,
     content:      buildContentForm,
@@ -2049,8 +2115,8 @@ function submitCreateForm() {
 
   const name   = g('cf_name');
   const artist = g('cf_artist');
-  if (!name)   { showToast('⚠️ Укажите ваше имя'); return; }
-  if (!artist) { showToast('⚠️ Укажите имя артиста'); return; }
+  if (!name)   { showToast('⚠️ ' + T('fErrName')); return; }
+  if (!artist) { showToast('⚠️ ' + T('fErrArtist')); return; }
 
   let lines = [
     `📋 ЗАПРОС: ${cfg.subject}`,
@@ -2076,9 +2142,9 @@ function submitCreateForm() {
     const city    = g('cf_city');
     const date    = g('cf_date');
     const details = g('cf_details');
-    if (!country) { showToast('⚠️ Выберите страну'); return; }
-    if (!city)    { showToast('⚠️ Укажите город'); return; }
-    lines.push(`📍 Страна: ${country}`, `🏙️ Город: ${city}`);
+    if (!country) { showToast('⚠️ ' + T('fErrCountry')); return; }
+    if (!city)    { showToast('⚠️ ' + T('fErrCity')); return; }
+    lines.push(`📍 ${T('fCountry')}: ${country}`, `🏙️ ${T('fCity')}: ${city}`);
     if (date) { let d=date; try{d=new Date(date).toLocaleDateString('ru-RU');}catch(e){} lines.push(`📅 Дата: ${d}`); }
     if (details) lines.push(`\n🎬 Детали:\n${details}`);
   }
@@ -2088,7 +2154,7 @@ function submitCreateForm() {
     const refs     = g('cf_refs');
     const labels   = g('cf_labels');
     const deadline = g('cf_deadline');
-    if (!genre) { showToast('⚠️ Укажите жанр музыки'); return; }
+    if (!genre) { showToast('⚠️ ' + T('fErrGenre')); return; }
     lines.push(`🎵 Жанр: ${genre}`);
     if (refs)     lines.push(`🎼 Референсы: ${refs}`);
     if (labels)   lines.push(`🏷️ Лейблы: ${labels}`);
@@ -2099,7 +2165,7 @@ function submitCreateForm() {
     const level  = g('cf_level');
     const goals  = g('cf_goals');
     const format = [...document.querySelectorAll('#cf_format_chips .rf-interest-chip.active')].map(c=>c.textContent).join(', ');
-    if (!level) { showToast('⚠️ Выберите ваш уровень'); return; }
+    if (!level) { showToast('⚠️ ' + T('fErrLevel')); return; }
     lines.push(`📊 Уровень: ${level}`);
     if (format) lines.push(`💻 Формат: ${format}`);
     if (goals)  lines.push(`\n🎯 Цели обучения:\n${goals}`);
@@ -2110,7 +2176,7 @@ function submitCreateForm() {
     const labels   = g('cf_labels');
     const link     = g('cf_tracklink');
     const details  = g('cf_details');
-    if (!genre) { showToast('⚠️ Укажите жанр'); return; }
+    if (!genre) { showToast('⚠️ ' + T('fErrGenre')); return; }
     lines.push(`🎵 Жанр: ${genre}`);
     if (labels)  lines.push(`🏷️ Лейблы: ${labels}`);
     if (link)    lines.push(`🔗 Ссылка на трек: ${link}`);
@@ -2127,7 +2193,7 @@ function submitCreateForm() {
     const labels  = g('cf_labels');
     const link    = g('cf_tracklink');
     const details = g('cf_details');
-    if (!genre) { showToast('⚠️ Укажите жанр трека'); return; }
+    if (!genre) { showToast('⚠️ ' + T('fErrGenre')); return; }
     lines.push(`🎵 Жанр: ${genre}`);
     if (labels)  lines.push(`🏷️ Лейблы: ${labels}`);
     if (link)    lines.push(`🔗 Ссылка на трек: ${link}`);
@@ -2139,24 +2205,349 @@ function submitCreateForm() {
     }
   }
 
-  lines.push('', '---', 'Отправлено через DJ MAP App');
+  lines.push('', '---', T('fSentVia'));
 
   const body = lines.join('\n');
   const mailto = `mailto:djmap.shop@gmail.com`
-    + `?subject=${encodeURIComponent(cfg.subject)}`
+    + `?subject=${encodeURIComponent(T(cfg.subjectKey) || cfg.subjectKey)}`
     + `&body=${encodeURIComponent(body)}`;
 
   window.location.href = mailto;
 
   const btn = document.getElementById('cf_submitBtn');
-  if (btn) { btn.textContent = '✓ Запрос отправлен'; btn.style.opacity = '0.6'; btn.disabled = true; }
-  showToast('✓ Запрос готов к отправке!');
+  if (btn) { btn.textContent = '✓ ' + T('fSent'); btn.style.opacity = '0.6'; btn.disabled = true; }
+  showToast('✓ ' + T('fSentOk'));
   setTimeout(() => closeCreateForm(), 1800);
 }
 
 // ══════════════════════════════════════════════
-//  INIT
+//  i18n — LANGUAGE SWITCHER
 // ══════════════════════════════════════════════
+
+const LANGUAGES = [
+  { code: 'en', flag: '🇬🇧', label: 'EN' },
+  { code: 'ru', flag: '🇷🇺', label: 'RU' },
+  { code: 'th', flag: '🇹🇭', label: 'TH' },
+];
+
+const TRANSLATIONS = {
+  en: {
+    eyebrow:'Venue Guide', sub:'Club, bar, rooftop & beach club contacts — 9 countries in Asia',
+    choosePlan:'Choose plan', plan1name:'1 City', plan1desc:'One city of your choice',
+    plan2name:'1 Country', plan2desc:'All cities in one country',
+    plan3name:'All Countries', plan3desc:'Full access — 9 countries',
+    perYear:'/year', demo:'Demo without contacts', proLogin:'Enter in test mode (PRO)',
+    statCountries:'Countries', statVenues:'Venues', statUpdates:'Updates',
+    payCard:'Pay by card', cancel:'Cancel',
+    navVenues:'Venues', navService:'Service', navSaved:'Saved',
+    navTemplates:'Templates', navCreate:'Create', navAccount:'Profile',
+    countries:'Countries', searchVenues:'🔍 Search venues...',
+    sortRating:'By rating', sortName:'By name',
+    allVenues:'All', allCities:'All cities', allGenres:'All genres',
+    noVenues:'No venues found',
+    country:'COUNTRY', city:'CITY', allCountries:'All countries',
+    catShop:'Shops', catServiceCenter:'Service Center', catRental:'Equipment Rental',
+    loading:'Loading...', noShops:'No shops', noServiceCenters:'No service centers', noRental:'No rental points',
+    requestRental:'Send rental request',
+    noSaved:'Nothing saved yet',
+    newTemplate:'New template', back:'Back',
+    tplName:'NAME', tplNamePh:'Template name...',
+    tplText:'MESSAGE TEXT', tplTextPh:'Enter text...', save:'Save',
+    tplCopy:'Copy', tplEdit:'Edit', tplDel:'Del', tplCopied:'Copied!',
+    secPromo:'📄 Promo Materials', secContent:'🎬 Content Production', secMusic:'🎵 Music & Education',
+    c_presskit_pdf:'Create Press Kit PDF', c_presskit_pdf_d:'Professional press kit for booking',
+    c_presskit_web:'Create Press Kit Web Page', c_presskit_web_d:'Online portfolio page',
+    c_media_links:'Artist Media Links & Pages', c_media_links_d:'Beatport, RA, SoundCloud, Spotify and more',
+    c_photo_video:'Photo / Video Session', c_photo_video_d:'Professional shoot for the artist',
+    c_set_rec:'Live Set Recording', c_set_rec_d:'Live recording of your performance',
+    c_stream:'Stream Recording', c_stream_d:'Online stream and recording',
+    c_ghost:'Ghost Production', c_ghost_d:'Professional track writing',
+    c_dj_edu:'DJ Education', c_dj_edu_d:'DJ courses from professionals',
+    c_music_edu:'Music Production Education', c_music_edu_d:'Production, mixing, mastering',
+    c_distrib:'Distribution / Release', c_distrib_d:'Spotify, Apple Music, Beatport and more',
+    c_mixing_d:'Professional mixing and mastering',
+    support:'Support', legal:'Legal',
+    privacy:'Privacy Policy', refund:'Refund Policy', terms:'Terms of Use', logout:'Log out',
+    backToCountries:'Countries', venueObjects:'venues', serviceObjects:'objects',
+    proActive:'PRO active',
+    country_thailand:'Thailand', country_vietnam:'Vietnam', country_cambodia:'Cambodia',
+    country_india:'India', country_malaysia:'Malaysia', country_japan:'Japan',
+    country_china:'China', country_korea:'Korea', country_indonesia:'Indonesia',
+    // Form labels
+    fName:'NAME', fNamePh:'Your name...', fArtist:'ARTIST NAME', fArtistPh:'DJ Name / alias...',
+    fArtistPh2:'DJ Name / alias (if any)...', fAbout:'ABOUT YOU & YOUR REQUEST',
+    fAboutPh:'Tell us about yourself, experience, goals...',
+    fLinks:'YOUR LINKS', fDetails:'DETAILS', fDetailsPh:'Describe what you want in detail...',
+    fCountry:'COUNTRY', fCity:'CITY', fCityPh:'City of shooting...',
+    fDate:'ESTIMATED DATE', fOptional:'optional',
+    fGenre:'GENRE / GENRES', fGenreTrack:'TRACK GENRE',
+    fRefs:'REFERENCES', fArtistTrack:'artist names and track titles',
+    fLabels:'YOUR LABELS', fIfReleases:'if you have releases',
+    fDeadline:'DEADLINE', fDeadlinePh:'e.g. within a month...',
+    fLevel:'YOUR LEVEL', fFormat:'TRAINING FORMAT',
+    lvlBeginner:'Beginner', lvlMedium:'Intermediate', lvlAdvanced:'Advanced',
+    fOnline:'Online', fOffline:'Offline',
+    fGoals:'WHAT DO YOU WANT TO ACHIEVE?', fGoalsPh:'Describe the skills and goals you want to reach...',
+    fTrackLink:'TRACK LINK', fDescription:'DESCRIPTION',
+    fMixingPh:'Describe the track, sound references, mixing preferences...',
+    fDistribPh:'Describe the track, release plans, platforms...',
+    fSelectCountry:'Select country', fOtherCountry:'Other country',
+    fUpload:'ATTACH FILES', fUploadHint:'(up to 10 files: photo, audio, PDF, ZIP)',
+    fChooseFiles:'Choose files', fNoFiles:'No files selected',
+    fSubmit:'Send request', fSent:'Sent', fSentOk:'Request ready to send!',
+    fErrName:'Please enter your name', fErrArtist:'Please enter artist name',
+    fErrCountry:'Please select a country', fErrCity:'Please enter city',
+    fErrDate:'Please enter date', fErrDays:'Please enter number of days',
+    fErrGenre:'Please enter genre', fErrLevel:'Please select your level',
+    fDelivery:'Delivery', fYes:'Yes', fNo:'No',
+    fEquipment:'Equipment', fNotSpecified:'not specified', fComment:'Comment',
+    fRentalDate:'Start date', fRentalDays:'Number of days',
+    rentalEmailTitle:'EQUIPMENT RENTAL REQUEST', fSentVia:'Sent via DJ MAP App',
+    mixing_mastering:'Mixing & Mastering',
+    aboutUs:'About us', contactUs:'Contact us',
+    aboutUsText:"We make a DJ's life easier and more exciting. We share our expertise and a contact database we have been building for you over 10 years.\n\nOur database contains only verified contacts and links. All contact information has been agreed upon and verified.\n\nOur product has no advertising goals.\n\nIf you have questions, suggestions, comments, or would like to give feedback — we would be happy to help.\n\nWith respect, the DJ MAP team.",
+    cuSubject:'SUBJECT', cuSubjectPh:'Subject...', cuMessage:'MESSAGE', cuMessagePh:'Write your message...',
+    fErrSubject:'Please enter a subject', fErrMessage:'Please write a message',
+  },
+  ru: {
+    eyebrow:'Venue Guide', sub:'Контакты клубов, баров, rooftop-ов и бич-клубов — 9 стран Азии',
+    choosePlan:'Выберите план', plan1name:'1 город', plan1desc:'Один город на выбор',
+    plan2name:'1 страна', plan2desc:'Все города одной страны',
+    plan3name:'Все страны', plan3desc:'Полный доступ — 9 стран',
+    perYear:'/год', demo:'Демо без контактов', proLogin:'Войти в тестовом режиме (PRO)',
+    statCountries:'Стран', statVenues:'Заведений', statUpdates:'Обновлений',
+    payCard:'Оплатить картой', cancel:'Отмена',
+    navVenues:'Заведения', navService:'Сервис', navSaved:'Избранное',
+    navTemplates:'Шаблоны', navCreate:'Создать', navAccount:'Профиль',
+    countries:'Страны', searchVenues:'🔍 Поиск заведений...',
+    sortRating:'По рейтингу', sortName:'А-Я По имени',
+    allVenues:'Все', allCities:'Все города', allGenres:'Все жанры',
+    noVenues:'Нет заведений',
+    country:'СТРАНА', city:'ГОРОД', allCountries:'Все страны',
+    catShop:'Магазины', catServiceCenter:'Сервис центр', catRental:'Аренда оборудования',
+    loading:'Загрузка...', noShops:'Нет магазинов', noServiceCenters:'Нет сервис центров', noRental:'Нет пунктов аренды',
+    requestRental:'Отправить запрос на аренду',
+    noSaved:'Пока ничего не сохранено',
+    newTemplate:'Новый шаблон', back:'Назад',
+    tplName:'НАЗВАНИЕ', tplNamePh:'Название шаблона...',
+    tplText:'ТЕКСТ СООБЩЕНИЯ', tplTextPh:'Введите текст...', save:'Сохранить',
+    tplCopy:'Копировать', tplEdit:'Изменить', tplDel:'Удалить', tplCopied:'Скопировано!',
+    secPromo:'📄 Промо материалы', secContent:'🎬 Производство контента', secMusic:'🎵 Музыка и обучение',
+    c_presskit_pdf:'Создать пресс кит PDF', c_presskit_pdf_d:'Профессиональный пресс кит для букинга',
+    c_presskit_web:'Создать пресс кит Web Page', c_presskit_web_d:'Онлайн страница с вашим портфолио',
+    c_media_links:'Медиа ссылки и страницы артиста', c_media_links_d:'Beatport, RA, SoundCloud, Spotify и другие',
+    c_photo_video:'Фото / Видео сессия', c_photo_video_d:'Профессиональная съёмка для артиста',
+    c_set_rec:'Запись сета с выступления', c_set_rec_d:'Live запись вашего перформанса',
+    c_stream:'Запись стрима', c_stream_d:'Онлайн стрим и его запись',
+    c_ghost:'Гост Продакшн', c_ghost_d:'Профессиональное написание треков',
+    c_dj_edu:'Обучение DJ', c_dj_edu_d:'Курсы диджеинга от профессионалов',
+    c_music_edu:'Обучение создания музыки', c_music_edu_d:'Продакшн, сведение, мастеринг',
+    c_distrib:'Дистрибьюция / Выпуск трека', c_distrib_d:'Spotify, Apple Music, Beatport и другие',
+    c_mixing_d:'Профессиональное сведение и мастеринг',
+    support:'Поддержка', legal:'Правовая информация',
+    privacy:'Политика конфиденциальности', refund:'Возврат средств', terms:'Условия использования', logout:'Выйти',
+    backToCountries:'Страны', venueObjects:'заведений', serviceObjects:'объектов',
+    proActive:'PRO активна',
+    country_thailand:'Таиланд', country_vietnam:'Вьетнам', country_cambodia:'Камбоджа',
+    country_india:'Индия', country_malaysia:'Малайзия', country_japan:'Япония',
+    country_china:'Китай', country_korea:'Корея', country_indonesia:'Индонезия',
+    fName:'ИМЯ', fNamePh:'Ваше имя...', fArtist:'ИМЯ АРТИСТА', fArtistPh:'DJ Name / псевдоним...',
+    fArtistPh2:'DJ Name / псевдоним (если есть)...', fAbout:'ПОДРОБНО О ВАС И ВАШЕМ ЗАПРОСЕ',
+    fAboutPh:'Расскажите о себе, опыте, целях...',
+    fLinks:'ВАШИ ССЫЛКИ', fDetails:'ДЕТАЛИ', fDetailsPh:'Опишите подробно, что вы хотите...',
+    fCountry:'СТРАНА', fCity:'ГОРОД', fCityPh:'Город съёмки...',
+    fDate:'ПРЕДПОЛАГАЕМАЯ ДАТА', fOptional:'не обязательно',
+    fGenre:'ЖАНР / ЖАНРЫ', fGenreTrack:'ЖАНР ТРЕКА',
+    fRefs:'РЕФЕРЕНСЫ', fArtistTrack:'имена артистов и названия треков',
+    fLabels:'ВАШИ ЛЕЙБЛЫ', fIfReleases:'если есть релизы',
+    fDeadline:'СРОКИ', fDeadlinePh:'Например: в течение месяца...',
+    fLevel:'ВАШ УРОВЕНЬ', fFormat:'ФОРМАТ ОБУЧЕНИЯ',
+    lvlBeginner:'Начальный', lvlMedium:'Средний', lvlAdvanced:'Высокий',
+    fOnline:'Онлайн', fOffline:'Офлайн',
+    fGoals:'ЧТО ВЫ ХОТИТЕ ПОЛУЧИТЬ?', fGoalsPh:'Опишите навыки и цели, которых хотите достичь...',
+    fTrackLink:'ССЫЛКА НА ТРЕК', fDescription:'ОПИСАНИЕ',
+    fMixingPh:'Опишите трек, референсы по звуку, пожелания по сведению...',
+    fDistribPh:'Опишите трек, планы на релиз, платформы...',
+    fSelectCountry:'Выберите страну', fOtherCountry:'Другая страна',
+    fUpload:'ПРИКРЕПИТЬ ФАЙЛЫ', fUploadHint:'(до 10 файлов: фото, аудио, PDF, ZIP)',
+    fChooseFiles:'Выбрать файлы', fNoFiles:'Файлы не выбраны',
+    fSubmit:'Отправить запрос', fSent:'Отправлено', fSentOk:'Запрос готов к отправке!',
+    fErrName:'Укажите ваше имя', fErrArtist:'Укажите имя артиста',
+    fErrCountry:'Выберите страну', fErrCity:'Укажите город',
+    fErrDate:'Укажите дату', fErrDays:'Укажите количество дней',
+    fErrGenre:'Укажите жанр', fErrLevel:'Выберите ваш уровень',
+    fDelivery:'Доставка', fYes:'Да', fNo:'Нет',
+    fEquipment:'Оборудование', fNotSpecified:'не указано', fComment:'Комментарий',
+    fRentalDate:'Дата начала', fRentalDays:'Количество дней',
+    rentalEmailTitle:'ЗАПРОС НА АРЕНДУ ОБОРУДОВАНИЯ', fSentVia:'Отправлено через DJ MAP App',
+    mixing_mastering:'Mixing & Mastering',
+    aboutUs:'О нас', contactUs:'Связаться с нами',
+    aboutUsText:'Наша компания делает жизнь диджея удобной и интересной. Мы делимся наработками и базой контактов, которую мы собирали для вас в течение 10 лет.\n\nВ нашей базе вы найдёте только проверенные контакты и ссылки. Вся контактная информация согласована и верифицирована.\n\nНаш продукт не несёт рекламных целей.\n\nЕсли у вас есть вопросы, предложения, замечания или вы хотите дать обратную связь — мы будем рады вам помочь.\n\nС уважением, команда DJ MAP.',
+    cuSubject:'ТЕМА', cuSubjectPh:'Тема письма...', cuMessage:'СООБЩЕНИЕ', cuMessagePh:'Напишите ваше сообщение...',
+    fErrSubject:'Укажите тему письма', fErrMessage:'Напишите сообщение',
+  },
+  th: {
+    eyebrow:'Venue Guide', sub:'ข้อมูลคลับ บาร์ รูฟท็อป และบีชคลับ — 9 ประเทศในเอเชีย',
+    choosePlan:'เลือกแผน', plan1name:'1 เมือง', plan1desc:'เมืองเดียวตามที่เลือก',
+    plan2name:'1 ประเทศ', plan2desc:'ทุกเมืองในประเทศเดียว',
+    plan3name:'ทุกประเทศ', plan3desc:'เข้าถึงเต็มรูปแบบ — 9 ประเทศ',
+    perYear:'/ปี', demo:'ทดลองใช้งานฟรี', proLogin:'เข้าสู่โหมดทดสอบ (PRO)',
+    statCountries:'ประเทศ', statVenues:'สถานที่', statUpdates:'อัปเดต',
+    payCard:'ชำระด้วยบัตร', cancel:'ยกเลิก',
+    navVenues:'สถานที่', navService:'บริการ', navSaved:'บันทึก',
+    navTemplates:'เทมเพลต', navCreate:'สร้าง', navAccount:'โปรไฟล์',
+    countries:'ประเทศ', searchVenues:'🔍 ค้นหาสถานที่...',
+    sortRating:'ตามคะแนน', sortName:'A-Z ตามชื่อ',
+    allVenues:'ทั้งหมด', allCities:'ทุกเมือง', allGenres:'ทุกแนว',
+    noVenues:'ไม่พบสถานที่',
+    country:'ประเทศ', city:'เมือง', allCountries:'ทุกประเทศ',
+    catShop:'ร้านค้า', catServiceCenter:'ศูนย์บริการ', catRental:'เช่าอุปกรณ์',
+    loading:'กำลังโหลด...', noShops:'ไม่มีร้านค้า', noServiceCenters:'ไม่มีศูนย์บริการ', noRental:'ไม่มีจุดเช่า',
+    requestRental:'ส่งคำขอเช่า',
+    noSaved:'ยังไม่มีรายการบันทึก',
+    newTemplate:'เทมเพลตใหม่', back:'กลับ',
+    tplName:'ชื่อ', tplNamePh:'ชื่อเทมเพลต...',
+    tplText:'ข้อความ', tplTextPh:'ใส่ข้อความ...', save:'บันทึก',
+    tplCopy:'คัดลอก', tplEdit:'แก้ไข', tplDel:'ลบ', tplCopied:'คัดลอกแล้ว!',
+    secPromo:'📄 สื่อโปรโมท', secContent:'🎬 ผลิตคอนเทนต์', secMusic:'🎵 ดนตรีและการศึกษา',
+    c_presskit_pdf:'สร้าง Press Kit PDF', c_presskit_pdf_d:'เอกสาร press kit สำหรับ booking',
+    c_presskit_web:'สร้าง Press Kit Web Page', c_presskit_web_d:'หน้าเว็บแสดงผลงาน',
+    c_media_links:'ลิงก์และหน้าศิลปิน', c_media_links_d:'Beatport, RA, SoundCloud, Spotify และอื่นๆ',
+    c_photo_video:'ถ่ายภาพ / วิดีโอ', c_photo_video_d:'ถ่ายภาพมืออาชีพสำหรับศิลปิน',
+    c_set_rec:'บันทึก Live Set', c_set_rec_d:'บันทึกการแสดงสด',
+    c_stream:'บันทึกสตรีม', c_stream_d:'สตรีมออนไลน์และการบันทึก',
+    c_ghost:'Ghost Production', c_ghost_d:'เขียนเพลงมืออาชีพ',
+    c_dj_edu:'สอน DJ', c_dj_edu_d:'คอร์ส DJ จากมืออาชีพ',
+    c_music_edu:'สอนผลิตดนตรี', c_music_edu_d:'Production, mixing, mastering',
+    c_distrib:'วางจำหน่าย / ปล่อยเพลง', c_distrib_d:'Spotify, Apple Music, Beatport และอื่นๆ',
+    c_mixing_d:'Mixing และ Mastering มืออาชีพ',
+    support:'ติดต่อ', legal:'กฎหมาย',
+    privacy:'นโยบายความเป็นส่วนตัว', refund:'นโยบายคืนเงิน', terms:'ข้อกำหนดการใช้งาน', logout:'ออกจากระบบ',
+    backToCountries:'ประเทศ', venueObjects:'สถานที่', serviceObjects:'รายการ',
+    proActive:'PRO ใช้งานอยู่',
+    country_thailand:'ไทย', country_vietnam:'เวียดนาม', country_cambodia:'กัมพูชา',
+    country_india:'อินเดีย', country_malaysia:'มาเลเซีย', country_japan:'ญี่ปุ่น',
+    country_china:'จีน', country_korea:'เกาหลี', country_indonesia:'อินโดนีเซีย',
+    fName:'ชื่อ', fNamePh:'ชื่อของคุณ...', fArtist:'ชื่อศิลปิน', fArtistPh:'DJ Name / นามแฝง...',
+    fArtistPh2:'DJ Name / นามแฝง (ถ้ามี)...', fAbout:'เกี่ยวกับคุณและคำขอ',
+    fAboutPh:'เล่าเกี่ยวกับตัวเอง ประสบการณ์ เป้าหมาย...',
+    fLinks:'ลิงก์ของคุณ', fDetails:'รายละเอียด', fDetailsPh:'อธิบายสิ่งที่คุณต้องการ...',
+    fCountry:'ประเทศ', fCity:'เมือง', fCityPh:'เมืองถ่ายทำ...',
+    fDate:'วันที่โดยประมาณ', fOptional:'ไม่บังคับ',
+    fGenre:'แนวเพลง', fGenreTrack:'แนวเพลงของเพลง',
+    fRefs:'อ้างอิง', fArtistTrack:'ชื่อศิลปินและชื่อเพลง',
+    fLabels:'ค่ายเพลงของคุณ', fIfReleases:'ถ้ามีผลงาน',
+    fDeadline:'กำหนดเวลา', fDeadlinePh:'เช่น ภายในหนึ่งเดือน...',
+    fLevel:'ระดับของคุณ', fFormat:'รูปแบบการเรียน',
+    lvlBeginner:'เริ่มต้น', lvlMedium:'ปานกลาง', lvlAdvanced:'สูง',
+    fOnline:'ออนไลน์', fOffline:'ออฟไลน์',
+    fGoals:'คุณต้องการอะไรจากการเรียน?', fGoalsPh:'อธิบายทักษะและเป้าหมาย...',
+    fTrackLink:'ลิงก์เพลง', fDescription:'คำอธิบาย',
+    fMixingPh:'อธิบายเพลง อ้างอิงเสียง ความต้องการ...',
+    fDistribPh:'อธิบายเพลง แผนปล่อย แพลตฟอร์ม...',
+    fSelectCountry:'เลือกประเทศ', fOtherCountry:'ประเทศอื่น',
+    fUpload:'แนบไฟล์', fUploadHint:'(สูงสุด 10 ไฟล์: รูป, เสียง, PDF, ZIP)',
+    fChooseFiles:'เลือกไฟล์', fNoFiles:'ยังไม่ได้เลือกไฟล์',
+    fSubmit:'ส่งคำขอ', fSent:'ส่งแล้ว', fSentOk:'คำขอพร้อมส่งแล้ว!',
+    fErrName:'กรุณาใส่ชื่อ', fErrArtist:'กรุณาใส่ชื่อศิลปิน',
+    fErrCountry:'กรุณาเลือกประเทศ', fErrCity:'กรุณาใส่เมือง',
+    fErrDate:'กรุณาใส่วันที่', fErrDays:'กรุณาใส่จำนวนวัน',
+    fErrGenre:'กรุณาใส่แนวเพลง', fErrLevel:'กรุณาเลือกระดับ',
+    fDelivery:'การจัดส่ง', fYes:'ใช่', fNo:'ไม่',
+    fEquipment:'อุปกรณ์', fNotSpecified:'ไม่ระบุ', fComment:'ความคิดเห็น',
+    fRentalDate:'วันที่เริ่ม', fRentalDays:'จำนวนวัน',
+    rentalEmailTitle:'คำขอเช่าอุปกรณ์', fSentVia:'ส่งผ่าน DJ MAP App',
+    mixing_mastering:'Mixing & Mastering',
+    aboutUs:'เกี่ยวกับเรา', contactUs:'ติดต่อเรา',
+    aboutUsText:'บริษัทของเราทำให้ชีวิต DJ สะดวกและน่าสนใจยิ่งขึ้น เราแบ่งปันความรู้และฐานข้อมูลผู้ติดต่อที่เราสร้างมาเพื่อคุณกว่า 10 ปี\n\nในฐานข้อมูลของเราคุณจะพบเฉพาะผู้ติดต่อและลิงก์ที่ผ่านการตรวจสอบแล้ว ข้อมูลติดต่อทั้งหมดได้รับการตกลงและยืนยันแล้ว\n\nผลิตภัณฑ์ของเราไม่มีจุดประสงค์ทางโฆษณา\n\nหากคุณมีคำถาม ข้อเสนอแนะ ความคิดเห็น หรือต้องการให้ข้อเสนอแนะ — เรายินดีที่จะช่วยเหลือคุณ\n\nด้วยความนับถือ ทีม DJ MAP',
+    cuSubject:'หัวเรื่อง', cuSubjectPh:'หัวเรื่อง...', cuMessage:'ข้อความ', cuMessagePh:'เขียนข้อความของคุณ...',
+    fErrSubject:'กรุณาใส่หัวเรื่อง', fErrMessage:'กรุณาเขียนข้อความ',
+  },
+};
+
+let currentLangIdx = 0;
+let currentLang = 'en';
+
+function applyLanguage(code) {
+  currentLang = code;
+  const t = TRANSLATIONS[code] || TRANSLATIONS.en;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+  if (document.getElementById('app') && !document.getElementById('app').classList.contains('hidden')) {
+    renderCountriesGrid();
+    renderServiceListNew();
+    renderSaved();
+    renderTemplates();
+  }
+}
+
+function T(key) {
+  const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+  return t[key] || TRANSLATIONS.en[key] || key;
+}
+
+function cycleLang() {
+  currentLangIdx = (currentLangIdx + 1) % LANGUAGES.length;
+  const lang = LANGUAGES[currentLangIdx];
+  document.getElementById('langFlag').textContent = lang.flag;
+  document.getElementById('langCode').textContent = lang.label;
+  applyLanguage(lang.code);
+}
+
+// ── ABOUT US / CONTACT US ─────────────────────
+function openAboutUs() {
+  const m = document.getElementById('aboutUsModal');
+  m.style.display = 'flex';
+  document.getElementById('aboutUsTitle').textContent = 'ℹ️ ' + T('aboutUs');
+  const el = document.getElementById('aboutUsText');
+  el.innerHTML = T('aboutUsText').split('\n\n').map(p =>
+    `<p style="margin:0 0 12px;">${p.replace(/\n/g,'<br>')}</p>`
+  ).join('');
+}
+function closeAboutUs() {
+  document.getElementById('aboutUsModal').style.display = 'none';
+}
+
+function openContactUs() {
+  document.getElementById('contactUsModal').style.display = 'flex';
+  document.getElementById('contactUsTitle').textContent = '✉️ ' + T('contactUs');
+  document.getElementById('cu_name').value = '';
+  document.getElementById('cu_subject').value = '';
+  document.getElementById('cu_message').value = '';
+  const btn = document.getElementById('cu_submitBtn');
+  btn.innerHTML = '📩 ' + T('fSubmit');
+  btn.disabled = false; btn.style.opacity = '1';
+  // apply placeholders
+  document.getElementById('cu_name').placeholder = T('fNamePh');
+  document.getElementById('cu_subject').placeholder = T('cuSubjectPh');
+  document.getElementById('cu_message').placeholder = T('cuMessagePh');
+}
+function closeContactUs() {
+  document.getElementById('contactUsModal').style.display = 'none';
+}
+function submitContactUs() {
+  const name    = document.getElementById('cu_name').value.trim();
+  const subject = document.getElementById('cu_subject').value.trim();
+  const message = document.getElementById('cu_message').value.trim();
+  if (!name)    { showToast('⚠️ ' + T('fErrName'));    return; }
+  if (!subject) { showToast('⚠️ ' + T('fErrSubject')); return; }
+  if (!message) { showToast('⚠️ ' + T('fErrMessage')); return; }
+  const body = [T('contactUs').toUpperCase(),'',`👤 ${T('fName')}: ${name}`,`📌 ${T('cuSubject')}: ${subject}`,'',`💬 ${T('cuMessage')}:`,message,'','---',T('fSentVia')].join('\n');
+  window.location.href = `mailto:djmap.shop@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const btn = document.getElementById('cu_submitBtn');
+  btn.innerHTML = '✓ ' + T('fSent'); btn.style.opacity = '0.6'; btn.disabled = true;
+  showToast('✓ ' + T('fSentOk'));
+  setTimeout(() => closeContactUs(), 1800);
+}
+
+// ── INIT ──────────────────────────────────────
+applyLanguage('en');
 updateSVGBg('splash');
 </script>
 </body>
