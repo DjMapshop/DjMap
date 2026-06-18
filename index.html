@@ -1006,9 +1006,8 @@ function enterApp(pro) {
       if (window.venuesFromSheet && window.venuesFromSheet.length > 0) {
         venues = window.venuesFromSheet;
       }
-      if (window.servicesFromSheet && window.servicesFromSheet.length > 0) {
-        services = window.servicesFromSheet;
-      }
+      // services section loads from its own Google Sheet (separate tab)
+      // window.servicesFromSheet is reserved for future service sheet
       renderCountriesGrid();
       renderSaved();
       renderProfileStats();
@@ -1174,6 +1173,7 @@ const SVC_CATEGORY_MAP = {
 
 // Загрузка из Google Sheets (таблица service)
 async function loadServicesFromSheet() {
+  // Service data loads from its own dedicated sheet (configure when ready)
   if (typeof SHEET_ID === 'undefined') return;
   document.getElementById('svcLoading').style.display = 'block';
   try {
@@ -1339,7 +1339,6 @@ function venueCardHTML(v) {
         </div>`).join('')
     : grads.map((g, i) =>
         `<div class="carousel-slide ${i===0?'active':''}" style="background:${g}">
-          <span class="carousel-emoji">${emojis[i]}</span>
         </div>`).join('');
 
   const dots = Array.from({length: slideCount}, (_, i) =>
