@@ -1120,11 +1120,36 @@ function buildVenueFilters() {
   const types = ['All',...new Set(cvs.map(v=>v.type))];
   const cities = ['All',...selectedCountry.cities.filter(c => cvs.some(v=>v.city===c))];
   const genres = ['All',...new Set(cvs.flatMap(v=>v.genre||[]))];
-  document.getElementById('venueTypeFilters').innerHTML = types.map(t =>
-    `<button class="filter-chip ${venueTypeFilter===t?'active':''}" onclick="setVenueTypeFilter('${t}')">${t==='All'?'🎵 '+T('allVenues'):(T('type_'+t)||t)}</button>`).join('');
+  const TYPE_DISPLAY = {
+    'Nightclub':'Nightclub','Night Club':'Nightclub',
+    'Rooftop Bar':'Rooftop Bar',
+    'Promo Group':'Promo Group',
+    'Bar & Club':'Bar','Bar':'Bar','Lounge':'Bar',
+    'Beach Club':'Beach Club',
+    'Restaurant':'Restaurant','Club':'Nightclub',
+  };
+  // Use fixed order: All first, then our canonical order
+  const TYPES_ORDER = ['All','Nightclub','Rooftop Bar','Promo Group','Bar','Beach Club','Restaurant'];
+  const presentTypes = new Set(cvs.map(v => TYPE_DISPLAY[v.type] || v.type));
+  const orderedTypes = TYPES_ORDER.filter(t => t==='All' || presentTypes.has(t));
+  // Add any types from data not in our list
+  presentTypes.forEach(t => { if(!orderedTypes.includes(t)) orderedTypes.push(t); });
+  document.getElementById('venueTypeFilters').innerHTML = orderedTypes.map(t =>
+    `<button class="filter-chip ${venueTypeFilter===t?'active':''}" onclick="setVenueTypeFilter('${t}')">${t==='All'?'🎵 '+T('allVenues'):t}</button>`).join('');
   document.getElementById('venueCityFilters').innerHTML = cities.map(c =>
     `<button class="filter-chip ${venueCityFilter===c?'active':''}" onclick="setVenueCityFilter('${c}')">${c==='All'?T('allCities'):c}</button>`).join('');
-  document.getElementById('venueGenreFilters').innerHTML = genres.map(g =>
+  const GENRES_ORDER = [
+    'All','House','Afro House','Organic House','Progressive House','Melodic House',
+    'Latin House','Tech House','Minimal House','Indie Dance',
+    'Melodic Techno','Minimal Techno','Pick Time Techno',
+    'Hard Techno','Raw Techno','Downtempo','New Disco'
+  ];
+  // Show All + genres that actually exist in current country data, in our order
+  const presentGenres = new Set(cvs.flatMap(v=>v.genre||[]).map(g=>g.trim()));
+  const orderedGenres = GENRES_ORDER.filter(g => g==='All' || presentGenres.has(g));
+  // Append any genres from data not in our list
+  presentGenres.forEach(g => { if(g && !orderedGenres.includes(g)) orderedGenres.push(g); });
+  document.getElementById('venueGenreFilters').innerHTML = orderedGenres.map(g =>
     `<button class="filter-chip ${venueGenreFilter===g?'active':''}" onclick="setVenueGenreFilter('${g}')">${g==='All'?T('allGenres'):g}</button>`).join('');
 }
 
@@ -1142,7 +1167,10 @@ function renderVenueList() {
   if (!selectedCountry) return;
   const search = (document.getElementById('venueSearch').value||'').toLowerCase();
   let list = venues.filter(v => v.country === selectedCountry.id);
-  if (venueTypeFilter !== 'All') list = list.filter(v => v.type === venueTypeFilter);
+  if (venueTypeFilter !== 'All') {
+    const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Rooftop Bar':'Rooftop Bar','Promo Group':'Promo Group','Bar & Club':'Bar','Bar':'Bar','Lounge':'Bar','Beach Club':'Beach Club','Restaurant':'Restaurant'};
+    list = list.filter(v => (TYPE_DISPLAY_F[v.type] || v.type) === venueTypeFilter);
+  }
   if (venueCityFilter !== 'All') list = list.filter(v => v.city === venueCityFilter);
   if (venueGenreFilter !== 'All') list = list.filter(v => (v.genre||[]).includes(venueGenreFilter));
   if (search) list = list.filter(v => v.name.toLowerCase().includes(search) || (v.genre||[]).join(' ').toLowerCase().includes(search));
