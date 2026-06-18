@@ -28,6 +28,7 @@ const TYPE_MAP = {
   'lounge':'Lounge','лаунж':'Lounge',
   'music shop':'Music Shop','музыкальный магазин':'Music Shop',
   'service center':'Service Center','сервисный центр':'Service Center',
+  'rental':'Rental','аренда':'Rental','аренда оборудования':'Rental',
 };
 
 function parseCSVLine(line) {
@@ -56,7 +57,7 @@ async function loadSheetData() {
     try {
       text = await tryFetch(SHEET_CSV_URL2);
     } catch(e2) {
-      console.warn('⚠️ Google Sheets недоступен:', e2.message);
+      console.warn('⚠️ Google Sheets unavailable:', e2.message);
       window.venuesFromSheet = null;
       window.servicesFromSheet = null;
       return false;
@@ -65,12 +66,12 @@ async function loadSheetData() {
 
   const lines = text.split('\n').map(l => l.replace('\r', '')).filter(l => l.trim());
   if (lines.length < 2) {
-    console.warn('⚠️ Таблица пустая');
+    console.warn('⚠️ Sheet is empty');
     return false;
   }
 
   const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim());
-  console.log('📋 Колонки:', headers);
+  console.log('📋 Columns:', headers);
 
   const rows = lines.slice(1).map((line, idx) => {
     const vals = parseCSVLine(line);
@@ -91,7 +92,7 @@ async function loadSheetData() {
     const contactName = get('contactName') || get('contactname');
     const contacts = contactName ? [{
       name: contactName,
-      role: get('contactRole') || get('contactrole') || 'Менеджер',
+      role: get('contactRole') || get('contactrole') || 'Manager',
       whatsapp: get('whatsapp'),
       telegram: get('telegram'),
       instagram: get('instagram'),
@@ -105,17 +106,20 @@ async function loadSheetData() {
     const typeRaw = get('type').toLowerCase();
     const type = TYPE_MAP[typeRaw] || get('type') || 'Nightclub';
 
-    const isPremiumRaw = get('isPremium') || get('ispremium');
-    const isPremium = ['true','1','yes','да'].includes(isPremiumRaw.toLowerCase());
+    const isPremiumRaw = get('isPremium') || get('ispremium') || get('hot');
+    const isPremium = ['true','1','yes','да'].includes((isPremiumRaw || '').toLowerCase());
 
-    // ── PHOTOS (колонки V, W, X в таблице) ──
     function driveUrl(url) {
       if (!url) return '';
-      // https://drive.google.com/file/d/FILE_ID/view... → прямая ссылка
+      // Google Drive direct link conversion
       const m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
       if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w800';
+      // Google Drive open link
+      const m2 = url.match(/id=([a-zA-Z0-9_-]+)/);
+      if (m2) return 'https://drive.google.com/thumbnail?id=' + m2[1] + '&sz=w800';
       return url;
     }
+
     const photo1 = driveUrl(get('photo1'));
     const photo2 = driveUrl(get('photo2'));
     const photo3 = driveUrl(get('photo3'));
@@ -123,25 +127,37 @@ async function loadSheetData() {
 
     return {
       id: 1000 + idx,
-      name, country, city: get('city'), area: get('area'), type,
-      genre, rating: parseFloat(get('rating')) || 4.5,
+      name,
+      country,
+      city: get('city'),
+      area: get('area'),
+      type,
+      genre,
+      rating: parseFloat(get('rating')) || 4.5,
       capacity: parseInt(get('capacity')) || 0,
-      description: get('description'), fee: get('fee'), nights,
-      isPremium, contacts,
+      description: get('description'),
+      fee: get('fee'),
+      nights,
+      isPremium,
+      contacts,
       instagram: get('instagramvenue') || get('instagram'),
       venueInstagram: get('instagramvenue') || get('instagramVenue'),
       mapurl: get('mapurl'),
       brands: get('brands') || '',
       workingHours: get('workingHours') || get('workinghours') || '',
-      photos, // массив URL фотографий (0–3 штуки)
+      photo1, // для сервис-раздела (логотип)
+      photos,
+      category: ['Music Shop','Service Center','Rental'].includes(type)
+        ? (type === 'Music Shop' ? 'shop' : type === 'Service Center' ? 'service' : 'rental')
+        : null,
     };
   }).filter(Boolean);
 
-  const serviceTypes = ['Music Shop', 'Service Center'];
-  window.venuesFromSheet = rows.filter(r => !serviceTypes.includes(r.type));
-  window.servicesFromSheet = rows.filter(r => serviceTypes.includes(r.type));
+  const serviceTypes = ['Music Shop', 'Service Center', 'Rental'];
+  window.venuesFromSheet  = rows.filter(r => !serviceTypes.includes(r.type));
+  window.servicesFromSheet = rows.filter(r =>  serviceTypes.includes(r.type));
 
-  console.log(`✅ Загружено: ${window.venuesFromSheet.length} заведений, ${window.servicesFromSheet.length} сервисов`);
+  console.log(`✅ Loaded: ${window.venuesFromSheet.length} venues, ${window.servicesFromSheet.length} services`);
   return true;
 }
 

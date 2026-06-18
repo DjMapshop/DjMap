@@ -17,13 +17,13 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 #langFlag{font-size:14px;line-height:1;}
 
 /* ── SPLASH ── */
-#splash{position:fixed;inset:0;background:#050508;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 24px;text-align:center;z-index:200;overflow:hidden;}
+#splash{position:fixed;inset:0;background:#050508;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:32px 24px 40px;text-align:center;z-index:200;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 #splash.hidden{display:none;}
-.splash-logo{width:100px;height:100px;border-radius:24px;object-fit:cover;margin:0 auto 16px;box-shadow:0 0 60px rgba(201,168,76,.5);cursor:pointer;user-select:none;}
-.splash-eyebrow{font-size:10px;color:var(--gold);letter-spacing:5px;text-transform:uppercase;margin-bottom:4px;}
+.splash-logo{width:80px;height:80px;border-radius:20px;object-fit:cover;margin:0 auto 12px;box-shadow:0 0 60px rgba(201,168,76,.5);cursor:pointer;user-select:none;}
+.splash-eyebrow{font-size:10px;color:var(--gold);letter-spacing:5px;text-transform:uppercase;margin-bottom:4px;margin-top:12px;}
 .splash-title{font-size:32px;font-weight:900;margin-bottom:8px;}
 .splash-sub{color:#555;font-size:13px;line-height:1.7;max-width:280px;margin:0 auto 20px;}
-.splash-flags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;font-size:22px;}
+.splash-flags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;font-size:20px;}
 .splash-plans{width:100%;max-width:340px;}
 .splash-label{color:#333;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;text-align:left;}
 .plan-btn{width:100%;padding:14px 18px;border-radius:14px;border:none;cursor:pointer;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;font-family:'Inter',sans-serif;}
@@ -36,7 +36,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .plan-all{background:linear-gradient(135deg,var(--gold),#8b6914);color:#000;box-shadow:0 4px 30px rgba(201,168,76,.4);}
 .btn-demo{width:100%;padding:12px;border-radius:14px;background:transparent;color:#333;font-weight:600;font-size:13px;border:1px solid #1a1a2e;cursor:pointer;margin-top:2px;font-family:'Inter',sans-serif;}
 .btn-pro{width:100%;padding:12px;border-radius:14px;background:linear-gradient(135deg,#1a1a2e,#0f0f20);color:var(--gold);font-weight:700;font-size:13px;border:1px solid rgba(201,168,76,.4);cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Inter',sans-serif;}
-.splash-stats{margin-top:28px;display:flex;gap:32px;}
+.splash-stats{margin-top:20px;display:flex;gap:32px;padding-bottom:20px;}
 .stat-val{color:var(--gold);font-weight:800;font-size:18px;display:block;}
 .stat-lab{color:#333;font-size:11px;}
 
@@ -336,7 +336,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .method-btn:hover{border-color:rgba(201,168,76,.4);}
 .payment-back{width:100%;padding:12px;border-radius:14px;background:transparent;color:#333;border:1px solid #1a1a2e;cursor:pointer;font-family:'Inter',sans-serif;}
 </style>
-<script src="data.js"></script>
+<script src="data.js" onerror="console.log('data.js not found - using built-in data')"></script>
 </head>
 <body>
 
@@ -969,7 +969,7 @@ let svcCategory = 'shop'; // 'shop' | 'service' | 'rental'
 let sortBy = 'rating';
 
 // Google Sheets config — вставьте ID своей таблицы
-const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID';
+// SHEET_ID and data loading handled by data.js
 const SHEET_SERVICE_TAB = 'service';
 let logoTaps = 0;
 let currentPlan = null;
@@ -986,9 +986,23 @@ let editingAdminItem = null;
 //  NAVIGATION
 // ══════════════════════════════════════════════
 function enterApp(pro) {
-  // Загружаем данные из Google Sheets если доступны
+  isPro = pro;
+  document.getElementById('splash').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('proBadge').style.display = pro ? 'inline-block' : 'none';
+
+  // Render immediately with built-in data
+  renderCountriesGrid();
+  renderSaved();
+  renderTemplates();
+  renderProfileStats();
+  setSvcCategory('shop');
+  updateSVGBg('venues');
+
+  // When Google Sheets data arrives, re-render
   if (window.sheetDataReady) {
-    window.sheetDataReady.then(() => {
+    window.sheetDataReady.then((ok) => {
+      if (!ok) return;
       if (window.venuesFromSheet && window.venuesFromSheet.length > 0) {
         venues = window.venuesFromSheet;
       }
@@ -996,23 +1010,12 @@ function enterApp(pro) {
         services = window.servicesFromSheet;
       }
       renderCountriesGrid();
-      renderServiceCountriesGrid();
       renderSaved();
       renderProfileStats();
+      setSvcCategory(svcCategory);
       document.getElementById('venueCountBadge').textContent = `● ${venues.length} venue`;
-    });
+    }).catch(() => {});
   }
-  isPro = pro;
-  document.getElementById('splash').classList.add('hidden');
-  document.getElementById('app').classList.remove('hidden');
-  document.getElementById('proBadge').style.display = pro ? 'inline-block' : 'none';
-  renderCountriesGrid();
-  renderSaved();
-  renderTemplates();
-  renderProfileStats();
-  setSvcCategory('shop');
-  loadServicesFromSheet();
-  updateSVGBg('venues');
 }
 
 function goSplash() {
@@ -1171,7 +1174,7 @@ const SVC_CATEGORY_MAP = {
 
 // Загрузка из Google Sheets (таблица service)
 async function loadServicesFromSheet() {
-  if (!SHEET_ID || SHEET_ID === 'YOUR_GOOGLE_SHEET_ID') return;
+  if (typeof SHEET_ID === 'undefined') return;
   document.getElementById('svcLoading').style.display = 'block';
   try {
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_SERVICE_TAB)}`;
@@ -1268,7 +1271,7 @@ function renderServiceListNew() {
     const rentalCta = svcCategory === 'rental'
       ? `<div style="margin-top:16px;"><button onclick="openRentalForm()" style="background:linear-gradient(135deg,var(--gold),#8b6914);border:none;color:#000;font-size:13px;font-weight:800;padding:12px 28px;border-radius:12px;cursor:pointer;font-family:'Inter',sans-serif;">${T('requestRental')}</button></div>`
       : '';
-    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>Нет ${labels[svcCategory] || T('serviceObjects')}</p>${rentalCta}</div>`;
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>${labels[svcCategory] || T('serviceObjects')}</p>${rentalCta}</div>`;
     return;
   }
   el.innerHTML = list.map(s => svcCardHTML(s)).join('');
@@ -1523,7 +1526,7 @@ function toggleSave(id) {
 function renderSaved() {
   const saved = [...venues,...services].filter(v=>savedIds.includes(v.id));
   const el = document.getElementById('savedList');
-  if (!saved.length) { el.innerHTML='<div class="empty-state"><div class="empty-icon">☆</div><p>Нажмите ★ на заведении</p></div>'; return; }
+  if (!saved.length) { el.innerHTML='<div class="empty-state"><div class="empty-icon">☆</div><p>'+T('savedHint')+'</p></div>'; return; }
   el.innerHTML = saved.map(v => venueCardHTML(v)).join('');
 }
 
@@ -1734,7 +1737,7 @@ function deleteAdminItem(id) {
 // ══════════════════════════════════════════════
 //  SECRET ADMIN TAP
 // ══════════════════════════════════════════════
-document.getElementById('splashLogo').addEventListener('click', ()=>{
+const _logo = document.getElementById('splashLogo'); if(_logo) _logo.addEventListener('click', ()=>{
   logoTaps++;
   if(logoTaps>=5){logoTaps=0;const pw=prompt('Admin password:');if(pw===ADMIN_PASSWORD){enterApp(true);setTimeout(openAdmin,100);}}
 });
@@ -2305,6 +2308,7 @@ const TRANSLATIONS = {
     rentalEmailTitle:'EQUIPMENT RENTAL REQUEST', fSentVia:'Sent via DJ MAP App',
     mixing_mastering:'Mixing & Mastering',
     aboutUs:'About us', contactUs:'Contact us',
+    savedHint:'Tap ★ on a venue to save it',
     aboutUsText:`We make a DJ's life easier and more exciting. We share our expertise and a contact database we have been building for you over 10 years.
 
 Our database contains only verified contacts and links. All contact information has been agreed upon and verified.
@@ -2390,6 +2394,7 @@ With respect, the DJ MAP team.`,
     rentalEmailTitle:'ЗАПРОС НА АРЕНДУ ОБОРУДОВАНИЯ', fSentVia:'Отправлено через DJ MAP App',
     mixing_mastering:'Mixing & Mastering',
     aboutUs:'О нас', contactUs:'Связаться с нами',
+    savedHint:'Нажмите ★ на заведении чтобы сохранить',
     aboutUsText:`Наша компания делает жизнь диджея удобной и интересной. Мы делимся наработками и базой контактов, которую мы собирали для вас в течение 10 лет.
 
 В нашей базе вы найдёте только проверенные контакты и ссылки. Вся контактная информация согласована и верифицирована.
@@ -2475,6 +2480,7 @@ With respect, the DJ MAP team.`,
     rentalEmailTitle:'คำขอเช่าอุปกรณ์', fSentVia:'ส่งผ่าน DJ MAP App',
     mixing_mastering:'Mixing & Mastering',
     aboutUs:'เกี่ยวกับเรา', contactUs:'ติดต่อเรา',
+    savedHint:'แตะ ★ ที่สถานที่เพื่อบันทึก',
     aboutUsText:`บริษัทของเราทำให้ชีวิต DJ สะดวกและน่าสนใจยิ่งขึ้น เราแบ่งปันความรู้และฐานข้อมูลผู้ติดต่อที่เราสร้างมาเพื่อคุณกว่า 10 ปี
 
 ในฐานข้อมูลของเราคุณจะพบเฉพาะผู้ติดต่อและลิงก์ที่ผ่านการตรวจสอบแล้ว ข้อมูลติดต่อทั้งหมดได้รับการตกลงและยืนยันแล้ว
