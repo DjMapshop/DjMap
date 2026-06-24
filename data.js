@@ -8,15 +8,46 @@ const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/t
 const SHEET_CSV_URL2 = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
 
 const COUNTRY_MAP = {
+  // Thailand
   'thailand':'thailand','таиланд':'thailand',
+  // Vietnam
   'vietnam':'vietnam','вьетнам':'vietnam',
-  'cambodia':'cambodia','камбоджа':'cambodia',
-  'india':'india','индия':'india',
-  'malaysia':'malaysia','малайзия':'malaysia',
+  // Indonesia
+  'indonesia':'indonesia','индонезия':'indonesia','bali':'indonesia',
+  // UAE
+  'uae':'uae','дубай':'uae','dubai':'uae','united arab emirates':'uae','оаэ':'uae',
+  // Japan
   'japan':'japan','япония':'japan',
+  // India
+  'india':'india','индия':'india',
+  // Hong Kong
+  'hong kong':'hongkong','гонконг':'hongkong','hongkong':'hongkong',
+  // Singapore
+  'singapore':'singapore','сингапур':'singapore',
+  // South Korea
+  'korea':'korea','корея':'korea','south korea':'korea','south_korea':'korea',
+  // Malaysia
+  'malaysia':'malaysia','малайзия':'malaysia',
+  // Philippines
+  'philippines':'philippines','филиппины':'philippines',
+  // China
   'china':'china','китай':'china',
-  'korea':'korea','корея':'korea','south korea':'korea',
-  'indonesia':'indonesia','индонезия':'indonesia',
+  // Turkey
+  'turkey':'turkey','турция':'turkey',
+  // Saudi Arabia
+  'saudi arabia':'saudi','saudi_arabia':'saudi','саудовская аравия':'saudi',
+  // Spain
+  'spain':'spain','испания':'spain',
+  // Portugal
+  'portugal':'portugal','португалия':'portugal',
+  // Morocco
+  'morocco':'morocco','марокко':'morocco',
+  // Pakistan
+  'pakistan':'pakistan','пакистан':'pakistan',
+  // Uganda
+  'uganda':'uganda','уганда':'uganda',
+  // Cambodia (legacy)
+  'cambodia':'cambodia','камбоджа':'cambodia',
 };
 
 const TYPE_MAP = {
@@ -24,8 +55,10 @@ const TYPE_MAP = {
   'beach club':'Beach Club','beachclub':'Beach Club','бич клуб':'Beach Club',
   'rooftop bar':'Rooftop Bar','rooftop':'Rooftop Bar',
   'bar & club':'Bar & Club','bar and club':'Bar & Club',
-  'club':'Club','клуб':'Club',
-  'lounge':'Lounge','лаунж':'Lounge',
+  'bar':'Bar & Club','клуб':'Nightclub','club':'Nightclub',
+  'lounge':'Bar & Club','лаунж':'Bar & Club',
+  'promo group':'Promo Group','promo':'Promo Group',
+  'restaurant':'Restaurant','ресторан':'Restaurant',
   'music shop':'Music Shop','музыкальный магазин':'Music Shop',
   'service center':'Service Center','сервисный центр':'Service Center',
   'rental':'Rental','аренда':'Rental','аренда оборудования':'Rental',
@@ -49,6 +82,20 @@ async function tryFetch(url) {
   return res.text();
 }
 
+
+// Normalise genre casing
+function normaliseGenre(g) {
+  const map = {
+    'afro house':'Afro House','organic house':'Organic House','melodic house':'Melodic House',
+    'progressive house':'Progressive House','latin house':'Latin House','tech house':'Tech House',
+    'minimal house':'Minimal House','indie dance':'Indie Dance','melodic techno':'Melodic Techno',
+    'minimal techno':'Minimal Techno','hard techno':'Hard Techno','raw techno':'Raw Techno',
+    'new disco':'New Disco','disco house':'Disco House','world music':'World Music',
+    'psy trance':'Psy Trance','hip hop':'Hip Hop','house':'House','techno':'Techno',
+    'edm':'EDM','rnb':'RnB','r&b':'RnB','funk':'Funk','downtempo':'Downtempo',
+  };
+  return map[g.toLowerCase()] || g.trim();
+}
 async function loadSheetData() {
   let text = '';
   try {
@@ -84,7 +131,7 @@ async function loadSheetData() {
     if (!name) return null;
 
     const genreRaw = get('genre');
-    const genre = genreRaw ? genreRaw.split(/[;,]/).map(s => s.trim()).filter(Boolean) : [];
+    const genre = genreRaw ? genreRaw.split(/[;,]/).map(s => normaliseGenre(s.trim())).filter(Boolean) : [];
 
     const nightsRaw = get('nights');
     const nights = nightsRaw ? nightsRaw.split(/[;,]/).map(s => s.trim()).filter(Boolean) : [];
@@ -100,8 +147,8 @@ async function loadSheetData() {
       email: get('email'),
     }] : [];
 
-    const countryRaw = get('country').toLowerCase();
-    const country = COUNTRY_MAP[countryRaw] || countryRaw;
+    const countryRaw = (get('country') || '').toLowerCase().trim();
+    const country = COUNTRY_MAP[countryRaw] || countryRaw.replace(/\s+/g,'');
 
     const typeRaw = get('type').toLowerCase();
     const type = TYPE_MAP[typeRaw] || get('type') || 'Nightclub';
@@ -153,11 +200,11 @@ async function loadSheetData() {
     };
   }).filter(Boolean);
 
-  const serviceTypes = ['Music Shop', 'Service Center', 'Rental'];
-  window.venuesFromSheet  = rows.filter(r => !serviceTypes.includes(r.type));
-  window.servicesFromSheet = rows.filter(r =>  serviceTypes.includes(r.type));
+  // All rows go to venues - service section has its own dedicated sheet
+  window.venuesFromSheet = rows;
+  window.servicesFromSheet = null; // Reserved for dedicated service sheet
 
-  console.log(`✅ Loaded: ${window.venuesFromSheet.length} venues, ${window.servicesFromSheet.length} services`);
+  console.log(`✅ Loaded: ${window.venuesFromSheet.length} venues`);
   return true;
 }
 

@@ -363,7 +363,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
   <div class="splash-eyebrow" data-i18n="eyebrow">Venue Guide</div>
   <h1 class="splash-title">DJ MAP</h1>
   <p class="splash-sub" data-i18n="sub">Club, bar, rooftop &amp; beach club contacts — 9 countries in Asia</p>
-  <div class="splash-flags">🇹🇭🇻🇳🇰🇭🇮🇳🇲🇾🇯🇵🇨🇳🇰🇷🇮🇩</div>
+  <div class="splash-flags">🇹🇭🇻🇳🇮🇩🇦🇪🇯🇵🇮🇳🇭🇰🇸🇬🇰🇷🇲🇾🇵🇭🇨🇳🇹🇷🇸🇦🇪🇸🇵🇹🇲🇦🇵🇰🇺🇬</div>
   <div class="splash-plans">
     <div class="splash-label" data-i18n="choosePlan">Choose plan</div>
     <button class="plan-btn plan-city" onclick="selectPlan('city','$50')">
@@ -923,15 +923,25 @@ const GOLD = '#c9a84c';
 const ADMIN_PASSWORD = 'evgeny111';
 
 const COUNTRIES = [
-  {id:'thailand',  name:'Таиланд',   flag:'🇹🇭', color:'#c9a84c', cities:['Bangkok','Phuket','Koh Samui','Pattaya','Chiang Mai']},
-  {id:'vietnam',   name:'Вьетнам',   flag:'🇻🇳', color:'#ef4444', cities:['Ho Chi Minh City','Hanoi','Da Nang','Nha Trang']},
-  {id:'cambodia',  name:'Камбоджа',  flag:'🇰🇭', color:'#f59e0b', cities:['Phnom Penh','Siem Reap','Sihanoukville']},
-  {id:'india',     name:'Индия',     flag:'🇮🇳', color:'#f97316', cities:['Mumbai','Goa','Delhi','Bangalore']},
-  {id:'malaysia',  name:'Малайзия',  flag:'🇲🇾', color:'#06b6d4', cities:['Kuala Lumpur','Penang','Johor Bahru']},
-  {id:'japan',     name:'Япония',    flag:'🇯🇵', color:'#ec4899', cities:['Tokyo','Osaka','Kyoto','Fukuoka']},
-  {id:'china',     name:'Китай',     flag:'🇨🇳', color:'#dc2626', cities:['Shanghai','Beijing','Shenzhen','Guangzhou']},
-  {id:'korea',     name:'Корея',     flag:'🇰🇷', color:'#8b5cf6', cities:['Seoul','Busan','Incheon']},
-  {id:'indonesia', name:'Индонезия', flag:'🇮🇩', color:'#10b981', cities:['Bali','Jakarta','Lombok','Surabaya']},
+  {id:'thailand',     name:'Таиланд',      flag:'🇹🇭', color:'#c9a84c', cities:['Bangkok','Pattaya','Koh Samui','Phuket','Koh Phangan','Hua Hin']},
+  {id:'vietnam',      name:'Вьетнам',      flag:'🇻🇳', color:'#ef4444', cities:['Ho Chi Minh City','Da Nang','Hanoi','Phu Quoc','Hoi An','Mui Ne']},
+  {id:'indonesia',    name:'Индонезия',    flag:'🇮🇩', color:'#10b981', cities:['Bali']},
+  {id:'uae',          name:'ОАЭ',          flag:'🇦🇪', color:'#059669', cities:['Dubai']},
+  {id:'japan',        name:'Япония',       flag:'🇯🇵', color:'#ec4899', cities:['Tokyo','Osaka']},
+  {id:'india',        name:'Индия',        flag:'🇮🇳', color:'#f97316', cities:['Delhi','Mumbai','Bangalore','Pune','Hyderabad']},
+  {id:'hongkong',     name:'Гонконг',      flag:'🇭🇰', color:'#dc2626', cities:['Hong Kong']},
+  {id:'singapore',    name:'Сингапур',     flag:'🇸🇬', color:'#06b6d4', cities:['Singapore']},
+  {id:'korea',        name:'Корея',        flag:'🇰🇷', color:'#8b5cf6', cities:['Seoul']},
+  {id:'malaysia',     name:'Малайзия',     flag:'🇲🇾', color:'#0284c7', cities:['Kuala Lumpur']},
+  {id:'philippines',  name:'Филиппины',    flag:'🇵🇭', color:'#fbbf24', cities:['Manila']},
+  {id:'china',        name:'Китай',        flag:'🇨🇳', color:'#b91c1c', cities:['Shanghai']},
+  {id:'turkey',       name:'Турция',       flag:'🇹🇷', color:'#d97706', cities:['Istanbul','Alanya','Marmaris']},
+  {id:'saudi',        name:'Саудовская Аравия', flag:'🇸🇦', color:'#16a34a', cities:['Riyadh','AlUla']},
+  {id:'spain',        name:'Испания',      flag:'🇪🇸', color:'#f59e0b', cities:['Ibiza']},
+  {id:'portugal',     name:'Португалия',   flag:'🇵🇹', color:'#15803d', cities:['Lisbon']},
+  {id:'morocco',      name:'Марокко',      flag:'🇲🇦', color:'#c2410c', cities:['Marrakech']},
+  {id:'pakistan',     name:'Пакистан',     flag:'🇵🇰', color:'#065f46', cities:['Karachi']},
+  {id:'uganda',       name:'Уганда',       flag:'🇺🇬', color:'#7c3aed', cities:['Kampala']},
 ];
 
 const TYPE_GRADIENTS = {
@@ -1128,15 +1138,15 @@ function buildVenueFilters() {
   const cities = ['All',...selectedCountry.cities.filter(c => cvs.some(v=>v.city===c))];
   const genres = ['All',...new Set(cvs.flatMap(v=>v.genre||[]))];
   const TYPE_DISPLAY = {
-    'Nightclub':'Nightclub','Night Club':'Nightclub',
+    'Nightclub':'Nightclub','Night Club':'Nightclub','nightclub':'Nightclub','Club':'Nightclub',
     'Rooftop Bar':'Rooftop Bar',
     'Promo Group':'Promo Group',
-    'Bar & Club':'Bar','Bar':'Bar','Lounge':'Bar',
+    'Bar & Club':'Bar & Club','Bar':'Bar & Club','Lounge':'Bar & Club',
     'Beach Club':'Beach Club',
-    'Restaurant':'Restaurant','Club':'Nightclub',
+    'Restaurant':'Restaurant',
+    'Music Shop':'Music Shop','Service Center':'Service Center','Rental':'Rental',
   };
-  // Use fixed order: All first, then our canonical order
-  const TYPES_ORDER = ['All','Nightclub','Rooftop Bar','Promo Group','Bar','Beach Club','Restaurant'];
+  const TYPES_ORDER = ['All','Nightclub','Rooftop Bar','Promo Group','Bar & Club','Beach Club','Restaurant'];
   const presentTypes = new Set(cvs.map(v => TYPE_DISPLAY[v.type] || v.type));
   const orderedTypes = TYPES_ORDER.filter(t => t==='All' || presentTypes.has(t));
   // Add any types from data not in our list
@@ -1149,7 +1159,8 @@ function buildVenueFilters() {
     'All','House','Afro House','Organic House','Progressive House','Melodic House',
     'Latin House','Tech House','Minimal House','Indie Dance',
     'Melodic Techno','Minimal Techno','Pick Time Techno',
-    'Hard Techno','Raw Techno','Downtempo','New Disco'
+    'Hard Techno','Raw Techno','Downtempo','New Disco',
+    'Techno','EDM','Hip Hop','RnB','Disco House','Funk','World Music','Psy Trance',
   ];
   // Show All + genres that actually exist in current country data, in our order
   const presentGenres = new Set(cvs.flatMap(v=>v.genre||[]).map(g=>g.trim()));
@@ -2270,7 +2281,7 @@ const LANGUAGES = [
 
 const TRANSLATIONS = {
   en: {
-    eyebrow:'Venue Guide', sub:'Club, bar, rooftop & beach club contacts — 9 countries in Asia',
+    eyebrow:'Venue Guide', sub:'Club, bar, rooftop & beach club contacts — 19 countries',
     choosePlan:'Choose plan', plan1name:'1 City', plan1desc:'One city of your choice',
     plan2name:'1 Country', plan2desc:'All cities in one country',
     plan3name:'All Countries', plan3desc:'Full access — 9 countries',
@@ -2311,6 +2322,10 @@ const TRANSLATIONS = {
     country_thailand:'Thailand', country_vietnam:'Vietnam', country_cambodia:'Cambodia',
     country_india:'India', country_malaysia:'Malaysia', country_japan:'Japan',
     country_china:'China', country_korea:'Korea', country_indonesia:'Indonesia',
+    country_uae:'UAE', country_hongkong:'Hong Kong', country_singapore:'Singapore',
+    country_philippines:'Philippines', country_turkey:'Turkey', country_saudi:'Saudi Arabia',
+    country_spain:'Spain', country_portugal:'Portugal', country_morocco:'Morocco',
+    country_pakistan:'Pakistan', country_uganda:'Uganda',
     // Form labels
     fName:'NAME', fNamePh:'Your name...', fArtist:'ARTIST NAME', fArtistPh:'DJ Name / alias...',
     fArtistPh2:'DJ Name / alias (if any)...', fAbout:'ABOUT YOU & YOUR REQUEST',
@@ -2360,7 +2375,7 @@ With respect, the DJ MAP team.`,
     fErrSubject:'Please enter a subject', fErrMessage:'Please write a message',
   },
   ru: {
-    eyebrow:'Venue Guide', sub:'Контакты клубов, баров, rooftop-ов и бич-клубов — 9 стран Азии',
+    eyebrow:'Venue Guide', sub:'Контакты клубов, баров, rоофтоп-баров и бич-клабов — 19 стран мира',
     choosePlan:'Выберите план', plan1name:'1 город', plan1desc:'Один город на выбор',
     plan2name:'1 страна', plan2desc:'Все города одной страны',
     plan3name:'Все страны', plan3desc:'Полный доступ — 9 стран',
@@ -2401,6 +2416,10 @@ With respect, the DJ MAP team.`,
     country_thailand:'Таиланд', country_vietnam:'Вьетнам', country_cambodia:'Камбоджа',
     country_india:'Индия', country_malaysia:'Малайзия', country_japan:'Япония',
     country_china:'Китай', country_korea:'Корея', country_indonesia:'Индонезия',
+    country_uae:'ОАЭ', country_hongkong:'Гонконг', country_singapore:'Сингапур',
+    country_philippines:'Филиппины', country_turkey:'Турция', country_saudi:'Саудовская Аравия',
+    country_spain:'Испания', country_portugal:'Португалия', country_morocco:'Марокко',
+    country_pakistan:'Пакистан', country_uganda:'Уганда',
     fName:'ИМЯ', fNamePh:'Ваше имя...', fArtist:'ИМЯ АРТИСТА', fArtistPh:'DJ Name / псевдоним...',
     fArtistPh2:'DJ Name / псевдоним (если есть)...', fAbout:'ПОДРОБНО О ВАС И ВАШЕМ ЗАПРОСЕ',
     fAboutPh:'Расскажите о себе, опыте, целях...',
@@ -2449,7 +2468,7 @@ With respect, the DJ MAP team.`,
     fErrSubject:'Укажите тему письма', fErrMessage:'Напишите сообщение',
   },
   th: {
-    eyebrow:'Venue Guide', sub:'ข้อมูลคลับ บาร์ รูฟท็อป และบีชคลับ — 9 ประเทศในเอเชีย',
+    eyebrow:'Venue Guide', sub:'ข้อมูลคลับ บาร์ รูฟท็อป และบีชคลับ — 19 ประเทศ',
     choosePlan:'เลือกแผน', plan1name:'1 เมือง', plan1desc:'เมืองเดียวตามที่เลือก',
     plan2name:'1 ประเทศ', plan2desc:'ทุกเมืองในประเทศเดียว',
     plan3name:'ทุกประเทศ', plan3desc:'เข้าถึงเต็มรูปแบบ — 9 ประเทศ',
@@ -2490,6 +2509,10 @@ With respect, the DJ MAP team.`,
     country_thailand:'ไทย', country_vietnam:'เวียดนาม', country_cambodia:'กัมพูชา',
     country_india:'อินเดีย', country_malaysia:'มาเลเซีย', country_japan:'ญี่ปุ่น',
     country_china:'จีน', country_korea:'เกาหลี', country_indonesia:'อินโดนีเซีย',
+    country_uae:'สหรัฐอาหรับเอมิเรตส์', country_hongkong:'ฮ่องกง', country_singapore:'สิงคโปร์',
+    country_philippines:'ฟิลิปปินส์', country_turkey:'ตุรกี', country_saudi:'ซาอุดีอาระเบีย',
+    country_spain:'สเปน', country_portugal:'โปรตุเกส', country_morocco:'โมร็อกโก',
+    country_pakistan:'ปากีสถาน', country_uganda:'ยูกันดา',
     fName:'ชื่อ', fNamePh:'ชื่อของคุณ...', fArtist:'ชื่อศิลปิน', fArtistPh:'DJ Name / นามแฝง...',
     fArtistPh2:'DJ Name / นามแฝง (ถ้ามี)...', fAbout:'เกี่ยวกับคุณและคำขอ',
     fAboutPh:'เล่าเกี่ยวกับตัวเอง ประสบการณ์ เป้าหมาย...',
