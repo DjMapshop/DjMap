@@ -944,6 +944,30 @@ const COUNTRIES = [
   {id:'uganda',       name:'Уганда',       flag:'🇺🇬', color:'#7c3aed', cities:['Kampala']},
 ];
 
+
+// ── COUNTRY NORMALISER ────────────────────────
+// Maps any country string from sheets to app country id
+function countryToId(raw) {
+  if (!raw) return '';
+  const s = raw.toLowerCase().trim();
+  const MAP = {
+    'thailand':'thailand','вьетнам':'vietnam','vietnam':'vietnam',
+    'indonesia':'indonesia','bali':'indonesia',
+    'uae':'uae','dubai':'uae','united arab emirates':'uae','оаэ':'uae',
+    'japan':'japan','india':'india',
+    'hong kong':'hongkong','hongkong':'hongkong',
+    'singapore':'singapore',
+    'south korea':'korea','korea':'korea','south_korea':'korea',
+    'malaysia':'malaysia','philippines':'philippines',
+    'china':'china','turkey':'turkey',
+    'saudi arabia':'saudi','saudi_arabia':'saudi',
+    'spain':'spain','portugal':'portugal','morocco':'morocco',
+    'pakistan':'pakistan','uganda':'uganda','cambodia':'cambodia',
+  };
+  return MAP[s] || s.replace(/[\s_]+/g,'').replace('southkorea','korea')
+                     .replace('hongkong','hongkong').replace('saudiarabia','saudi');
+}
+
 const TYPE_GRADIENTS = {
   'Nightclub':      ['linear-gradient(135deg,#1a0533,#7c3aed)','linear-gradient(135deg,#0d0d2b,#4c1d95)','linear-gradient(135deg,#2d1b69,#db2777)'],
   'Beach Club':     ['linear-gradient(135deg,#0c4a6e,#06b6d4)','linear-gradient(135deg,#164e63,#0891b2)','linear-gradient(135deg,#0e7490,#22d3ee)'],
@@ -1106,7 +1130,7 @@ function updateSVGBg(type) {
 function renderCountriesGrid() {
   const g = document.getElementById('countriesGrid');
   g.innerHTML = COUNTRIES.map(c => {
-    const cnt = venues.filter(v => v.country === c.id).length;
+    const cnt = venues.filter(v => countryToId(v.country) === c.id).length;
     return `<div class="country-card" onclick="selectCountry('${c.id}')">
       <div class="country-flag">${c.flag}</div>
       <div class="country-name">${T('country_'+c.id) || c.name}</div>
@@ -1133,7 +1157,7 @@ function backToCountries() {
 }
 
 function buildVenueFilters() {
-  const cvs = venues.filter(v => v.country === selectedCountry.id);
+  const cvs = venues.filter(v => countryToId(v.country) === selectedCountry.id);
   const types = ['All',...new Set(cvs.map(v=>v.type))];
   const cities = ['All',...selectedCountry.cities.filter(c => cvs.some(v=>v.city===c))];
   const genres = ['All',...new Set(cvs.flatMap(v=>v.genre||[]))];
@@ -1184,7 +1208,7 @@ function setSort(s){
 function renderVenueList() {
   if (!selectedCountry) return;
   const search = (document.getElementById('venueSearch').value||'').toLowerCase();
-  let list = venues.filter(v => v.country === selectedCountry.id);
+  let list = venues.filter(v => countryToId(v.country) === selectedCountry.id);
   if (venueTypeFilter !== 'All') {
     const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Rooftop Bar':'Rooftop Bar','Promo Group':'Promo Group','Bar & Club':'Bar','Bar':'Bar','Lounge':'Bar','Beach Club':'Beach Club','Restaurant':'Restaurant'};
     list = list.filter(v => (TYPE_DISPLAY_F[v.type] || v.type) === venueTypeFilter);
@@ -1308,7 +1332,7 @@ function renderServiceListNew() {
   const cityVal2 = document.getElementById('svcCitySort').value;
 
   let list = services.filter(s => (SVC_CATEGORY_MAP[s.type] || s.category) === svcCategory);
-  if (countryVal !== 'All') list = list.filter(s => s.country === countryVal);
+  if (countryVal !== 'All') list = list.filter(s => countryToId(s.country) === countryVal || s.country === countryVal);
   if (cityVal2 !== 'All') list = list.filter(s => s.city === cityVal2);
   list.sort((a,b) => b.rating - a.rating);
 
@@ -1326,7 +1350,7 @@ function renderServiceListNew() {
 
 function svcCardHTML(s) {
   const color = TYPE_COLORS[s.type] || '#c9a84c';
-  const countryObj = COUNTRIES.find(c => c.id === s.country);
+  const countryObj = COUNTRIES.find(c => c.id === countryToId(s.country));
   const flag = countryObj ? countryObj.flag : '';
   const countryName = countryObj ? countryObj.name : s.country;
   const catEmoji = {shop:'🎸', service:'🔧', rental:'🎚️'};
