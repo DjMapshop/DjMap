@@ -17,7 +17,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 #langFlag{font-size:14px;line-height:1;}
 
 /* ── SPLASH ── */
-#splash{position:fixed;inset:0;background:#050508;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:max(32px,env(safe-area-inset-top)) 24px max(40px,env(safe-area-inset-bottom));text-align:center;z-index:200;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+#splash{position:fixed;inset:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:max(32px,env(safe-area-inset-top)) 24px max(40px,env(safe-area-inset-bottom));text-align:center;z-index:200;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 #splash.hidden{display:none;}
 .splash-logo{width:100px;height:100px;border-radius:24px;object-fit:cover;margin:0 auto 16px;box-shadow:0 0 60px rgba(201,168,76,.5);cursor:pointer;user-select:none;}
 .splash-eyebrow{font-size:10px;color:var(--gold);letter-spacing:5px;text-transform:uppercase;margin-bottom:4px;margin-top:12px;}
@@ -41,7 +41,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .stat-lab{color:#333;font-size:11px;}
 
 /* ── MAIN APP ── */
-#app{position:fixed;inset:0;background:#050508;display:flex;flex-direction:column;overflow:hidden;}
+#app{position:fixed;inset:0;background:transparent;display:flex;flex-direction:column;overflow:hidden;}
 #app.hidden{display:none;}
 
 /* Header */
@@ -134,7 +134,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .back-btn{background:#ffffff12;border:none;color:#777;border-radius:8px;padding:6px 11px;cursor:pointer;font-size:12px;font-family:'Inter',sans-serif;}
 
 /* Venue detail */
-#venue-detail{position:fixed;inset:0;background:#050508;z-index:150;display:none;flex-direction:column;overflow-y:auto;}
+#venue-detail{position:fixed;inset:0;background:transparent;z-index:150;display:none;flex-direction:column;overflow-y:auto;}
 #venue-detail.open{display:flex;}
 .detail-carousel{position:relative;width:100%;height:220px;overflow:hidden;}
 .detail-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;opacity:0;transition:opacity .4s;}
@@ -216,7 +216,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .logout-btn{width:100%;margin-top:12px;padding:13px;background:#0f0f18;border:1px solid #1a1a2e;border-radius:11px;color:#333;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;}
 
 /* Admin */
-#admin-screen{position:fixed;inset:0;background:#050508;z-index:160;display:none;flex-direction:column;overflow-y:auto;}
+#admin-screen{position:fixed;inset:0;background:transparent;z-index:160;display:none;flex-direction:column;overflow-y:auto;}
 #admin-screen.open{display:flex;}
 .admin-header{background:#0a0a10;border-bottom:1px solid #1a1a2e;padding:14px 20px;display:flex;align-items:center;gap:12px;}
 .admin-section-tabs{display:flex;gap:8px;padding:12px 20px;}
@@ -323,7 +323,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .app-content,.app-header,.bottom-nav{position:relative;z-index:1;}
 
 /* Payment screen */
-#payment-screen{position:fixed;inset:0;background:#050508;z-index:180;display:none;flex-direction:column;overflow-y:auto;}
+#payment-screen{position:fixed;inset:0;background:transparent;z-index:180;display:none;flex-direction:column;overflow-y:auto;}
 #payment-screen.open{display:flex;}
 .payment-body{padding:20px 20px 100px;}
 .payment-plan-card{border-radius:18px;padding:24px;margin-bottom:24px;text-align:center;}
@@ -375,7 +375,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
       <div><span class="plan-price">$100</span><span class="plan-year" data-i18n="perYear">/year</span></div>
     </button>
     <button class="plan-btn plan-all" onclick="selectPlan('all','$200')">
-      <div><div class="plan-name" data-i18n="plan3name">All Countries</div><div class="plan-desc" data-i18n="plan3desc">Full access — 9 countries</div></div>
+      <div><div class="plan-name" data-i18n="plan3name">All Countries</div><div class="plan-desc" data-i18n="plan3desc"id="plan3descStatic">Full access — {n} countries</div></div>
       <div><span class="plan-price">$200</span><span class="plan-year" data-i18n="perYear">/year</span></div>
     </button>
     <button class="btn-demo" onclick="enterApp(false)" data-i18n="demo">Demo without contacts</button>
@@ -398,7 +398,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
   <div class="payment-body">
     <div class="payment-plan-card" id="paymentCard">
       <div class="payment-plan-name" id="paymentPlanName">All Countries</div>
-      <div class="payment-plan-desc" id="paymentPlanDesc">Full access — 9 countries</div>
+      <div class="payment-plan-desc" id="paymentPlanDesc"id="plan3descStatic">Full access — {n} countries</div>
       <div class="payment-plan-price" id="paymentPrice">$200</div>
       <div class="payment-plan-year" data-i18n="perYear">/year</div>
     </div>
@@ -673,6 +673,17 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
           <div class="create-card-arrow">→</div>
         </button>
 
+        <button class="create-card" onclick="openRentalForm()">
+          <div class="create-card-icon" style="background:linear-gradient(135deg,#1a1a0a,#c9a84c);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+          </div>
+          <div class="create-card-info">
+            <div class="create-card-title" data-i18n="catRental">Equipment Rental</div>
+            <div class="create-card-desc" data-i18n="c_rental_d">Pioneer CDJ, DJM, speakers and more</div>
+          </div>
+          <div class="create-card-arrow">→</div>
+        </button>
+
       </div>
     </div>
 
@@ -894,6 +905,65 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
   </div>
 </div>
 
+<!-- PLANS MODAL -->
+<div id="plansModal" style="position:fixed;inset:0;z-index:310;display:none;flex-direction:column;">
+  <div class="rental-backdrop" onclick="closePlansModal()"></div>
+  <div class="rental-sheet">
+    <div class="rental-handle"></div>
+    <div class="rental-head">
+      <div class="rental-title" id="planModalTitle">✦ Choose Plan</div>
+      <button class="rental-close" onclick="closePlansModal()">✕</button>
+    </div>
+    <div style="padding:8px 20px 40px;">
+
+      <!-- Current plan badge -->
+      <div style="text-align:center;margin-bottom:20px;">
+        <span style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 16px;border-radius:20px;" id="currentPlanBadge">✓ PRO ACTIVE</span>
+      </div>
+
+      <!-- Plan 1 City -->
+      <button class="plan-btn plan-city" onclick="selectPlan('city','$50');closePlansModal();" style="margin-bottom:10px;">
+        <div>
+          <div class="plan-name" data-i18n="plan1name">1 City</div>
+          <div class="plan-desc" data-i18n="plan1desc">One city of your choice</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="plan-price">$50</div>
+          <div class="plan-year" data-i18n="perYear">/year</div>
+        </div>
+      </button>
+
+      <!-- Plan 1 Country -->
+      <button class="plan-btn plan-country" onclick="selectPlan('country','$100');closePlansModal();" style="margin-bottom:10px;">
+        <div>
+          <div class="plan-name" data-i18n="plan2name">1 Country</div>
+          <div class="plan-desc" data-i18n="plan2desc">All cities in one country</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="plan-price" style="color:var(--gold);">$100</div>
+          <div class="plan-year" data-i18n="perYear">/year</div>
+        </div>
+      </button>
+
+      <!-- Plan All Countries -->
+      <button class="plan-btn plan-all" onclick="selectPlan('all','$200');closePlansModal();" style="margin-bottom:20px;">
+        <div>
+          <div class="plan-name" data-i18n="plan3name">All Countries</div>
+          <div class="plan-desc" data-i18n="plan3desc">Full access — 19 countries</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="plan-price">$200</div>
+          <div class="plan-year" data-i18n="perYear">/year</div>
+        </div>
+      </button>
+
+      <!-- Contact / info -->
+      <p style="text-align:center;color:#333;font-size:11px;line-height:1.6;" data-i18n="planContactInfo">To change or upgrade your plan, contact us at djmap.shop@gmail.com</p>
+
+    </div>
+  </div>
+</div>
+
 <!-- VENUE DETAIL -->
 <div id="venue-detail">
   <div class="detail-carousel" id="detailCarousel"></div>
@@ -978,6 +1048,17 @@ const TYPE_GRADIENTS = {
   'Music Shop':     ['linear-gradient(135deg,#1e3a5f,#3b82f6)','linear-gradient(135deg,#1e40af,#60a5fa)','linear-gradient(135deg,#1d4ed8,#93c5fd)'],
   'Service Center': ['linear-gradient(135deg,#3f1c00,#92400e)','linear-gradient(135deg,#78350f,#d97706)','linear-gradient(135deg,#451a03,#f59e0b)'],
   'Rental':         ['linear-gradient(135deg,#064e3b,#10b981)','linear-gradient(135deg,#065f46,#34d399)','linear-gradient(135deg,#047857,#6ee7b7)'],
+};
+const TYPE_IMAGES = {
+  'Nightclub':      'venue_images/nightclub.svg',
+  'Rooftop Bar':    'venue_images/rooftop_bar.svg',
+  'Beach Club':     'venue_images/beach_club.svg',
+  'Bar & Club':     'venue_images/bar_club.svg',
+  'Promo Group':    'venue_images/promo_group.svg',
+  'Restaurant':     'venue_images/restaurant.svg',
+  'Music Shop':     'venue_images/music_shop.svg',
+  'Service Center': 'venue_images/service_center.svg',
+  'Rental':         'venue_images/service_center.svg',
 };
 const PHOTO_EMOJIS = {
   'Nightclub':['🎛️','💡','🎶'],'Beach Club':['🏖️','🌅','🍹'],
@@ -1107,20 +1188,61 @@ function switchTab(tab) {
 //  SVG BACKGROUND
 // ══════════════════════════════════════════════
 const BG_CONFIGS = {
-  splash:    {lines:[{x1:'0%',y1:'30%',x2:'40%',y2:'10%',op:.18},{x1:'60%',y1:'0%',x2:'100%',y2:'45%',op:.14},{x1:'20%',y1:'100%',x2:'80%',y2:'60%',op:.12}],glow:[{cx:'50%',cy:'20%',r:'35%',op:.06}]},
-  countries: {lines:[{x1:'0%',y1:'15%',x2:'30%',y2:'5%',op:.15},{x1:'70%',y1:'0%',x2:'100%',y2:'30%',op:.12},{x1:'0%',y1:'80%',x2:'50%',y2:'95%',op:.10}],glow:[{cx:'85%',cy:'12%',r:'28%',op:.05}]},
-  service:   {lines:[{x1:'100%',y1:'20%',x2:'60%',y2:'5%',op:.15},{x1:'0%',y1:'10%',x2:'35%',y2:'30%',op:.12},{x1:'40%',y1:'90%',x2:'100%',y2:'75%',op:.10}],glow:[{cx:'15%',cy:'15%',r:'30%',op:.05}]},
-  create:    {lines:[{x1:'30%',y1:'0%',x2:'70%',y2:'15%',op:.18},{x1:'0%',y1:'50%',x2:'20%',y2:'20%',op:.13},{x1:'80%',y1:'90%',x2:'100%',y2:'60%',op:.11}],glow:[{cx:'60%',cy:'8%',r:'32%',op:.07}]},
-  saved:     {lines:[{x1:'50%',y1:'0%',x2:'100%',y2:'25%',op:.14},{x1:'0%',y1:'40%',x2:'25%',y2:'10%',op:.12},{x1:'10%',y1:'85%',x2:'60%',y2:'100%',op:.10}],glow:[{cx:'75%',cy:'8%',r:'32%',op:.05}]},
-  templates: {lines:[{x1:'0%',y1:'5%',x2:'45%',y2:'20%',op:.14},{x1:'55%',y1:'0%',x2:'100%',y2:'15%',op:.12},{x1:'30%',y1:'95%',x2:'90%',y2:'80%',op:.10}],glow:[{cx:'25%',cy:'10%',r:'30%',op:.05}]},
-  account:   {lines:[{x1:'0%',y1:'25%',x2:'50%',y2:'5%',op:.15},{x1:'50%',y1:'5%',x2:'100%',y2:'20%',op:.13},{x1:'20%',y1:'90%',x2:'80%',y2:'100%',op:.10}],glow:[{cx:'50%',cy:'5%',r:'40%',op:.06}]},
+  splash:    {glowCx:'50%', glowCy:'35%', glowR:'50%', glowOp:.14},
+  countries: {glowCx:'80%', glowCy:'15%', glowR:'35%', glowOp:.10},
+  service:   {glowCx:'20%', glowCy:'15%', glowR:'35%', glowOp:.10},
+  create:    {glowCx:'60%', glowCy:'10%', glowR:'38%', glowOp:.12},
+  saved:     {glowCx:'75%', glowCy:'10%', glowR:'32%', glowOp:.10},
+  templates: {glowCx:'25%', glowCy:'10%', glowR:'30%', glowOp:.10},
+  account:   {glowCx:'50%', glowCy:'5%',  glowR:'40%', glowOp:.12},
 };
 function updateSVGBg(type) {
   const cfg = BG_CONFIGS[type] || BG_CONFIGS.countries;
-  const id = 'bg_'+type;
-  let s = `<defs><radialGradient id="${id}" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c9a84c" stop-opacity="1"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/></radialGradient><filter id="blur_${id}"><feGaussianBlur stdDeviation="8"/></filter></defs>`;
-  cfg.glow.forEach(g => s += `<ellipse cx="${g.cx}" cy="${g.cy}" rx="${g.r}" ry="${g.r}" fill="url(#${id})" opacity="${g.op}" filter="url(#blur_${id})"/>`);
-  cfg.lines.forEach(l => s += `<line x1="${l.x1}" y1="${l.y1}" x2="${l.x2}" y2="${l.y2}" stroke="#c9a84c" stroke-width="1" opacity="${l.op}"/>`);
+  const uid = 'bg_'+type;
+
+  // DJ MAP logo: geo-pin + headphones + vinyl record — very dim gold outline
+  const logo = `
+    <!-- Soft glow behind logo center -->
+    <ellipse cx="50%" cy="48%" rx="22%" ry="22%" fill="#c9a84c" opacity="0.03"/>
+
+    <!-- === GEO PIN SHAPE === -->
+    <!-- Pin circle (top part) -->
+    <circle cx="50%" cy="38%" r="19%" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.13"/>
+    <!-- Pin tail (bottom triangle pointing down) -->
+    <path d="M 37% 52% Q 50% 72% 63% 52%" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.13" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- === VINYL RECORD inside pin === -->
+    <!-- Outer record ring -->
+    <circle cx="50%" cy="38%" r="14%" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.11"/>
+    <!-- Groove rings -->
+    <circle cx="50%" cy="38%" r="12%" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.08"/>
+    <circle cx="50%" cy="38%" r="10%" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.07"/>
+    <circle cx="50%" cy="38%" r="8%"  fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.06"/>
+    <!-- Center disc -->
+    <circle cx="50%" cy="38%" r="5.5%" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.12"/>
+    <circle cx="50%" cy="38%" r="2.5%" fill="#c9a84c" opacity="0.10"/>
+
+    <!-- === HEADPHONES over pin === -->
+    <!-- Headphone arc (top band) -->
+    <path d="M 28% 37% Q 28% 16% 50% 15% Q 72% 16% 72% 37%"
+          fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.15" stroke-linecap="round"/>
+    <!-- Left ear cup -->
+    <rect x="25%" y="35%" width="7%" height="11%" rx="3.5%" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.14"/>
+    <!-- Right ear cup -->
+    <rect x="68%" y="35%" width="7%" height="11%" rx="3.5%" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.14"/>
+  `;
+
+  let s = `<defs>
+    <radialGradient id="${uid}" cx="${cfg.glowCx}" cy="${cfg.glowCy}" r="${cfg.glowR}">
+      <stop offset="0%" stop-color="#c9a84c" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur_${uid}"><feGaussianBlur stdDeviation="60"/></filter>
+  </defs>
+  <ellipse cx="${cfg.glowCx}" cy="${cfg.glowCy}" rx="${cfg.glowR}" ry="${cfg.glowR}"
+    fill="url(#${uid})" opacity="${cfg.glowOp}" filter="url(#blur_${uid})"/>
+  ${logo}`;
+
   document.getElementById('svgBg').innerHTML = s;
 }
 
@@ -1168,7 +1290,7 @@ function buildVenueFilters() {
     'Bar & Club':'Bar & Club','Bar':'Bar & Club','Lounge':'Bar & Club',
     'Beach Club':'Beach Club',
     'Restaurant':'Restaurant',
-    'Music Shop':'Music Shop','Service Center':'Service Center','Rental':'Rental',
+    // Music Shop / Service / Rental → excluded from venue filters (belong to Service section)
   };
   const TYPES_ORDER = ['All','Nightclub','Rooftop Bar','Promo Group','Bar & Club','Beach Club','Restaurant'];
   const presentTypes = new Set(cvs.map(v => TYPE_DISPLAY[v.type] || v.type));
@@ -1208,9 +1330,10 @@ function setSort(s){
 function renderVenueList() {
   if (!selectedCountry) return;
   const search = (document.getElementById('venueSearch').value||'').toLowerCase();
-  let list = venues.filter(v => countryToId(v.country) === selectedCountry.id);
+  const SERVICE_TYPES = ['Music Shop','Service Center','Rental'];
+  let list = venues.filter(v => countryToId(v.country) === selectedCountry.id && !SERVICE_TYPES.includes(v.type));
   if (venueTypeFilter !== 'All') {
-    const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Rooftop Bar':'Rooftop Bar','Promo Group':'Promo Group','Bar & Club':'Bar','Bar':'Bar','Lounge':'Bar','Beach Club':'Beach Club','Restaurant':'Restaurant'};
+    const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Rooftop Bar':'Rooftop Bar','Promo Group':'Promo Group','Bar & Club':'Bar & Club','Bar':'Bar & Club','Lounge':'Bar & Club','Beach Club':'Beach Club','Restaurant':'Restaurant'};
     list = list.filter(v => (TYPE_DISPLAY_F[v.type] || v.type) === venueTypeFilter);
   }
   if (venueCityFilter !== 'All') list = list.filter(v => v.city === venueCityFilter);
@@ -1408,9 +1531,15 @@ function venueCardHTML(v) {
         `<div class="carousel-slide ${i===0?'active':''}" style="background:${grads[i%grads.length]};position:relative;">
           <img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
         </div>`).join('')
-    : grads.map((g, i) =>
-        `<div class="carousel-slide ${i===0?'active':''}" style="background:${g}">
-        </div>`).join('');
+    : [0].map(i => {
+        const typeImg = TYPE_IMAGES[v.type];
+        if (typeImg) {
+          return `<div class="carousel-slide active" style="background:${grads[0]};position:relative;">
+            <img src="${typeImg}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.9;" loading="lazy">
+          </div>`;
+        }
+        return `<div class="carousel-slide active" style="background:${grads[0]}"></div>`;
+      }).join('');
 
   const dots = Array.from({length: slideCount}, (_, i) =>
     `<div class="carousel-dot" style="width:${i===0?14:5}px;"></div>`).join('');
@@ -1673,7 +1802,7 @@ function renderProfileStats() {
   ].map(([l,v])=>`<div class="stat-row"><span class="stat-row-label">${l}</span><span class="stat-row-val">${v}</span></div>`).join('');
 
   document.getElementById('profileProBtn').innerHTML = isPro
-    ? '<span class="profile-pro-btn">✓ ' + T('proActive') + '</span>'
+    ? '<button class="profile-pro-btn" onclick="openPlansModal()">✓ ' + T('proActive') + '</button>'
     : `<button class="profile-get-btn" onclick="goSplash()">${T('choosePlan')}</button>`;
 }
 
@@ -2308,7 +2437,7 @@ const TRANSLATIONS = {
     eyebrow:'Venue Guide', sub:'Club, bar, rooftop & beach club contacts — 19 countries',
     choosePlan:'Choose plan', plan1name:'1 City', plan1desc:'One city of your choice',
     plan2name:'1 Country', plan2desc:'All cities in one country',
-    plan3name:'All Countries', plan3desc:'Full access — 9 countries',
+    plan3name:'All Countries', plan3desc:'Full access — {n} countries',
     perYear:'/year', demo:'Demo without contacts', proLogin:'Enter in test mode (PRO)',
     statCountries:'Countries', statVenues:'Venues', statUpdates:'Updates',
     payCard:'Pay by card', cancel:'Cancel',
@@ -2343,6 +2472,7 @@ const TRANSLATIONS = {
     privacy:'Privacy Policy', refund:'Refund Policy', terms:'Terms of Use', logout:'Log out',
     backToCountries:'Countries', venueObjects:'venues', serviceObjects:'objects',
     proActive:'PRO active',
+    planContactInfo:'To change or upgrade your plan, contact us at djmap.shop@gmail.com',
     country_thailand:'Thailand', country_vietnam:'Vietnam', country_cambodia:'Cambodia',
     country_india:'India', country_malaysia:'Malaysia', country_japan:'Japan',
     country_china:'China', country_korea:'Korea', country_indonesia:'Indonesia',
@@ -2381,6 +2511,7 @@ const TRANSLATIONS = {
     fRentalDate:'Start date', fRentalDays:'Number of days',
     rentalEmailTitle:'EQUIPMENT RENTAL REQUEST', fSentVia:'Sent via DJ MAP App',
     mixing_mastering:'Mixing & Mastering',
+    c_rental_d:'Pioneer CDJ, DJM, speakers and more',
     aboutUs:'About us', contactUs:'Contact us',
     savedHint:'Tap ★ on a venue to save it',
     dAbout:'About venue', dGenres:'Genres', dFee:'Fee', dDays:'Working days',
@@ -2402,7 +2533,7 @@ With respect, the DJ MAP team.`,
     eyebrow:'Venue Guide', sub:'Контакты клубов, баров, rоофтоп-баров и бич-клабов — 19 стран мира',
     choosePlan:'Выберите план', plan1name:'1 город', plan1desc:'Один город на выбор',
     plan2name:'1 страна', plan2desc:'Все города одной страны',
-    plan3name:'Все страны', plan3desc:'Полный доступ — 9 стран',
+    plan3name:'Все страны', plan3desc:'Полный доступ — {n} стран',
     perYear:'/год', demo:'Демо без контактов', proLogin:'Войти в тестовом режиме (PRO)',
     statCountries:'Стран', statVenues:'Заведений', statUpdates:'Обновлений',
     payCard:'Оплатить картой', cancel:'Отмена',
@@ -2437,6 +2568,7 @@ With respect, the DJ MAP team.`,
     privacy:'Политика конфиденциальности', refund:'Возврат средств', terms:'Условия использования', logout:'Выйти',
     backToCountries:'Страны', venueObjects:'заведений', serviceObjects:'объектов',
     proActive:'PRO активна',
+    planContactInfo:'Для изменения или продления плана напишите нам на djmap.shop@gmail.com',
     country_thailand:'Таиланд', country_vietnam:'Вьетнам', country_cambodia:'Камбоджа',
     country_india:'Индия', country_malaysia:'Малайзия', country_japan:'Япония',
     country_china:'Китай', country_korea:'Корея', country_indonesia:'Индонезия',
@@ -2474,6 +2606,7 @@ With respect, the DJ MAP team.`,
     fRentalDate:'Дата начала', fRentalDays:'Количество дней',
     rentalEmailTitle:'ЗАПРОС НА АРЕНДУ ОБОРУДОВАНИЯ', fSentVia:'Отправлено через DJ MAP App',
     mixing_mastering:'Mixing & Mastering',
+    c_rental_d:'Pioneer CDJ, DJM, колонки и другое',
     aboutUs:'О нас', contactUs:'Связаться с нами',
     savedHint:'Нажмите ★ на заведении чтобы сохранить',
     dAbout:'О заведении', dGenres:'Жанры', dFee:'Гонорар', dDays:'Рабочие дни',
@@ -2495,7 +2628,7 @@ With respect, the DJ MAP team.`,
     eyebrow:'Venue Guide', sub:'ข้อมูลคลับ บาร์ รูฟท็อป และบีชคลับ — 19 ประเทศ',
     choosePlan:'เลือกแผน', plan1name:'1 เมือง', plan1desc:'เมืองเดียวตามที่เลือก',
     plan2name:'1 ประเทศ', plan2desc:'ทุกเมืองในประเทศเดียว',
-    plan3name:'ทุกประเทศ', plan3desc:'เข้าถึงเต็มรูปแบบ — 9 ประเทศ',
+    plan3name:'ทุกประเทศ', plan3desc:'เข้าถึงเต็มรูปแบบ — {n} ประเทศ',
     perYear:'/ปี', demo:'ทดลองใช้งานฟรี', proLogin:'เข้าสู่โหมดทดสอบ (PRO)',
     statCountries:'ประเทศ', statVenues:'สถานที่', statUpdates:'อัปเดต',
     payCard:'ชำระด้วยบัตร', cancel:'ยกเลิก',
@@ -2530,6 +2663,7 @@ With respect, the DJ MAP team.`,
     privacy:'นโยบายความเป็นส่วนตัว', refund:'นโยบายคืนเงิน', terms:'ข้อกำหนดการใช้งาน', logout:'ออกจากระบบ',
     backToCountries:'ประเทศ', venueObjects:'สถานที่', serviceObjects:'รายการ',
     proActive:'PRO ใช้งานอยู่',
+    planContactInfo:'ติดต่อเราที่ djmap.shop@gmail.com เพื่อเปลี่ยนหรืออัปเกรดแผน',
     country_thailand:'ไทย', country_vietnam:'เวียดนาม', country_cambodia:'กัมพูชา',
     country_india:'อินเดีย', country_malaysia:'มาเลเซีย', country_japan:'ญี่ปุ่น',
     country_china:'จีน', country_korea:'เกาหลี', country_indonesia:'อินโดนีเซีย',
@@ -2567,6 +2701,7 @@ With respect, the DJ MAP team.`,
     fRentalDate:'วันที่เริ่ม', fRentalDays:'จำนวนวัน',
     rentalEmailTitle:'คำขอเช่าอุปกรณ์', fSentVia:'ส่งผ่าน DJ MAP App',
     mixing_mastering:'Mixing & Mastering',
+    c_rental_d:'Pioneer CDJ, DJM, ลำโพง และอื่นๆ',
     aboutUs:'เกี่ยวกับเรา', contactUs:'ติดต่อเรา',
     savedHint:'แตะ ★ ที่สถานที่เพื่อบันทึก',
     dAbout:'เกี่ยวกับสถานที่', dGenres:'แนวเพลง', dFee:'ค่าตัว', dDays:'วันทำงาน',
@@ -2610,7 +2745,11 @@ function applyLanguage(code) {
 
 function T(key) {
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
-  return t[key] || TRANSLATIONS.en[key] || key;
+  let val = t[key] || TRANSLATIONS.en[key] || key;
+  if (typeof val === 'string' && val.includes('{n}')) {
+    val = val.replace('{n}', COUNTRIES.length);
+  }
+  return val;
 }
 
 function cycleLang() {
@@ -2622,6 +2761,22 @@ function cycleLang() {
 }
 
 // ── ABOUT US / CONTACT US ─────────────────────
+// ── PLANS MODAL ──────────────────────────────
+function openPlansModal() {
+  const m = document.getElementById('plansModal');
+  m.style.display = 'flex';
+  document.getElementById('planModalTitle').textContent = '✦ ' + T('choosePlan');
+  // Apply translations to plan buttons
+  m.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = T(key);
+    if (val) el.textContent = val;
+  });
+}
+function closePlansModal() {
+  document.getElementById('plansModal').style.display = 'none';
+}
+
 function openAboutUs() {
   const m = document.getElementById('aboutUsModal');
   m.style.display = 'flex';

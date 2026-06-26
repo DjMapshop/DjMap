@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="280" viewBox="0 0 400 280">
+  <defs>
+    <linearGradient id="grad_service_center" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1200"/>
+      <stop offset="100%" style="stop-color:#121800"/>
+    </linearGradient>
+    <filter id="glow_service_center">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="280" fill="url(#grad_service_center)"/>
+  
+  <!-- Subtle grid -->
+  <line x1="0" y1="140" x2="400" y2="140" stroke="#86efac" stroke-width="0.3" opacity="0.1"/>
+  <line x1="200" y1="0" x2="200" y2="280" stroke="#86efac" stroke-width="0.3" opacity="0.1"/>
+  
+  <!-- Corner accents -->
+  <path d="M0 0 L30 0 L0 30" fill="#86efac" opacity="0.15"/>
+  <path d="M400 0 L370 0 L400 30" fill="#86efac" opacity="0.15"/>
+  <path d="M0 280 L30 280 L0 250" fill="#86efac" opacity="0.15"/>
+  <path d="M400 280 L370 280 L400 250" fill="#86efac" opacity="0.15"/>
+  
+  <!-- Icon -->
+  <g filter="url(#glow_service_center)">
+    <circle cx="200" cy="100" r="40" fill="none" stroke="#86efac" stroke-width="2" opacity="0.5"/>
+<path d="M185 85 L200 100 L215 85" fill="none" stroke="#86efac" stroke-width="2" opacity="0.7"/>
+<path d="M185 115 L200 100 L215 115" fill="none" stroke="#86efac" stroke-width="2" opacity="0.7"/>
+<path d="M170 90 Q165 100 170 110" fill="none" stroke="#86efac" stroke-width="2" opacity="0.5"/>
+<path d="M230 90 Q235 100 230 110" fill="none" stroke="#86efac" stroke-width="2" opacity="0.5"/>
+<circle cx="200" cy="100" r="8" fill="#86efac" opacity="0.4"/>
+<path d="M165 145 L235 145" stroke="#86efac" stroke-width="1.5" opacity="0.4"/>
+<rect x="160" y="155" width="80" height="8" rx="4" fill="#86efac" opacity="0.3"/>
+<rect x="165" y="170" width="70" height="6" rx="3" fill="#86efac" opacity="0.2"/>
+<rect x="170" y="183" width="60" height="5" rx="2.5" fill="#86efac" opacity="0.15"/>
+  </g>
+  
+  <!-- DJ MAP label -->
+  <text x="20" y="24" font-family="Arial,sans-serif" font-size="8" font-weight="600" letter-spacing="3" fill="#86efac" opacity="0.5">DJ MAP</text>
+  
+  <!-- Type label -->
+  <text x="200" y="248" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="4" fill="#86efac" text-anchor="middle" opacity="0.9">SERVICE CENTER</text>
+  
+  <!-- Bottom line -->
+  <line x1="80" y1="255" x2="320" y2="255" stroke="#86efac" stroke-width="0.5" opacity="0.3"/>
+</svg>

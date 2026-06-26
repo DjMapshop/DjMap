@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="280" viewBox="0 0 400 280">
+  <defs>
+    <linearGradient id="grad_music_shop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#001218"/>
+      <stop offset="100%" style="stop-color:#002030"/>
+    </linearGradient>
+    <filter id="glow_music_shop">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="280" fill="url(#grad_music_shop)"/>
+  
+  <!-- Subtle grid -->
+  <line x1="0" y1="140" x2="400" y2="140" stroke="#22d3ee" stroke-width="0.3" opacity="0.1"/>
+  <line x1="200" y1="0" x2="200" y2="280" stroke="#22d3ee" stroke-width="0.3" opacity="0.1"/>
+  
+  <!-- Corner accents -->
+  <path d="M0 0 L30 0 L0 30" fill="#22d3ee" opacity="0.15"/>
+  <path d="M400 0 L370 0 L400 30" fill="#22d3ee" opacity="0.15"/>
+  <path d="M0 280 L30 280 L0 250" fill="#22d3ee" opacity="0.15"/>
+  <path d="M400 280 L370 280 L400 250" fill="#22d3ee" opacity="0.15"/>
+  
+  <!-- Icon -->
+  <g filter="url(#glow_music_shop)">
+    <rect x="160" y="60" width="80" height="100" rx="4" fill="none" stroke="#22d3ee" stroke-width="2" opacity="0.6"/>
+<circle cx="200" cy="130" r="20" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity="0.7"/>
+<circle cx="200" cy="130" r="8" fill="#22d3ee" opacity="0.3"/>
+<circle cx="200" cy="130" r="3" fill="#22d3ee" opacity="0.7"/>
+<line x1="200" y1="75" x2="200" y2="110" stroke="#22d3ee" stroke-width="1.5" opacity="0.5"/>
+<line x1="180" y1="75" x2="220" y2="75" stroke="#22d3ee" stroke-width="1.5" opacity="0.5"/>
+<rect x="175" y="80" width="8" height="25" rx="2" fill="#22d3ee" opacity="0.4"/>
+<line x1="155" y1="170" x2="245" y2="170" stroke="#22d3ee" stroke-width="1" opacity="0.3"/>
+<rect x="155" y="175" width="90" height="20" rx="4" fill="#c9a84c" opacity="0.15"/>
+  </g>
+  
+  <!-- DJ MAP label -->
+  <text x="20" y="24" font-family="Arial,sans-serif" font-size="8" font-weight="600" letter-spacing="3" fill="#22d3ee" opacity="0.5">DJ MAP</text>
+  
+  <!-- Type label -->
+  <text x="200" y="248" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="4" fill="#22d3ee" text-anchor="middle" opacity="0.9">MUSIC SHOP</text>
+  
+  <!-- Bottom line -->
+  <line x1="80" y1="255" x2="320" y2="255" stroke="#22d3ee" stroke-width="0.5" opacity="0.3"/>
+</svg>
