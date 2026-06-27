@@ -1671,6 +1671,18 @@ function openVenue(id) {
   // Body
   const isSaved = savedIds.includes(v.id);
   const contacts = (v.contacts||[]).filter(c=>c.name);
+  // Validate that a value makes sense for its channel type
+  function isValidChannel(key, val) {
+    const v = val.trim();
+    if (!v) return false;
+    if (key === 'email') return v.includes('@') && !v.startsWith('http');
+    if (key === 'whatsapp') return /[0-9]{6,}/.test(v.replace(/[^0-9]/g,''));
+    if (key === 'line') return !v.startsWith('http') || v.includes('line.me');
+    if (key === 'instagram') return !v.startsWith('http') || v.includes('instagram.com');
+    if (key === 'telegram') return v.startsWith('@') || v.startsWith('http') || /^[a-zA-Z0-9_]{4,}$/.test(v);
+    return true;
+  }
+
   function channelUrl(key, val) {
     const v = val.trim();
     if (key === 'whatsapp') {
@@ -1694,6 +1706,9 @@ function openVenue(id) {
     if (key === 'email') {
       return 'mailto:' + v;
     }
+    if (key === 'website') {
+      return v.startsWith('http') ? v : 'https://' + v;
+    }
     return '#';
   }
 
@@ -1704,10 +1719,11 @@ function openVenue(id) {
     {key:'instagram',icon:'📸', label:'Instagram'},
     {key:'facebook', icon:'👤', label:'Facebook'},
     {key:'email',    icon:'✉️', label:'Email'},
+    {key:'website',  icon:'🌐', label:'Website'},
   ];
 
   let contactsHTML = contacts.map(c => {
-    const filled = CHANNELS.filter(ch => c[ch.key] && c[ch.key].trim());
+    const filled = CHANNELS.filter(ch => c[ch.key] && isValidChannel(ch.key, c[ch.key]));
     if (!filled.length && !c.name) return '';
     return `<div class="contact-card">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
@@ -1743,7 +1759,8 @@ function openVenue(id) {
     ${v.nights&&v.nights.length?`<div class="detail-section"><div class="detail-section-label">${T('dDays')}</div><div class="tag-row">${v.nights.map(n=>`<span class="tag">${n}</span>`).join('')}</div></div>`:''}
     ${v.brands?`<div class="detail-section"><div class="detail-section-label">${T('dBrands')}</div><div class="detail-desc" style="color:#60a5fa;">${v.brands}</div></div>`:''}
     ${v.workingHours?`<div class="detail-section"><div class="detail-section-label">${T('dHours')}</div><div class="detail-desc">${v.workingHours}</div></div>`:''}
-    ${v.venueInstagram?`<div class="detail-section"><div class="detail-section-label">${T('dInstagram')}</div><div class="detail-desc"><a href="https://instagram.com/${v.venueInstagram.replace('@','')}" target="_blank" style="color:#c9a84c;text-decoration:none;">📸 ${v.venueInstagram}</a></div></div>`:''}
+    ${v.venueInstagram && !v.venueInstagram.startsWith('http')?`<div class="detail-section"><div class="detail-section-label">${T('dInstagram')}</div><div class="detail-desc"><a href="https://instagram.com/${v.venueInstagram.replace('@','')}" target="_blank" style="color:#c9a84c;text-decoration:none;">📸 ${v.venueInstagram}</a></div></div>`:''}
+    ${v.website?`<div class="detail-section"><div class="detail-section-label">WEBSITE</div><div class="detail-desc"><a href="${v.website.startsWith('http')?v.website:'https://'+v.website}" target="_blank" style="color:#60a5fa;text-decoration:none;">🌐 ${v.website}</a></div></div>`:''}
     ${v.mapurl?`<div class="detail-section"><div class="detail-section-label">${T('dLocation')}</div><div class="detail-desc"><a href="${v.mapurl}" target="_blank" style="color:#60a5fa;text-decoration:none;">📍 ${T('dOpenMap')}</a></div></div>`:''}
     ${contactsHTML?`<div style="margin-top:4px;"><div style="font-size:10px;color:${color};letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">${T('dContacts')}</div>${contactsHTML}</div>`:''}`;
 

@@ -140,7 +140,9 @@ function parseSheetCSV(text, idOffset, defaultType) {
     const lineVal   = g('line') || '';
     const email     = g('email') || g('e-mail') || '';
 
-    const contacts = (whatsapp || telegram || instagram || lineVal || email) ? [{
+    const website  = g('website') || '';
+
+    const contacts = (whatsapp || telegram || instagram || lineVal || email || website) ? [{
       name:      contactName,
       role:      contactRole,
       whatsapp,
@@ -148,6 +150,7 @@ function parseSheetCSV(text, idOffset, defaultType) {
       instagram,
       line:      lineVal,
       email,
+      website,
     }] : [];
 
     const countryRaw = g('country').toLowerCase().trim();
