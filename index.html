@@ -1144,7 +1144,7 @@ const TYPE_COLORS = {
   'Nightclub':'#a855f7','Beach Club':'#06b6d4','Rooftop Bar':'#c9a84c',
   'Bar & Club':'#84cc16','Club':'#ec4899','Lounge':'#f97316',
   'Music Shop':'#3b82f6','Service Center':'#d97706','Rental':'#10b981',
-  'Promo Group':'#4ade80'
+  'Promo Group':'#4ade80','Bar':'#f97316','Festival':'#a855f7'
 };
 
 let venues = [];
@@ -1182,8 +1182,6 @@ let editingAdminItem = null;
 //  NAVIGATION
 // ══════════════════════════════════════════════
 function enterApp(pro) {
-  // Explicitly block services data from main venues sheet
-  window.servicesFromSheet = null;
   isPro = pro;
   document.getElementById('splash').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
@@ -1367,15 +1365,16 @@ function buildVenueFilters() {
   const genres = ['All',...new Set(cvs.flatMap(v=>v.genre||[]))];
   const TYPE_DISPLAY = {
     'Nightclub':'Nightclub','Night Club':'Nightclub','nightclub':'Nightclub','Club':'Nightclub',
-    'Bar':'Nightclub','Bar & Club':'Nightclub','Lounge':'Nightclub',
+    'Bar':'Bar','Bar & Club':'Bar','Lounge':'Bar',
     'Rooftop Bar':'Rooftop Bar',
     'Promo Group':'Promo Group',
     'Beach Club':'Beach Club',
     'Restaurant':'Restaurant',
+    'Festival':'Festival',
     // Service types excluded from venue filters
     'Music Shop':null,'Service Center':null,'Rental':null,'Facebook Group Shop':null,
   };
-  const TYPES_ORDER = ['All','Nightclub','Rooftop Bar','Promo Group','Beach Club','Restaurant'];
+  const TYPES_ORDER = ['All','Nightclub','Bar','Rooftop Bar','Beach Club','Festival','Promo Group','Restaurant'];
   const presentTypes = new Set(cvs.map(v => TYPE_DISPLAY[v.type] || v.type).filter(t => t !== null && t !== undefined && !['Music Shop','Service Center','Rental','Facebook Group Shop'].includes(t)));
   const orderedTypes = TYPES_ORDER.filter(t => t==='All' || presentTypes.has(t));
   // Add any types from data not in our list
@@ -1416,7 +1415,7 @@ function renderVenueList() {
   const SERVICE_TYPES = ['Music Shop','Service Center','Rental','Facebook Group Shop'];
   let list = venues.filter(v => countryToId(v.country) === selectedCountry.id && !SERVICE_TYPES.includes(v.type));
   if (venueTypeFilter !== 'All') {
-    const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Bar':'Nightclub','Bar & Club':'Nightclub','Lounge':'Nightclub','Rooftop Bar':'Rooftop Bar','Promo Group':'Promo Group','Beach Club':'Beach Club','Restaurant':'Restaurant'};
+    const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Bar':'Bar','Bar & Club':'Bar','Lounge':'Bar','Rooftop Bar':'Rooftop Bar','Promo Group':'Promo Group','Beach Club':'Beach Club','Restaurant':'Restaurant','Festival':'Festival'};
     list = list.filter(v => (TYPE_DISPLAY_F[v.type] || v.type) === venueTypeFilter);
   }
   if (venueCityFilter !== 'All') list = list.filter(v => v.city === venueCityFilter);
