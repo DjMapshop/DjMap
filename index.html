@@ -1083,22 +1083,31 @@ function rebuildCountriesFromData() {
 function countryToId(raw) {
   if (!raw) return '';
   const s = raw.toLowerCase().trim();
+  // Complete map — must match COUNTRY_MAP in data.js exactly
   const MAP = {
-    'thailand':'thailand','вьетнам':'vietnam','vietnam':'vietnam',
-    'indonesia':'indonesia','bali':'indonesia',
-    'uae':'uae','dubai':'uae','united arab emirates':'uae','оаэ':'uae',
-    'japan':'japan','india':'india',
-    'hong kong':'hongkong','hongkong':'hongkong',
-    'singapore':'singapore',
-    'south korea':'korea','korea':'korea','south_korea':'korea',
-    'malaysia':'malaysia','philippines':'philippines',
-    'china':'china','turkey':'turkey',
-    'saudi arabia':'saudi','saudi_arabia':'saudi',
-    'spain':'spain','portugal':'portugal','morocco':'morocco',
-    'pakistan':'pakistan','uganda':'uganda','cambodia':'cambodia',
+    'thailand':'thailand','таиланд':'thailand',
+    'vietnam':'vietnam','вьетнам':'vietnam',
+    'indonesia':'indonesia','индонезия':'indonesia','bali':'indonesia',
+    'uae':'uae','дубай':'uae','dubai':'uae','united arab emirates':'uae','оаэ':'uae',
+    'japan':'japan','япония':'japan',
+    'india':'india','индия':'india',
+    'hong kong':'hongkong','гонконг':'hongkong','hongkong':'hongkong',
+    'singapore':'singapore','сингапур':'singapore',
+    'south korea':'korea','korea':'korea','south_korea':'korea','корея':'korea',
+    'malaysia':'malaysia','малайзия':'malaysia',
+    'philippines':'philippines','филиппины':'philippines',
+    'china':'china','китай':'china',
+    'turkey':'turkey','турция':'turkey',
+    'saudi arabia':'saudi','saudi_arabia':'saudi','саудовская аравия':'saudi',
+    'spain':'spain','испания':'spain',
+    'portugal':'portugal','португалия':'portugal',
+    'morocco':'morocco','марокко':'morocco',
+    'pakistan':'pakistan','пакистан':'pakistan',
+    'uganda':'uganda','уганда':'uganda',
+    'cambodia':'cambodia','камбоджа':'cambodia',
   };
   return MAP[s] || s.replace(/[\s_]+/g,'').replace('southkorea','korea')
-                     .replace('hongkong','hongkong').replace('saudiarabia','saudi');
+                     .replace('saudiarabia','saudi');
 }
 
 const TYPE_GRADIENTS = {
@@ -1111,12 +1120,8 @@ const TYPE_GRADIENTS = {
   'Music Shop':     ['linear-gradient(135deg,#1e3a5f,#3b82f6)','linear-gradient(135deg,#1e40af,#60a5fa)','linear-gradient(135deg,#1d4ed8,#93c5fd)'],
   'Service Center': ['linear-gradient(135deg,#3f1c00,#92400e)','linear-gradient(135deg,#78350f,#d97706)','linear-gradient(135deg,#451a03,#f59e0b)'],
   'Facebook Group Shop': ['linear-gradient(135deg,#001840,#003070)','linear-gradient(135deg,#00102a,#002560)','linear-gradient(135deg,#001530,#002050)'],
-  'Bar':      ['linear-gradient(135deg,#1a0a00,#3d1800)','linear-gradient(135deg,#2a1000,#4d2000)','linear-gradient(135deg,#0f0600,#2d1200)'],
-  'Festival': ['linear-gradient(135deg,#1a0020,#3d0050)','linear-gradient(135deg,#250030,#500070)','linear-gradient(135deg,#0f0015,#2a0035)'],
   'Rental':         ['linear-gradient(135deg,#064e3b,#10b981)','linear-gradient(135deg,#065f46,#34d399)','linear-gradient(135deg,#047857,#6ee7b7)'],
   'Promo Group':    ['linear-gradient(135deg,#050f00,#0a2000)','linear-gradient(135deg,#061200,#122800)','linear-gradient(135deg,#040e00,#0d1f00)'],
-  'Bar':            ['linear-gradient(135deg,#1a0a00,#3d1800)','linear-gradient(135deg,#2a1000,#4d2000)','linear-gradient(135deg,#0f0600,#2d1200)'],
-  'Festival':       ['linear-gradient(135deg,#1a0020,#3d0050)','linear-gradient(135deg,#250030,#500070)','linear-gradient(135deg,#0f0015,#2a0035)'],
 };
 const TYPE_IMAGES = {
   'Nightclub': '<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 400 260\' style=\'width:100%;height:100%;display:block;\'><defs><linearGradient id=\'g\' x1=\'0\' y1=\'0\' x2=\'1\' y2=\'1\'><stop offset=\'0%\' stop-color=\'#08001a\'/><stop offset=\'100%\' stop-color=\'#1a0035\'/></linearGradient></defs><rect width=\'400\' height=\'260\' fill=\'url(#g)\'/><path d=\'M0 0 L20 0 L0 20\' fill=\'#c9a84c\' opacity=\'0.2\'/><path d=\'M400 0 L380 0 L400 20\' fill=\'#c9a84c\' opacity=\'0.2\'/><path d=\'M0 260 L20 260 L0 240\' fill=\'#c9a84c\' opacity=\'0.2\'/><path d=\'M400 260 L380 260 L400 240\' fill=\'#c9a84c\' opacity=\'0.2\'/><circle cx=\'200\' cy=\'115\' r=\'55\' fill=\'none\' stroke=\'#c9a84c\' stroke-width=\'1.5\' opacity=\'0.5\'/><circle cx=\'200\' cy=\'115\' r=\'35\' fill=\'none\' stroke=\'#c9a84c\' stroke-width=\'1\' opacity=\'0.35\'/><circle cx=\'200\' cy=\'115\' r=\'12\' fill=\'#c9a84c\' opacity=\'0.25\'/><circle cx=\'200\' cy=\'115\' r=\'5\' fill=\'#c9a84c\' opacity=\'0.6\'/><line x1=\'200\' y1=\'60\' x2=\'200\' y2=\'25\' stroke=\'#c9a84c\' stroke-width=\'2\' opacity=\'0.5\'/><line x1=\'160\' y1=\'75\' x2=\'140\' y2=\'55\' stroke=\'#c9a84c\' stroke-width=\'1.5\' opacity=\'0.35\'/><line x1=\'240\' y1=\'75\' x2=\'260\' y2=\'55\' stroke=\'#c9a84c\' stroke-width=\'1.5\' opacity=\'0.35\'/><line x1=\'145\' y1=\'115\' x2=\'110\' y2=\'115\' stroke=\'#c9a84c\' stroke-width=\'1.5\' opacity=\'0.35\'/><line x1=\'255\' y1=\'115\' x2=\'290\' y2=\'115\' stroke=\'#c9a84c\' stroke-width=\'1.5\' opacity=\'0.35\'/><rect x=\'160\' y=\'190\' width=\'80\' height=\'6\' rx=\'3\' fill=\'#c9a84c\' opacity=\'0.3\'/></svg>',
@@ -1139,7 +1144,7 @@ const TYPE_COLORS = {
   'Nightclub':'#a855f7','Beach Club':'#06b6d4','Rooftop Bar':'#c9a84c',
   'Bar & Club':'#84cc16','Club':'#ec4899','Lounge':'#f97316',
   'Music Shop':'#3b82f6','Service Center':'#d97706','Rental':'#10b981',
-  'Promo Group':'#4ade80','Bar':'#f97316','Festival':'#a855f7','Bar':'#f97316','Festival':'#a855f7'
+  'Promo Group':'#4ade80'
 };
 
 let venues = [];
@@ -1362,16 +1367,15 @@ function buildVenueFilters() {
   const genres = ['All',...new Set(cvs.flatMap(v=>v.genre||[]))];
   const TYPE_DISPLAY = {
     'Nightclub':'Nightclub','Night Club':'Nightclub','nightclub':'Nightclub','Club':'Nightclub',
-    'Bar':'Bar','Bar & Club':'Bar','Lounge':'Bar',
+    'Bar':'Nightclub','Bar & Club':'Nightclub','Lounge':'Nightclub',
     'Rooftop Bar':'Rooftop Bar',
     'Promo Group':'Promo Group',
     'Beach Club':'Beach Club',
     'Restaurant':'Restaurant',
-    'Festival':'Festival',
     // Service types excluded from venue filters
     'Music Shop':null,'Service Center':null,'Rental':null,'Facebook Group Shop':null,
   };
-  const TYPES_ORDER = ['All','Nightclub','Bar','Rooftop Bar','Beach Club','Festival','Promo Group','Restaurant'];
+  const TYPES_ORDER = ['All','Nightclub','Rooftop Bar','Promo Group','Beach Club','Restaurant'];
   const presentTypes = new Set(cvs.map(v => TYPE_DISPLAY[v.type] || v.type).filter(t => t !== null && t !== undefined && !['Music Shop','Service Center','Rental','Facebook Group Shop'].includes(t)));
   const orderedTypes = TYPES_ORDER.filter(t => t==='All' || presentTypes.has(t));
   // Add any types from data not in our list
@@ -1412,7 +1416,7 @@ function renderVenueList() {
   const SERVICE_TYPES = ['Music Shop','Service Center','Rental','Facebook Group Shop'];
   let list = venues.filter(v => countryToId(v.country) === selectedCountry.id && !SERVICE_TYPES.includes(v.type));
   if (venueTypeFilter !== 'All') {
-    const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Bar':'Bar','Bar & Club':'Bar','Lounge':'Bar','Rooftop Bar':'Rooftop Bar','Promo Group':'Promo Group','Beach Club':'Beach Club','Restaurant':'Restaurant','Festival':'Festival'};
+    const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Bar':'Nightclub','Bar & Club':'Nightclub','Lounge':'Nightclub','Rooftop Bar':'Rooftop Bar','Promo Group':'Promo Group','Beach Club':'Beach Club','Restaurant':'Restaurant'};
     list = list.filter(v => (TYPE_DISPLAY_F[v.type] || v.type) === venueTypeFilter);
   }
   if (venueCityFilter !== 'All') list = list.filter(v => v.city === venueCityFilter);
