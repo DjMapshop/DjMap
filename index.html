@@ -1205,9 +1205,9 @@ function enterApp(pro) {
       if (!ok) return;
       if (window.venuesFromSheet && window.venuesFromSheet.length > 0) {
         venues = window.venuesFromSheet;
-        if (window.servicesFromSheet && window.servicesFromSheet.length > 0) {
-          services = window.servicesFromSheet;
-        }
+      }
+      if (window.servicesFromSheet && window.servicesFromSheet.length > 0) {
+        services = window.servicesFromSheet;
       }
       rebuildCountriesFromData();
       renderCountriesGrid();
@@ -1538,7 +1538,10 @@ function renderServiceListNew() {
   // Re-read city after rebuild
   const cityVal2 = document.getElementById('svcCitySort').value;
 
-  let list = services.filter(s => (SVC_CATEGORY_MAP[s.type] || s.category) === svcCategory);
+  let list = services.filter(s => {
+    const cat = s.category || SVC_CATEGORY_MAP[s.type] || SVC_CATEGORY_MAP[s.type?.toLowerCase()];
+    return cat === svcCategory;
+  });
   if (countryVal !== 'All') list = list.filter(s => countryToId(s.country) === countryVal || s.country === countryVal);
   if (cityVal2 !== 'All') list = list.filter(s => s.city === cityVal2);
   list.sort((a,b) => b.rating - a.rating);
