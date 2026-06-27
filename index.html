@@ -1602,7 +1602,8 @@ function venueCardHTML(v) {
   const photo1 = photos.length > 0 ? photos[0] : null;
   const slides = photo1
     ? `<div class="carousel-slide active" style="background:${grads[0]};position:relative;">
-        <img src="${photo1}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+        <img src="${photo1}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy"
+          onerror="this.style.display='none'">
        </div>`
     : [0].map(i => {
         const typeImg = (TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub']).replace(/%22/g, "'");
