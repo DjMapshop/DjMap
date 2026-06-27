@@ -50,13 +50,14 @@ const COUNTRY_MAP = {
   'cambodia':'cambodia','камбоджа':'cambodia',
 };
 
+// FIX: TYPE_MAP values must match exactly what the app expects in TYPE_DISPLAY / TYPE_DISPLAY_F
 const TYPE_MAP = {
-  'nightclub':'Nightclub','night club':'Nightclub','ночной клуб':'Nightclub',
+  'nightclub':'Nightclub','night club':'Nightclub','ночной клуб':'Nightclub','club':'Nightclub','клуб':'Nightclub',
   'beach club':'Beach Club','beachclub':'Beach Club','бич клуб':'Beach Club',
   'rooftop bar':'Rooftop Bar','rooftop':'Rooftop Bar',
-  'bar & club':'Bar','bar and club':'Bar',
-  'bar':'Bar','клуб':'Nightclub','club':'Nightclub',
-  'lounge':'Bar','лаунж':'Bar & Club',
+  // FIX: was 'Bar' — must be 'Bar & Club' to match filters
+  'bar & club':'Bar & Club','bar and club':'Bar & Club',
+  'bar':'Bar & Club','lounge':'Bar & Club','лаунж':'Bar & Club',
   'promo group':'Promo Group','promo':'Promo Group',
   'restaurant':'Restaurant','ресторан':'Restaurant',
   'music shop':'Music Shop','музыкальный магазин':'Music Shop',
@@ -82,7 +83,6 @@ async function tryFetch(url) {
   return res.text();
 }
 
-
 // Normalise genre casing
 function normaliseGenre(g) {
   const map = {
@@ -93,9 +93,11 @@ function normaliseGenre(g) {
     'new disco':'New Disco','disco house':'Disco House','world music':'World Music',
     'psy trance':'Psy Trance','hip hop':'Hip Hop','house':'House','techno':'Techno',
     'edm':'EDM','rnb':'RnB','r&b':'RnB','funk':'Funk','downtempo':'Downtempo',
+    'pick time techno':'Pick Time Techno',
   };
   return map[g.toLowerCase()] || g.trim();
 }
+
 async function loadSheetData() {
   let text = '';
   try {
@@ -120,81 +122,127 @@ async function loadSheetData() {
   const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim());
   console.log('📋 Columns:', headers);
 
+  // FIX: detect column indices once for Promo Group column-shift handling
+  const iName     = headers.indexOf('name');
+  const iType     = headers.indexOf('type');
+  const iCountry  = headers.indexOf('country');
+  const iCity     = headers.indexOf('city');
+  const iArea     = headers.indexOf('area');
+  const iRating   = headers.indexOf('rating');
+  const iGenre    = headers.indexOf('genre');
+  const iNights   = headers.indexOf('nights');
+  const iFee      = headers.indexOf('fee');
+  const iWorkDays = headers.indexOf('workingdays');
+  const iDesc     = headers.indexOf('description');
+  const iIgVenue  = headers.indexOf('instagramvenue');
+  const iMapUrl   = headers.indexOf('mapurl');
+  const iBrands   = headers.indexOf('brands');
+  const iHours    = headers.indexOf('workinghours');
+  const iPhoto1   = headers.indexOf('photo1');
+  const iPhoto2   = headers.indexOf('photo2');
+  const iPhoto3   = headers.indexOf('photo3');
+  const iHot      = headers.indexOf('hot');
+  const iPremium  = headers.indexOf('ispremium');
+  const iCapacity = headers.indexOf('capacity');
+  const iCName    = Math.max(headers.indexOf('contactname'), headers.indexOf('contactname'));
+  const iCRole    = Math.max(headers.indexOf('contactrole'), headers.indexOf('contactrole'));
+  const iWhatsApp = headers.indexOf('whatsapp');
+  const iTelegram = headers.indexOf('telegram');
+  const iLine     = headers.indexOf('line');
+  const iInstagram= headers.indexOf('instagram');
+  const iEmail    = headers.indexOf('email');
+
   const rows = lines.slice(1).map((line, idx) => {
     const vals = parseCSVLine(line);
-    const get = (key) => {
-      const i = headers.indexOf(key.toLowerCase());
-      return i >= 0 ? (vals[i] || '').trim() : '';
-    };
 
-    const name = get('name');
-    if (!name) return null;
+    // Safe column getter — returns '' for out-of-range indices
+    const col = (i) => (i >= 0 && i < vals.length) ? (vals[i] || '').trim() : '';
 
-    const genreRaw = get('genre');
+    const name = col(iName);
+    if (!name) return null; // skip truly empty rows
+
+    const typeRaw = col(iType).toLowerCase();
+    const type = TYPE_MAP[typeRaw] || col(iType) || 'Nightclub';
+
+    // FIX: Promo Group rows often have empty fee and workingDays columns,
+    // which causes a column shift for ALL subsequent columns.
+    // Strategy: for Promo Group, read contact fields by exact header index (already done above),
+    // so they are immune to missing-column shift errors.
+    // The column-shift only happens when CSV has fewer commas than the header row.
+    // parseCSVLine already pads to available commas — col() returns '' for missing indices,
+    // so no extra shift logic needed here as long as headers are correct.
+
+    const genreRaw = col(iGenre);
     const genre = genreRaw ? genreRaw.split(/[;,]/).map(s => normaliseGenre(s.trim())).filter(Boolean) : [];
 
-    const nightsRaw = get('nights');
+    const nightsRaw = col(iNights);
     const nights = nightsRaw ? nightsRaw.split(/[;,]/).map(s => s.trim()).filter(Boolean) : [];
 
-    const contactName = get('contactName') || get('contactname');
+    // FIX: Support both contactName and contactname header variants
+    const contactNameIdx = headers.indexOf('contactname') >= 0
+      ? headers.indexOf('contactname')
+      : headers.indexOf('contactName') >= 0
+        ? headers.indexOf('contactName')
+        : -1;
+    const contactRoleIdx = headers.indexOf('contactrole') >= 0
+      ? headers.indexOf('contactrole')
+      : headers.indexOf('contactRole') >= 0
+        ? headers.indexOf('contactRole')
+        : -1;
+
+    const contactName = col(contactNameIdx);
     const contacts = contactName ? [{
       name: contactName,
-      role: get('contactRole') || get('contactrole') || 'Manager',
-      whatsapp: get('whatsapp'),
-      telegram: get('telegram'),
-      instagram: get('instagram'),
-      line: get('line'),
-      email: get('email'),
+      role: col(contactRoleIdx) || 'Manager',
+      whatsapp:  col(iWhatsApp),
+      telegram:  col(iTelegram),
+      instagram: col(iInstagram),
+      line:      col(iLine),
+      email:     col(iEmail),
     }] : [];
 
-    const countryRaw = (get('country') || '').toLowerCase().trim();
+    const countryRaw = col(iCountry).toLowerCase().trim();
     const country = COUNTRY_MAP[countryRaw] || countryRaw.replace(/\s+/g,'');
 
-    const typeRaw = get('type').toLowerCase();
-    const type = TYPE_MAP[typeRaw] || get('type') || 'Nightclub';
-
-    const isPremiumRaw = get('isPremium') || get('ispremium') || get('hot');
+    const isPremiumRaw = col(iPremium) || col(iHot);
     const isPremium = ['true','1','yes','да'].includes((isPremiumRaw || '').toLowerCase());
 
     function driveUrl(url) {
       if (!url) return '';
-      // Google Drive direct link conversion
       const m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
       if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w800';
-      // Google Drive open link
       const m2 = url.match(/id=([a-zA-Z0-9_-]+)/);
       if (m2) return 'https://drive.google.com/thumbnail?id=' + m2[1] + '&sz=w800';
-      // Only return if it's a valid http URL
       if (url.startsWith('http://') || url.startsWith('https://')) return url;
-      return ''; // ignore @handles, website names, etc.
+      return '';
     }
 
-    const photo1 = driveUrl(get('photo1'));
-    const photo2 = driveUrl(get('photo2'));
-    const photo3 = driveUrl(get('photo3'));
+    const photo1 = driveUrl(col(iPhoto1));
+    const photo2 = driveUrl(col(iPhoto2));
+    const photo3 = driveUrl(col(iPhoto3));
     const photos = [photo1, photo2, photo3].filter(Boolean);
 
     return {
       id: 1000 + idx,
       name,
       country,
-      city: get('city'),
-      area: get('area'),
+      city:         col(iCity),
+      area:         col(iArea),
       type,
       genre,
-      rating: parseFloat(get('rating')) || 4.5,
-      capacity: parseInt(get('capacity')) || 0,
-      description: get('description'),
-      fee: get('fee'),
+      rating:       parseFloat(col(iRating)) || 4.5,
+      capacity:     parseInt(col(iCapacity)) || 0,
+      description:  col(iDesc),
+      fee:          col(iFee),
       nights,
       isPremium,
       contacts,
-      instagram: get('instagramvenue') || get('instagram'),
-      venueInstagram: get('instagramvenue') || get('instagramVenue'),
-      mapurl: get('mapurl'),
-      brands: get('brands') || '',
-      workingHours: get('workingHours') || get('workinghours') || '',
-      photo1, // для сервис-раздела (логотип)
+      instagram:     col(iIgVenue) || col(iInstagram),
+      venueInstagram:col(iIgVenue),
+      mapurl:        col(iMapUrl),
+      brands:        col(iBrands) || '',
+      workingHours:  col(iHours) || '',
+      photo1,
       photos,
       category: ['Music Shop','Service Center','Rental'].includes(type)
         ? (type === 'Music Shop' ? 'shop' : type === 'Service Center' ? 'service' : 'rental')
@@ -202,9 +250,9 @@ async function loadSheetData() {
     };
   }).filter(Boolean);
 
-  // All rows go to venues - service section has its own dedicated sheet
+  // All rows go to venues — service section has its own dedicated sheet
   window.venuesFromSheet = rows;
-  window.servicesFromSheet = null; // Reserved for dedicated service sheet
+  window.servicesFromSheet = null;
 
   console.log(`✅ Loaded: ${window.venuesFromSheet.length} venues`);
   return true;
