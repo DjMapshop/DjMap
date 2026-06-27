@@ -1195,6 +1195,9 @@ function enterApp(pro) {
       if (!ok) return;
       if (window.venuesFromSheet && window.venuesFromSheet.length > 0) {
         venues = window.venuesFromSheet;
+        const withPhotos = venues.filter(v => v.photos && v.photos.length > 0).length;
+        console.log('📸 Venues with photos:', withPhotos, '/', venues.length);
+        if (venues[0]) console.log('📋 First venue photos:', JSON.stringify(venues[0].photos));
       }
       // services section loads from its own Google Sheet (separate tab)
       // window.servicesFromSheet is reserved for future service sheet
@@ -1606,7 +1609,7 @@ function venueCardHTML(v) {
        </div>`
     : [0].map(i => {
         const typeImg = (TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub']);
-        return `<div class="carousel-slide active" style="background-image:url('${typeImg}');background-size:cover;background-position:center;background-color:${grads[0]};width:100%;height:100%;"></div>`;
+        return `<div class="carousel-slide active" style="background-color:${grads[0]};width:100%;height:100%;position:absolute;inset:0;"><img src="${typeImg}" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""></div>`;
       }).join('');
 
   const dots = Array.from({length: slideCount}, (_, i) =>
@@ -1651,8 +1654,10 @@ function openVenue(id) {
   const typeImg = (TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub']);
   const slidesBg = photo1
     ? `background:${grads[0]};background-image:url('${photo1}');background-size:cover;background-position:center;`
-    : `background-image:url('${typeImg}');background-size:cover;background-position:center;background-color:${grads[0]};`;
+    : `background-color:${grads[0]};`;
+  const slideInner = photo1 ? '' : `<img src="${typeImg}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="">`;
   const slides = `<div class="detail-slide active" style="${slidesBg};position:relative;" id="ds_${id}_0">
+    ${slideInner}
     <span class="detail-name-bg">${v.name.toUpperCase()}</span>
   </div>`;
   const dots = Array.from({length: slideCount}, (_, i) =>
