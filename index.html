@@ -141,7 +141,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .detail-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;opacity:0;transition:opacity .4s;}
 .detail-slide.active{opacity:1;}
 .detail-emoji{font-size:60px;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5));}
-.detail-name-bg{color:rgba(255,255,255,.2);font-size:10px;letter-spacing:2px;}
+.detail-name-bg{color:rgba(255,255,255,.15);font-size:13px;letter-spacing:3px;font-weight:700;text-align:center;padding:0 20px;}
 .detail-nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:none;color:#fff;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
 .detail-nav-btn.prev{left:12px;}
 .detail-nav-btn.next{right:12px;}
@@ -1609,8 +1609,6 @@ function venueCardHTML(v) {
   const grads = TYPE_GRADIENTS[v.type] || TYPE_GRADIENTS['Nightclub'];
   const emojis = PHOTO_EMOJIS[v.type] || ['🎵','🎶','🎛️'];
   const color = TYPE_COLORS[v.type] || GOLD;
-  const photos = v.photos && v.photos.length ? v.photos : [];
-
   const slideCount = 1;
 
   // Always use inline SVG placeholder
@@ -1656,7 +1654,7 @@ function openVenue(id) {
 
   // Always use inline SVG placeholder
   const typeImg = TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub'];
-  const slides = `<div class="detail-slide active" style="position:relative;overflow:hidden;" id="ds_${id}_0">
+  const slides = `<div class="detail-slide active" style="position:relative;overflow:hidden;background:${grads[0]};" id="ds_${id}_0">
     <div style="position:absolute;inset:0;"><img src="${typeImg}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt=""></div>
     <span class="detail-name-bg">${v.name.toUpperCase()}</span>
   </div>`;
