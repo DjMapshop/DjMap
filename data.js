@@ -172,7 +172,7 @@ function parseSheetCSV(text, idOffset, defaultType) {
       capacity:     parseInt(g('capacity')) || 0,
       description:  g('description'),
       fee:          g('fee'),
-      nights:       [],
+      nights:       (g('workingdays') || g('workingDays') || g('nights') || '').split(/[,;]/).map(s=>s.trim()).filter(Boolean),
       isPremium,
       contacts,
       instagram:      g('instagramvenue') || g('instagram'),
@@ -180,7 +180,7 @@ function parseSheetCSV(text, idOffset, defaultType) {
       website:        g('website') || '',
       mapurl:         g('mapurl'),
       brands:         g('brands') || '',
-      workingHours:   g('workinghours') || '',
+      workingHours:   g('workinghours') || g('workingdays') || g('workingDays') || '',
       photos: [],
     };
   }).filter(Boolean);
