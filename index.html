@@ -1357,14 +1357,13 @@ function buildVenueFilters() {
   const genres = ['All',...new Set(cvs.flatMap(v=>v.genre||[]))];
   const TYPE_DISPLAY = {
     'Nightclub':'Nightclub','Night Club':'Nightclub','nightclub':'Nightclub','Club':'Nightclub',
+    'Bar':'Nightclub','Bar & Club':'Nightclub','Lounge':'Nightclub',
     'Rooftop Bar':'Rooftop Bar',
     'Promo Group':'Promo Group',
-    'Bar & Club':'Bar & Club','Bar':'Bar & Club','Lounge':'Bar & Club',
     'Beach Club':'Beach Club',
     'Restaurant':'Restaurant',
-    // Music Shop / Service / Rental → excluded from venue filters (belong to Service section)
   };
-  const TYPES_ORDER = ['All','Nightclub','Rooftop Bar','Promo Group','Bar & Club','Beach Club','Restaurant'];
+  const TYPES_ORDER = ['All','Nightclub','Rooftop Bar','Promo Group','Beach Club','Restaurant'];
   const presentTypes = new Set(cvs.map(v => TYPE_DISPLAY[v.type] || v.type));
   const orderedTypes = TYPES_ORDER.filter(t => t==='All' || presentTypes.has(t));
   // Add any types from data not in our list
@@ -1405,7 +1404,7 @@ function renderVenueList() {
   const SERVICE_TYPES = ['Music Shop','Service Center','Rental','Facebook Group Shop'];
   let list = venues.filter(v => countryToId(v.country) === selectedCountry.id && !SERVICE_TYPES.includes(v.type));
   if (venueTypeFilter !== 'All') {
-    const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Rooftop Bar':'Rooftop Bar','Promo Group':'Promo Group','Bar & Club':'Bar & Club','Bar':'Bar & Club','Lounge':'Bar & Club','Beach Club':'Beach Club','Restaurant':'Restaurant'};
+    const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Bar':'Nightclub','Bar & Club':'Nightclub','Lounge':'Nightclub','Rooftop Bar':'Rooftop Bar','Promo Group':'Promo Group','Beach Club':'Beach Club','Restaurant':'Restaurant'};
     list = list.filter(v => (TYPE_DISPLAY_F[v.type] || v.type) === venueTypeFilter);
   }
   if (venueCityFilter !== 'All') list = list.filter(v => v.city === venueCityFilter);
@@ -1606,8 +1605,8 @@ function venueCardHTML(v) {
         <img src="${photo1}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
        </div>`
     : [0].map(i => {
-        const typeImg = TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub'];
-        return `<div class="carousel-slide active" style="background-image:url('${typeImg}');background-size:cover;background-position:center;background-color:${grads[0]};"></div>`;
+        const typeImg = (TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub']).replace(/%22/g, "'");
+        return `<div class="carousel-slide active" style="background-image:url('${typeImg}');background-size:cover;background-position:center;background-color:${grads[0]};width:100%;height:100%;"></div>`;
       }).join('');
 
   const dots = Array.from({length: slideCount}, (_, i) =>
@@ -1649,7 +1648,7 @@ function openVenue(id) {
   const slideCount = 1;
 
   // Use photo1 if available, otherwise TYPE_IMAGE data URI
-  const typeImg = TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub'];
+  const typeImg = (TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub']).replace(/%22/g, "'");
   const slidesBg = photo1
     ? `background:${grads[0]};background-image:url('${photo1}');background-size:cover;background-position:center;`
     : `background-image:url('${typeImg}');background-size:cover;background-position:center;background-color:${grads[0]};`;

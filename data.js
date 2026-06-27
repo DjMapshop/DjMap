@@ -55,9 +55,9 @@ const TYPE_MAP = {
   'nightclub':'Nightclub','night club':'Nightclub','ночной клуб':'Nightclub','club':'Nightclub','клуб':'Nightclub',
   'beach club':'Beach Club','beachclub':'Beach Club','бич клуб':'Beach Club',
   'rooftop bar':'Rooftop Bar','rooftop':'Rooftop Bar',
-  // FIX: was 'Bar' — must be 'Bar & Club' to match filters
-  'bar & club':'Bar & Club','bar and club':'Bar & Club',
-  'bar':'Bar & Club','lounge':'Bar & Club','лаунж':'Bar & Club',
+  // Bar & Club / Bar / Lounge → all merged into Nightclub
+  'bar & club':'Nightclub','bar and club':'Nightclub',
+  'bar':'Nightclub','lounge':'Nightclub','лаунж':'Nightclub',
   'promo group':'Promo Group','promo':'Promo Group',
   'restaurant':'Restaurant','ресторан':'Restaurant',
   'music shop':'Music Shop','музыкальный магазин':'Music Shop',
