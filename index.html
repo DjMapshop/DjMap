@@ -97,7 +97,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .venue-card{background:#0f0f18;border:1px solid #1a1a2e;border-radius:14px;margin-bottom:11px;cursor:pointer;overflow:hidden;transition:border-color .2s;}
 .venue-card:hover{border-color:rgba(201,168,76,.3);}
 .venue-card.premium{border-color:rgba(201,168,76,.3);}
-.venue-carousel{position:relative;width:100%;height:220px;border-radius:12px 12px 0 0;overflow:hidden;}
+.venue-carousel{position:relative;width:100%;height:200px;border-radius:12px 12px 0 0;overflow:hidden;}
 .carousel-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;}
 .carousel-slide.active{opacity:1;}
 .carousel-emoji{font-size:34px;position:relative;z-index:1;}
@@ -134,9 +134,9 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
 .back-btn{background:#ffffff12;border:none;color:#777;border-radius:8px;padding:6px 11px;cursor:pointer;font-size:12px;font-family:'Inter',sans-serif;}
 
 /* Venue detail */
-#venue-detail{position:fixed;inset:0;background:rgba(5,5,8,0.85);z-index:150;display:none;flex-direction:column;overflow-y:scroll;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+#venue-detail{position:fixed;inset:0;background:rgba(5,5,8,0.85);z-index:150;display:none;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 #venue-detail.open{display:flex;}
-.detail-carousel{position:relative;width:100%;height:280px;overflow:hidden;}
+.detail-carousel{position:relative;width:100%;height:220px;overflow:hidden;}
 .detail-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;opacity:0;transition:opacity .4s;}
 .detail-slide.active{opacity:1;}
 .detail-emoji{font-size:60px;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5));}
@@ -1105,39 +1105,34 @@ const TYPE_GRADIENTS = {
   'Nightclub':      ['linear-gradient(135deg,#1a0533,#7c3aed)','linear-gradient(135deg,#0d0d2b,#4c1d95)','linear-gradient(135deg,#2d1b69,#db2777)'],
   'Beach Club':     ['linear-gradient(135deg,#0c4a6e,#06b6d4)','linear-gradient(135deg,#164e63,#0891b2)','linear-gradient(135deg,#0e7490,#22d3ee)'],
   'Rooftop Bar':    ['linear-gradient(135deg,#292524,#c9a84c)','linear-gradient(135deg,#1c1917,#d97706)','linear-gradient(135deg,#44403c,#fbbf24)'],
-  'Bar':            ['linear-gradient(135deg,#10001a,#200030)','linear-gradient(135deg,#18001a,#280035)','linear-gradient(135deg,#0a0012,#180022)'],
-  'Festival':       ['linear-gradient(135deg,#0a0018,#180030)','linear-gradient(135deg,#100020,#200038)','linear-gradient(135deg,#080012,#140028)'],
   'Bar & Club':     ['linear-gradient(135deg,#14532d,#84cc16)','linear-gradient(135deg,#166534,#4ade80)','linear-gradient(135deg,#052e16,#86efac)'],
   'Club':           ['linear-gradient(135deg,#500724,#ec4899)','linear-gradient(135deg,#831843,#f472b6)','linear-gradient(135deg,#be185d,#fda4af)'],
   'Lounge':         ['linear-gradient(135deg,#431407,#f97316)','linear-gradient(135deg,#7c2d12,#fb923c)','linear-gradient(135deg,#9a3412,#fdba74)'],
   'Music Shop':     ['linear-gradient(135deg,#1e3a5f,#3b82f6)','linear-gradient(135deg,#1e40af,#60a5fa)','linear-gradient(135deg,#1d4ed8,#93c5fd)'],
   'Service Center': ['linear-gradient(135deg,#3f1c00,#92400e)','linear-gradient(135deg,#78350f,#d97706)','linear-gradient(135deg,#451a03,#f59e0b)'],
-  'Bar': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g_bar%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2310001a%22/%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23200030%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22url%28%23g_bar%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%22220%22%20rx%3D%2280%22%20ry%3D%2210%22%20fill%3D%22%23e879f9%22%20opacity%3D%220.2%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%22100%22%20x2%3D%22200%22%20y2%3D%22220%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%224%22%20opacity%3D%220.6%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M130%2045%20L270%2045%20L240%20120%20Q200%20145%20160%20120%20Z%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%223%22%20opacity%3D%220.75%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22100%22%20r%3D%226%22%20fill%3D%22%23e879f9%22%20opacity%3D%220.5%22/%3E%3Cline%20x1%3D%22100%22%20y1%3D%22230%22%20x2%3D%22300%22%20y2%3D%22230%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%223%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%22250%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22252%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3Ccircle%20cx%3D%22252%22%20cy%3D%22250%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3Cline%20x1%3D%22155%22%20y1%3D%2245%22%20x2%3D%22148%22%20y2%3D%2215%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222.5%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%2212%22%20r%3D%225%22%20fill%3D%22%23e879f9%22%20opacity%3D%220.5%22/%3E%3C/svg%3E',
-  'Bar & Club': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g_bar%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2310001a%22/%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23200030%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22url%28%23g_bar%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%22220%22%20rx%3D%2280%22%20ry%3D%2210%22%20fill%3D%22%23e879f9%22%20opacity%3D%220.2%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%22100%22%20x2%3D%22200%22%20y2%3D%22220%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%224%22%20opacity%3D%220.6%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M130%2045%20L270%2045%20L240%20120%20Q200%20145%20160%20120%20Z%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%223%22%20opacity%3D%220.75%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22100%22%20r%3D%226%22%20fill%3D%22%23e879f9%22%20opacity%3D%220.5%22/%3E%3Cline%20x1%3D%22100%22%20y1%3D%22230%22%20x2%3D%22300%22%20y2%3D%22230%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%223%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%22250%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22252%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3Ccircle%20cx%3D%22252%22%20cy%3D%22250%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3Cline%20x1%3D%22155%22%20y1%3D%2245%22%20x2%3D%22148%22%20y2%3D%2215%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222.5%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%2212%22%20r%3D%225%22%20fill%3D%22%23e879f9%22%20opacity%3D%220.5%22/%3E%3C/svg%3E',
   'Facebook Group Shop': ['linear-gradient(135deg,#001840,#003070)','linear-gradient(135deg,#00102a,#002560)','linear-gradient(135deg,#001530,#002050)'],
   'Rental':         ['linear-gradient(135deg,#064e3b,#10b981)','linear-gradient(135deg,#065f46,#34d399)','linear-gradient(135deg,#047857,#6ee7b7)'],
 };
 const TYPE_IMAGES = {
-  'Nightclub': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%2308001a%22/%3E%3Cpolygon%20points%3D%22400%2C0%20400%2C300%200%2C300%22%20fill%3D%22%231a0038%22%20opacity%3D%220.8%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22130%22%20r%3D%2288%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22130%22%20r%3D%2256%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.8%22%20opacity%3D%220.45%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22130%22%20r%3D%2224%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.2%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22130%22%20r%3D%229%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.65%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%2242%22%20x2%3D%22200%22%20y2%3D%2210%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%223%22%20opacity%3D%220.65%22/%3E%3Cline%20x1%3D%22138%22%20y1%3D%2268%22%20x2%3D%22106%22%20y2%3D%2236%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%222.5%22%20opacity%3D%220.5%22/%3E%3Cline%20x1%3D%22262%22%20y1%3D%2268%22%20x2%3D%22294%22%20y2%3D%2236%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%222.5%22%20opacity%3D%220.5%22/%3E%3Cline%20x1%3D%22112%22%20y1%3D%22130%22%20x2%3D%2268%22%20y2%3D%22130%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%222.5%22%20opacity%3D%220.5%22/%3E%3Cline%20x1%3D%22288%22%20y1%3D%22130%22%20x2%3D%22332%22%20y2%3D%22130%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%222.5%22%20opacity%3D%220.5%22/%3E%3Crect%20x%3D%22150%22%20y%3D%22250%22%20width%3D%22100%22%20height%3D%227%22%20rx%3D%223.5%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.3%22/%3E%3C/svg%3E',
-  'Rooftop Bar': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%230f0a00%22/%3E%3Cpolygon%20points%3D%22400%2C0%20400%2C300%200%2C300%22%20fill%3D%22%231e1200%22%20opacity%3D%220.8%22/%3E%3Crect%20x%3D%2242%22%20y%3D%22182%22%20width%3D%2266%22%20height%3D%22105%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%222.5%22%20opacity%3D%220.7%22/%3E%3Crect%20x%3D%22134%22%20y%3D%22130%22%20width%3D%2288%22%20height%3D%22157%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%223%22%20opacity%3D%220.85%22/%3E%3Crect%20x%3D%22254%22%20y%3D%22162%22%20width%3D%2272%22%20height%3D%22125%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%222.5%22%20opacity%3D%220.7%22/%3E%3Crect%20x%3D%2255%22%20y%3D%22195%22%20width%3D%2212%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.4%22/%3E%3Crect%20x%3D%2275%22%20y%3D%22215%22%20width%3D%2212%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.3%22/%3E%3Crect%20x%3D%22150%22%20y%3D%22145%22%20width%3D%2212%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.4%22/%3E%3Crect%20x%3D%22170%22%20y%3D%22165%22%20width%3D%2212%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.35%22/%3E%3Crect%20x%3D%22195%22%20y%3D%22145%22%20width%3D%2212%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.4%22/%3E%3Crect%20x%3D%22264%22%20y%3D%22175%22%20width%3D%2212%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.35%22/%3E%3Crect%20x%3D%22290%22%20y%3D%22195%22%20width%3D%2212%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.3%22/%3E%3Cline%20x1%3D%2226%22%20y1%3D%22180%22%20x2%3D%22120%22%20y2%3D%22180%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%223.5%22%20opacity%3D%220.8%22/%3E%3Cline%20x1%3D%22120%22%20y1%3D%22128%22%20x2%3D%22234%22%20y2%3D%22128%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%224%22%20opacity%3D%221%22/%3E%3Cline%20x1%3D%22242%22%20y1%3D%22160%22%20x2%3D%22338%22%20y2%3D%22160%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%223.5%22%20opacity%3D%220.8%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2252%22%20r%3D%2228%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%222.5%22%20opacity%3D%220.9%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2252%22%20r%3D%2210%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.55%22/%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%2238%22%20r%3D%223%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%22300%22%20cy%3D%2244%22%20r%3D%223%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%2222%22%20r%3D%222%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22258%22%20cy%3D%2228%22%20r%3D%222%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.5%22/%3E%3C/svg%3E',
-  'Beach Club': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%23001525%22/%3E%3Cpolygon%20points%3D%22400%2C0%20400%2C300%200%2C300%22%20fill%3D%22%23002a50%22%20opacity%3D%220.8%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2298%22%20r%3D%2264%22%20fill%3D%22none%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%223%22%20opacity%3D%220.8%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2298%22%20r%3D%2242%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.1%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%2234%22%20x2%3D%22200%22%20y2%3D%226%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%223.5%22%20opacity%3D%220.8%22/%3E%3Cline%20x1%3D%22136%22%20y1%3D%2298%22%20x2%3D%22108%22%20y2%3D%2298%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%223.5%22%20opacity%3D%220.8%22/%3E%3Cline%20x1%3D%22264%22%20y1%3D%2298%22%20x2%3D%22292%22%20y2%3D%2298%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%223.5%22%20opacity%3D%220.8%22/%3E%3Cline%20x1%3D%22154%22%20y1%3D%2252%22%20x2%3D%22132%22%20y2%3D%2230%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22/%3E%3Cline%20x1%3D%22246%22%20y1%3D%2252%22%20x2%3D%22268%22%20y2%3D%2230%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22/%3E%3Cpath%20d%3D%22M18%20208%20Q109%20165%20200%20208%20Q291%20251%20382%20208%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%224%22%20opacity%3D%220.8%22/%3E%3Cpath%20d%3D%22M18%20238%20Q109%20195%20200%20238%20Q291%20281%20382%20238%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%223%22%20opacity%3D%220.6%22/%3E%3Cpath%20d%3D%22M18%20266%20Q109%20223%20200%20266%20Q291%20309%20382%20266%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3C/svg%3E',
-  'Bar': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%2310001a%22/%3E%3Cpolygon%20points%3D%22400%2C0%20400%2C300%200%2C300%22%20fill%3D%22%231e0028%22%20opacity%3D%220.8%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%22115%22%20x2%3D%22200%22%20y2%3D%22230%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%225%22%20opacity%3D%220.7%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M128%2040%20L272%2040%20L242%20118%20Q200%20145%20158%20118%20Z%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%223.5%22%20opacity%3D%220.8%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%22232%22%20rx%3D%2262%22%20ry%3D%2212%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222.5%22%20opacity%3D%220.5%22/%3E%3Cline%20x1%3D%22108%22%20y1%3D%22246%22%20x2%3D%22292%22%20y2%3D%22246%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%223%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%22264%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.45%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22266%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.45%22/%3E%3Ccircle%20cx%3D%22252%22%20cy%3D%22264%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.45%22/%3E%3Cline%20x1%3D%22155%22%20y1%3D%2240%22%20x2%3D%22148%22%20y2%3D%2214%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222.5%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%2211%22%20r%3D%225%22%20fill%3D%22%23e879f9%22%20opacity%3D%220.55%22/%3E%3C/svg%3E',
-  'Promo Group': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%23050f00%22/%3E%3Cpolygon%20points%3D%22400%2C0%20400%2C300%200%2C300%22%20fill%3D%22%230a1a00%22%20opacity%3D%220.8%22/%3E%3Cpath%20d%3D%22M120%20150%20Q120%2080%20200%2075%20Q280%2080%20280%20150%22%20fill%3D%22none%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%224%22%20opacity%3D%220.9%22%20stroke-linecap%3D%22round%22/%3E%3Crect%20x%3D%22100%22%20y%3D%22142%22%20width%3D%2236%22%20height%3D%2256%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%223.5%22%20opacity%3D%220.85%22/%3E%3Crect%20x%3D%22264%22%20y%3D%22142%22%20width%3D%2236%22%20height%3D%2256%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%223.5%22%20opacity%3D%220.85%22/%3E%3Crect%20x%3D%22118%22%20y%3D%22220%22%20width%3D%22164%22%20height%3D%2254%22%20rx%3D%228%22%20fill%3D%22none%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%222.5%22%20opacity%3D%220.65%22/%3E%3Ccircle%20cx%3D%22152%22%20cy%3D%22247%22%20r%3D%2212%22%20fill%3D%22none%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%222%22%20opacity%3D%220.55%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22247%22%20r%3D%2212%22%20fill%3D%22none%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%222%22%20opacity%3D%220.55%22/%3E%3Ccircle%20cx%3D%22248%22%20cy%3D%22247%22%20r%3D%2212%22%20fill%3D%22none%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%222%22%20opacity%3D%220.55%22/%3E%3Cline%20x1%3D%22138%22%20y1%3D%22222%22%20x2%3D%22138%22%20y2%3D%22274%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3Cline%20x1%3D%22262%22%20y1%3D%22222%22%20x2%3D%22262%22%20y2%3D%22274%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3Ctext%20x%3D%22200%22%20y%3D%2258%22%20font-family%3D%22Arial%22%20font-size%3D%2228%22%20fill%3D%22%234ade80%22%20text-anchor%3D%22middle%22%20opacity%3D%220.6%22%3E%26%239836%3B%3C/text%3E%3Ctext%20x%3D%22148%22%20y%3D%2270%22%20font-family%3D%22Arial%22%20font-size%3D%2218%22%20fill%3D%22%234ade80%22%20text-anchor%3D%22middle%22%20opacity%3D%220.4%22%3E%26%239835%3B%3C/text%3E%3Ctext%20x%3D%22255%22%20y%3D%2272%22%20font-family%3D%22Arial%22%20font-size%3D%2218%22%20fill%3D%22%234ade80%22%20text-anchor%3D%22middle%22%20opacity%3D%220.4%22%3E%26%239836%3B%3C/text%3E%3C/svg%3E',
-  'Restaurant': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%23150600%22/%3E%3Cpolygon%20points%3D%22400%2C0%20400%2C300%200%2C300%22%20fill%3D%22%23260e00%22%20opacity%3D%220.8%22/%3E%3Cline%20x1%3D%22148%22%20y1%3D%2218%22%20x2%3D%22148%22%20y2%3D%22282%22%20stroke%3D%22%23fb923c%22%20stroke-width%3D%226%22%20opacity%3D%220.7%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M124%2018%20Q124%20112%20148%20128%22%20fill%3D%22none%22%20stroke%3D%22%23fb923c%22%20stroke-width%3D%225%22%20opacity%3D%220.7%22/%3E%3Cpath%20d%3D%22M172%2018%20Q172%20112%20148%20128%22%20fill%3D%22none%22%20stroke%3D%22%23fb923c%22%20stroke-width%3D%225%22%20opacity%3D%220.7%22/%3E%3Cline%20x1%3D%22255%22%20y1%3D%2218%22%20x2%3D%22255%22%20y2%3D%22282%22%20stroke%3D%22%23fb923c%22%20stroke-width%3D%226%22%20opacity%3D%220.7%22%20stroke-linecap%3D%22round%22/%3E%3Cellipse%20cx%3D%22255%22%20cy%3D%2265%22%20rx%3D%2228%22%20ry%3D%2249%22%20fill%3D%22none%22%20stroke%3D%22%23fb923c%22%20stroke-width%3D%225%22%20opacity%3D%220.7%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22168%22%20r%3D%2276%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%222%22%20opacity%3D%220.35%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22168%22%20r%3D%2254%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.2%22%20opacity%3D%220.2%22/%3E%3C/svg%3E',
-  'Festival': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%230a0018%22/%3E%3Cpolygon%20points%3D%22400%2C0%20400%2C300%200%2C300%22%20fill%3D%22%23180030%22%20opacity%3D%220.8%22/%3E%3Crect%20x%3D%2280%22%20y%3D%22195%22%20width%3D%22240%22%20height%3D%2218%22%20rx%3D%224%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.5%22/%3E%3Crect%20x%3D%22100%22%20y%3D%22135%22%20width%3D%22200%22%20height%3D%2260%22%20fill%3D%22none%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%222%22%20opacity%3D%220.5%22/%3E%3Cpolygon%20points%3D%22120%2C130%2090%2C30%20150%2C30%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.12%22/%3E%3Cpolygon%20points%3D%22200%2C130%20180%2C20%20220%2C20%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.15%22/%3E%3Cpolygon%20points%3D%22280%2C130%20250%2C30%20310%2C30%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.12%22/%3E%3Ccircle%20cx%3D%22120%22%20cy%3D%2230%22%20r%3D%226%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.7%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2218%22%20r%3D%228%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.8%22/%3E%3Ccircle%20cx%3D%22280%22%20cy%3D%2230%22%20r%3D%226%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.7%22/%3E%3Cpath%20d%3D%22M60%20250%20Q200%20230%20340%20250%22%20fill%3D%22none%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%221.5%22%20opacity%3D%220.3%22/%3E%3Cpath%20d%3D%22M40%20268%20Q200%20245%20360%20268%22%20fill%3D%22none%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%221%22%20opacity%3D%220.2%22/%3E%3Ccircle%20cx%3D%22130%22%20cy%3D%22285%22%20r%3D%228%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.25%22/%3E%3Ccircle%20cx%3D%22160%22%20cy%3D%22280%22%20r%3D%228%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.25%22/%3E%3Ccircle%20cx%3D%22190%22%20cy%3D%22288%22%20r%3D%228%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.25%22/%3E%3Ccircle%20cx%3D%22220%22%20cy%3D%22280%22%20r%3D%228%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.25%22/%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%22285%22%20r%3D%228%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.25%22/%3E%3Ccircle%20cx%3D%22280%22%20cy%3D%22280%22%20r%3D%228%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.25%22/%3E%3C/svg%3E',
-  'Music Shop': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%23001018%22/%3E%3Cpolygon%20points%3D%22400%2C0%20400%2C300%200%2C300%22%20fill%3D%22%23002035%22%20opacity%3D%220.8%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22150%22%20r%3D%22118%22%20fill%3D%22none%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%223%22%20opacity%3D%220.65%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22150%22%20r%3D%2292%22%20fill%3D%22none%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%222%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22150%22%20r%3D%2266%22%20fill%3D%22none%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%221.5%22%20opacity%3D%220.4%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22150%22%20r%3D%2240%22%20fill%3D%22none%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%221.5%22%20opacity%3D%220.35%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22150%22%20r%3D%2220%22%20fill%3D%22none%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%222.5%22%20opacity%3D%220.65%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22150%22%20r%3D%228%22%20fill%3D%22%2322d3ee%22%20opacity%3D%220.65%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%22150%22%20x2%3D%22308%22%20y2%3D%2238%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%22308%22%20cy%3D%2238%22%20r%3D%229%22%20fill%3D%22none%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%222.5%22%20opacity%3D%220.7%22/%3E%3C/svg%3E',
-  'Service Center': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%23081208%22/%3E%3Cpolygon%20points%3D%22400%2C0%20400%2C300%200%2C300%22%20fill%3D%22%23101a10%22%20opacity%3D%220.8%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22148%22%20r%3D%2296%22%20fill%3D%22none%22%20stroke%3D%22%2386efac%22%20stroke-width%3D%222.5%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22148%22%20r%3D%2264%22%20fill%3D%22none%22%20stroke%3D%22%2386efac%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22148%22%20r%3D%2226%22%20fill%3D%22%2386efac%22%20opacity%3D%220.18%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22148%22%20r%3D%2211%22%20fill%3D%22%2386efac%22%20opacity%3D%220.55%22/%3E%3Crect%20x%3D%22186%22%20y%3D%2240%22%20width%3D%2228%22%20height%3D%2238%22%20rx%3D%226%22%20fill%3D%22%2386efac%22%20opacity%3D%220.65%22/%3E%3Crect%20x%3D%22186%22%20y%3D%22222%22%20width%3D%2228%22%20height%3D%2238%22%20rx%3D%226%22%20fill%3D%22%2386efac%22%20opacity%3D%220.65%22/%3E%3Crect%20x%3D%2256%22%20y%3D%22134%22%20width%3D%2238%22%20height%3D%2228%22%20rx%3D%226%22%20fill%3D%22%2386efac%22%20opacity%3D%220.65%22/%3E%3Crect%20x%3D%22306%22%20y%3D%22134%22%20width%3D%2238%22%20height%3D%2228%22%20rx%3D%226%22%20fill%3D%22%2386efac%22%20opacity%3D%220.65%22/%3E%3Crect%20x%3D%22104%22%20y%3D%2268%22%20width%3D%2228%22%20height%3D%2238%22%20rx%3D%226%22%20fill%3D%22%2386efac%22%20opacity%3D%220.55%22%20transform%3D%22rotate%2845%20118%2087%29%22/%3E%3Crect%20x%3D%22254%22%20y%3D%22218%22%20width%3D%2228%22%20height%3D%2238%22%20rx%3D%226%22%20fill%3D%22%2386efac%22%20opacity%3D%220.55%22%20transform%3D%22rotate%2845%20268%20237%29%22/%3E%3Crect%20x%3D%22254%22%20y%3D%2268%22%20width%3D%2228%22%20height%3D%2238%22%20rx%3D%226%22%20fill%3D%22%2386efac%22%20opacity%3D%220.55%22%20transform%3D%22rotate%28-45%20268%2087%29%22/%3E%3Crect%20x%3D%22104%22%20y%3D%22218%22%20width%3D%2228%22%20height%3D%2238%22%20rx%3D%226%22%20fill%3D%22%2386efac%22%20opacity%3D%220.55%22%20transform%3D%22rotate%28-45%20118%20237%29%22/%3E%3C/svg%3E',
-  'Facebook Group Shop': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%23001840%22/%3E%3Cpolygon%20points%3D%22400%2C0%20400%2C300%200%2C300%22%20fill%3D%22%23003070%22%20opacity%3D%220.8%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2272%22%20r%3D%2236%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%223.5%22%20opacity%3D%220.95%22/%3E%3Ccircle%20cx%3D%22108%22%20cy%3D%2298%22%20r%3D%2226%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%222.5%22%20opacity%3D%220.75%22/%3E%3Ccircle%20cx%3D%22292%22%20cy%3D%2298%22%20r%3D%2226%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%222.5%22%20opacity%3D%220.75%22/%3E%3Cpath%20d%3D%22M46%20178%20Q70%20142%20160%20142%20Q200%20142%20200%20142%20Q200%20142%20240%20142%20Q330%20142%20354%20178%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%222.5%22%20opacity%3D%220.65%22/%3E%3Crect%20x%3D%22145%22%20y%3D%22195%22%20width%3D%22110%22%20height%3D%2288%22%20rx%3D%2210%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%223.5%22%20opacity%3D%220.9%22/%3E%3Cpath%20d%3D%22M168%20195%20Q168%20168%20200%20168%20Q232%20168%20232%20195%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%223%22%20opacity%3D%220.9%22/%3E%3Cline%20x1%3D%22145%22%20y1%3D%22222%22%20x2%3D%22255%22%20y2%3D%22222%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%221.5%22%20opacity%3D%220.55%22/%3E%3Ccircle%20cx%3D%22180%22%20cy%3D%22210%22%20r%3D%227%22%20fill%3D%22%234f90f0%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%22220%22%20cy%3D%22210%22%20r%3D%227%22%20fill%3D%22%234f90f0%22%20opacity%3D%220.6%22/%3E%3C/svg%3E',
+  'Nightclub': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20260%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2308001a%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231a0035%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%22400%22%20height%3D%22260%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%200%20L20%200%20L0%2020%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%200%20L380%200%20L400%2020%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%20260%20L20%20260%20L0%20240%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%20260%20L380%20260%20L400%20240%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Ccircle%20cx%3D%22200%22%20cy%3D%22115%22%20r%3D%2255%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.5%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22115%22%20r%3D%2235%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221%22%20opacity%3D%220.35%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22115%22%20r%3D%2212%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.25%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22115%22%20r%3D%225%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.6%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%2260%22%20x2%3D%22200%22%20y2%3D%2225%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%222%22%20opacity%3D%220.5%22/%3E%3Cline%20x1%3D%22160%22%20y1%3D%2275%22%20x2%3D%22140%22%20y2%3D%2255%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.5%22%20opacity%3D%220.35%22/%3E%3Cline%20x1%3D%22240%22%20y1%3D%2275%22%20x2%3D%22260%22%20y2%3D%2255%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.5%22%20opacity%3D%220.35%22/%3E%3Cline%20x1%3D%22145%22%20y1%3D%22115%22%20x2%3D%22110%22%20y2%3D%22115%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.5%22%20opacity%3D%220.35%22/%3E%3Cline%20x1%3D%22255%22%20y1%3D%22115%22%20x2%3D%22290%22%20y2%3D%22115%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.5%22%20opacity%3D%220.35%22/%3E%3Crect%20x%3D%22160%22%20y%3D%22190%22%20width%3D%2280%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.3%22/%3E%3Crect%20x%3D%22170%22%20y%3D%22202%22%20width%3D%2260%22%20height%3D%225%22%20rx%3D%222%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.2%22/%3E%0A%3C/svg%3E',
+  'Rooftop Bar': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20260%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230f0a00%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%231e1400%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%22400%22%20height%3D%22260%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%200%20L20%200%20L0%2020%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%200%20L380%200%20L400%2020%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%20260%20L20%20260%20L0%20240%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%20260%20L380%20260%20L400%20240%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Crect%20x%3D%22130%22%20y%3D%22150%22%20width%3D%22140%22%20height%3D%2265%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.5%22%20opacity%3D%220.45%22/%3E%3Crect%20x%3D%22120%22%20y%3D%22143%22%20width%3D%22160%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.35%22/%3E%3Cline%20x1%3D%22155%22%20y1%3D%22143%22%20x2%3D%22155%22%20y2%3D%2290%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221%22%20opacity%3D%220.35%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%22143%22%20x2%3D%22200%22%20y2%3D%2275%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221%22%20opacity%3D%220.35%22/%3E%3Cline%20x1%3D%22245%22%20y1%3D%22143%22%20x2%3D%22245%22%20y2%3D%2290%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221%22%20opacity%3D%220.35%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2258%22%20r%3D%2222%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.5%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2258%22%20r%3D%228%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.3%22/%3E%3Cline%20x1%3D%2280%22%20y1%3D%22215%22%20x2%3D%22320%22%20y2%3D%22215%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%220.8%22%20opacity%3D%220.25%22/%3E%0A%3C/svg%3E',
+  'Beach Club': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20260%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23001525%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23002a45%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%22400%22%20height%3D%22260%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%200%20L20%200%20L0%2020%22%20fill%3D%22%2338bdf8%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%200%20L380%200%20L400%2020%22%20fill%3D%22%2338bdf8%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%20260%20L20%20260%20L0%20240%22%20fill%3D%22%2338bdf8%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%20260%20L380%20260%20L400%20240%22%20fill%3D%22%2338bdf8%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M60%20170%20Q200%2095%20340%20170%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%222%22%20opacity%3D%220.45%22/%3E%3Cpath%20d%3D%22M60%20185%20Q200%20110%20340%20185%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221.5%22%20opacity%3D%220.3%22/%3E%3Cpath%20d%3D%22M60%20200%20Q200%20125%20340%20200%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221%22%20opacity%3D%220.2%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2270%22%20r%3D%2242%22%20fill%3D%22none%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%222%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2270%22%20r%3D%2228%22%20fill%3D%22%23f59e0b%22%20opacity%3D%220.1%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%2228%22%20x2%3D%22200%22%20y2%3D%2210%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%222%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%22112%22%20x2%3D%22200%22%20y2%3D%22130%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%222%22/%3E%3Cline%20x1%3D%22158%22%20y1%3D%2270%22%20x2%3D%22140%22%20y2%3D%2270%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%222%22/%3E%3Cline%20x1%3D%22242%22%20y1%3D%2270%22%20x2%3D%22260%22%20y2%3D%2270%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%222%22/%3E%0A%3C/svg%3E',
+  'Bar & Club': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20260%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23080818%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2310102a%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%22400%22%20height%3D%22260%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%200%20L20%200%20L0%2020%22%20fill%3D%22%23a78bfa%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%200%20L380%200%20L400%2020%22%20fill%3D%22%23a78bfa%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%20260%20L20%20260%20L0%20240%22%20fill%3D%22%23a78bfa%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%20260%20L380%20260%20L400%20240%22%20fill%3D%22%23a78bfa%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Crect%20x%3D%22172%22%20y%3D%2255%22%20width%3D%2210%22%20height%3D%2295%22%20rx%3D%225%22%20fill%3D%22%23a78bfa%22%20opacity%3D%220.6%22/%3E%3Crect%20x%3D%22190%22%20y%3D%2240%22%20width%3D%2210%22%20height%3D%22110%22%20rx%3D%225%22%20fill%3D%22%23a78bfa%22%20opacity%3D%220.8%22/%3E%3Crect%20x%3D%22208%22%20y%3D%2250%22%20width%3D%2210%22%20height%3D%22100%22%20rx%3D%225%22%20fill%3D%22%23a78bfa%22%20opacity%3D%220.6%22/%3E%3Crect%20x%3D%22226%22%20y%3D%2265%22%20width%3D%2210%22%20height%3D%2285%22%20rx%3D%225%22%20fill%3D%22%23a78bfa%22%20opacity%3D%220.5%22/%3E%3Crect%20x%3D%22154%22%20y%3D%2272%22%20width%3D%2210%22%20height%3D%2278%22%20rx%3D%225%22%20fill%3D%22%23a78bfa%22%20opacity%3D%220.45%22/%3E%3Cline%20x1%3D%22144%22%20y1%3D%22160%22%20x2%3D%22256%22%20y2%3D%22160%22%20stroke%3D%22%23a78bfa%22%20stroke-width%3D%221%22%20opacity%3D%220.35%22/%3E%3Crect%20x%3D%22155%22%20y%3D%22168%22%20width%3D%2290%22%20height%3D%2228%22%20rx%3D%225%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.5%22%20opacity%3D%220.45%22/%3E%3Ccircle%20cx%3D%22178%22%20cy%3D%22182%22%20r%3D%227%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.35%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22182%22%20r%3D%227%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.35%22/%3E%3Ccircle%20cx%3D%22222%22%20cy%3D%22182%22%20r%3D%227%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.35%22/%3E%0A%3C/svg%3E',
+  'Promo Group': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20260%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23050f00%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230a1f00%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%22400%22%20height%3D%22260%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%200%20L20%200%20L0%2020%22%20fill%3D%22%234ade80%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%200%20L380%200%20L400%2020%22%20fill%3D%22%234ade80%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%20260%20L20%20260%20L0%20240%22%20fill%3D%22%234ade80%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%20260%20L380%20260%20L400%20240%22%20fill%3D%22%234ade80%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Ccircle%20cx%3D%22200%22%20cy%3D%2290%22%20r%3D%2228%22%20fill%3D%22none%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%222%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2290%22%20r%3D%2210%22%20fill%3D%22%234ade80%22%20opacity%3D%220.35%22/%3E%3Ccircle%20cx%3D%22135%22%20cy%3D%22145%22%20r%3D%2220%22%20fill%3D%22none%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%221.5%22%20opacity%3D%220.45%22/%3E%3Ccircle%20cx%3D%22135%22%20cy%3D%22145%22%20r%3D%227%22%20fill%3D%22%234ade80%22%20opacity%3D%220.25%22/%3E%3Ccircle%20cx%3D%22265%22%20cy%3D%22145%22%20r%3D%2220%22%20fill%3D%22none%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%221.5%22%20opacity%3D%220.45%22/%3E%3Ccircle%20cx%3D%22265%22%20cy%3D%22145%22%20r%3D%227%22%20fill%3D%22%234ade80%22%20opacity%3D%220.25%22/%3E%3Cline%20x1%3D%22172%22%20y1%3D%22108%22%20x2%3D%22150%22%20y2%3D%22130%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%221.5%22%20opacity%3D%220.4%22/%3E%3Cline%20x1%3D%22228%22%20y1%3D%22108%22%20x2%3D%22250%22%20y2%3D%22130%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%221.5%22%20opacity%3D%220.4%22/%3E%3Cline%20x1%3D%22115%22%20y1%3D%22165%22%20x2%3D%22185%22%20y2%3D%22195%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221%22%20opacity%3D%220.3%22/%3E%3Cline%20x1%3D%22285%22%20y1%3D%22165%22%20x2%3D%22215%22%20y2%3D%22195%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221%22%20opacity%3D%220.3%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%2212%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.5%22%20opacity%3D%220.4%22/%3E%0A%3C/svg%3E',
+  'Restaurant': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20260%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23150600%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23220e00%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%22400%22%20height%3D%22260%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%200%20L20%200%20L0%2020%22%20fill%3D%22%23fb923c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%200%20L380%200%20L400%2020%22%20fill%3D%22%23fb923c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%20260%20L20%20260%20L0%20240%22%20fill%3D%22%23fb923c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%20260%20L380%20260%20L400%20240%22%20fill%3D%22%23fb923c%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cline%20x1%3D%22160%22%20y1%3D%2250%22%20x2%3D%22160%22%20y2%3D%22130%22%20stroke%3D%22%23fb923c%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M148%2050%20Q160%2070%20172%2050%22%20fill%3D%22none%22%20stroke%3D%22%23fb923c%22%20stroke-width%3D%222%22%20opacity%3D%220.6%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%2250%22%20x2%3D%22200%22%20y2%3D%2280%22%20stroke%3D%22%23fb923c%22%20stroke-width%3D%222%22%20opacity%3D%220.6%22/%3E%3Cpath%20d%3D%22M188%2050%20Q188%2082%20200%2082%20Q212%2082%20212%2050%22%20fill%3D%22none%22%20stroke%3D%22%23fb923c%22%20stroke-width%3D%222%22%20opacity%3D%220.6%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%2282%22%20x2%3D%22200%22%20y2%3D%22130%22%20stroke%3D%22%23fb923c%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22/%3E%3Cline%20x1%3D%22240%22%20y1%3D%2250%22%20x2%3D%22240%22%20y2%3D%22130%22%20stroke%3D%22%23fb923c%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22%20stroke-linecap%3D%22round%22/%3E%3Crect%20x%3D%22140%22%20y%3D%22138%22%20width%3D%22120%22%20height%3D%225%22%20rx%3D%222%22%20fill%3D%22%23fb923c%22%20opacity%3D%220.4%22/%3E%3Crect%20x%3D%22148%22%20y%3D%22152%22%20width%3D%22104%22%20height%3D%2255%22%20rx%3D%225%22%20fill%3D%22none%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221.5%22%20opacity%3D%220.4%22/%3E%3Cline%20x1%3D%22160%22%20y1%3D%22168%22%20x2%3D%22240%22%20y2%3D%22168%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221%22%20opacity%3D%220.35%22/%3E%3Cline%20x1%3D%22160%22%20y1%3D%22182%22%20x2%3D%22230%22%20y2%3D%22182%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221%22%20opacity%3D%220.25%22/%3E%3Cline%20x1%3D%22160%22%20y1%3D%22196%22%20x2%3D%22218%22%20y2%3D%22196%22%20stroke%3D%22%23c9a84c%22%20stroke-width%3D%221%22%20opacity%3D%220.2%22/%3E%0A%3C/svg%3E',
+  'Music Shop': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20260%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23001018%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23002030%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%22400%22%20height%3D%22260%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%200%20L20%200%20L0%2020%22%20fill%3D%22%2322d3ee%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%200%20L380%200%20L400%2020%22%20fill%3D%22%2322d3ee%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%20260%20L20%20260%20L0%20240%22%20fill%3D%22%2322d3ee%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%20260%20L380%20260%20L400%20240%22%20fill%3D%22%2322d3ee%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Crect%20x%3D%22148%22%20y%3D%2250%22%20width%3D%22104%22%20height%3D%22120%22%20rx%3D%226%22%20fill%3D%22none%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%221.5%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22135%22%20r%3D%2228%22%20fill%3D%22none%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%221.5%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22135%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%221%22%20opacity%3D%220.4%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22135%22%20r%3D%225%22%20fill%3D%22%2322d3ee%22%20opacity%3D%220.5%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%2268%22%20x2%3D%22200%22%20y2%3D%22107%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%221.5%22%20opacity%3D%220.5%22/%3E%3Cline%20x1%3D%22175%22%20y1%3D%2268%22%20x2%3D%22225%22%20y2%3D%2268%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%221.5%22%20opacity%3D%220.5%22/%3E%3Crect%20x%3D%22173%22%20y%3D%2273%22%20width%3D%2210%22%20height%3D%2230%22%20rx%3D%223%22%20fill%3D%22%2322d3ee%22%20opacity%3D%220.35%22/%3E%3Cline%20x1%3D%22140%22%20y1%3D%22185%22%20x2%3D%22260%22%20y2%3D%22185%22%20stroke%3D%22%2322d3ee%22%20stroke-width%3D%221%22%20opacity%3D%220.3%22/%3E%3Crect%20x%3D%22148%22%20y%3D%22192%22%20width%3D%22104%22%20height%3D%2222%22%20rx%3D%224%22%20fill%3D%22%23c9a84c%22%20opacity%3D%220.12%22/%3E%0A%3C/svg%3E',
+  'Service Center': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20260%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23081208%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23101a10%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%22400%22%20height%3D%22260%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%200%20L20%200%20L0%2020%22%20fill%3D%22%2386efac%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%200%20L380%200%20L400%2020%22%20fill%3D%22%2386efac%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M0%20260%20L20%20260%20L0%20240%22%20fill%3D%22%2386efac%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Cpath%20d%3D%22M400%20260%20L380%20260%20L400%20240%22%20fill%3D%22%2386efac%22%20opacity%3D%220.2%22/%3E%0A%20%20%3Ccircle%20cx%3D%22200%22%20cy%3D%22105%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%2386efac%22%20stroke-width%3D%221.5%22%20opacity%3D%220.4%22/%3E%3Cpath%20d%3D%22M183%2088%20L200%20105%20L217%2088%22%20fill%3D%22none%22%20stroke%3D%22%2386efac%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22/%3E%3Cpath%20d%3D%22M183%20122%20L200%20105%20L217%20122%22%20fill%3D%22none%22%20stroke%3D%22%2386efac%22%20stroke-width%3D%222.5%22%20opacity%3D%220.6%22/%3E%3Cpath%20d%3D%22M165%2092%20Q158%20105%20165%20118%22%20fill%3D%22none%22%20stroke%3D%22%2386efac%22%20stroke-width%3D%222.5%22%20opacity%3D%220.55%22/%3E%3Cpath%20d%3D%22M235%2092%20Q242%20105%20235%20118%22%20fill%3D%22none%22%20stroke%3D%22%2386efac%22%20stroke-width%3D%222.5%22%20opacity%3D%220.55%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22105%22%20r%3D%2212%22%20fill%3D%22%2386efac%22%20opacity%3D%220.25%22/%3E%3Cline%20x1%3D%22155%22%20y1%3D%22168%22%20x2%3D%22245%22%20y2%3D%22168%22%20stroke%3D%22%2386efac%22%20stroke-width%3D%221.5%22%20opacity%3D%220.35%22/%3E%3Crect%20x%3D%22155%22%20y%3D%22176%22%20width%3D%2290%22%20height%3D%2210%22%20rx%3D%225%22%20fill%3D%22%2386efac%22%20opacity%3D%220.25%22/%3E%3Crect%20x%3D%22160%22%20y%3D%22193%22%20width%3D%2280%22%20height%3D%228%22%20rx%3D%224%22%20fill%3D%22%2386efac%22%20opacity%3D%220.18%22/%3E%0A%3C/svg%3E',
+  'Facebook Group Shop': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20260%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23001840%22/%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23003070%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22400%22%20height%3D%22260%22%20fill%3D%22url(%23g)%22/%3E%3Cpath%20d%3D%22M0%200%20L20%200%20L0%2020%22%20fill%3D%22%234f90f0%22%20opacity%3D%220.2%22/%3E%3Cpath%20d%3D%22M400%200%20L380%200%20L400%2020%22%20fill%3D%22%234f90f0%22%20opacity%3D%220.2%22/%3E%3Cpath%20d%3D%22M0%20260%20L20%20260%20L0%20240%22%20fill%3D%22%234f90f0%22%20opacity%3D%220.2%22/%3E%3Cpath%20d%3D%22M400%20260%20L380%20260%20L400%20240%22%20fill%3D%22%234f90f0%22%20opacity%3D%220.2%22/%3E%3Ccircle%20cx%3D%22170%22%20cy%3D%2280%22%20r%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%221.5%22%20opacity%3D%220.7%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%2270%22%20r%3D%2222%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%222%22%20opacity%3D%220.9%22/%3E%3Ccircle%20cx%3D%22230%22%20cy%3D%2280%22%20r%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%221.5%22%20opacity%3D%220.7%22/%3E%3Cpath%20d%3D%22M148%20130%20Q158%20108%20192%20108%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%221.5%22%20opacity%3D%220.6%22/%3E%3Cpath%20d%3D%22M252%20130%20Q242%20108%20208%20108%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%221.5%22%20opacity%3D%220.6%22/%3E%3Cpath%20d%3D%22M148%20130%20Q148%20145%20200%20145%20Q252%20145%20252%20130%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%221.5%22%20opacity%3D%220.5%22/%3E%3Crect%20x%3D%22163%22%20y%3D%22158%22%20width%3D%2274%22%20height%3D%2262%22%20rx%3D%226%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%222%22%20opacity%3D%220.8%22/%3E%3Cpath%20d%3D%22M178%20158%20Q178%20142%20200%20142%20Q222%20142%20222%20158%22%20fill%3D%22none%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%222%22%20opacity%3D%220.8%22/%3E%3Cline%20x1%3D%22163%22%20y1%3D%22178%22%20x2%3D%22237%22%20y2%3D%22178%22%20stroke%3D%22%234f90f0%22%20stroke-width%3D%221%22%20opacity%3D%220.4%22/%3E%3Ccircle%20cx%3D%22191%22%20cy%3D%22168%22%20r%3D%225%22%20fill%3D%22%234f90f0%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22209%22%20cy%3D%22168%22%20r%3D%225%22%20fill%3D%22%234f90f0%22%20opacity%3D%220.5%22/%3E%3C/svg%3E',
 };
 const PHOTO_EMOJIS = {
   'Nightclub':['🎛️','💡','🎶'],'Beach Club':['🏖️','🌅','🍹'],
   'Rooftop Bar':['🌃','✨','🥂'],'Bar & Club':['🍸','🎵','🌿'],
   'Club':['💃','🎤','🔊'],'Lounge':['🛋️','🕯️','🎼'],
-  'Festival':['🎪','🎵','✨'],'Music Shop':['🎸','🎹','🎚️'],'Service Center':['🔧','⚙️','🛠️'],'Rental':['🎚️','🔊','🎛️'],
+  'Music Shop':['🎸','🎹','🎚️'],'Service Center':['🔧','⚙️','🛠️'],'Rental':['🎚️','🔊','🎛️'],
 };
 const TYPE_COLORS = {
   'Nightclub':'#a855f7','Beach Club':'#06b6d4','Rooftop Bar':'#c9a84c',
-  'Bar':'#e879f9','Bar & Club':'#84cc16','Festival':'#f59e0b','Club':'#ec4899','Lounge':'#f97316',
+  'Bar & Club':'#84cc16','Club':'#ec4899','Lounge':'#f97316',
   'Music Shop':'#3b82f6','Service Center':'#d97706','Rental':'#10b981'
 };
 
@@ -1158,8 +1153,8 @@ let sortBy = 'rating';
 
 // Google Sheets config — вставьте ID своей таблицы
 // SHEET_ID and data loading handled by data.js
-const SHOP_SHEET_ID    = '1UPDzvZWsQaamHxbo2eW2mW3l3E07sh7OGgGR5hqxCn8';
-const SERVICE_SHEET_ID = '1TrYuCqj2j-Cr28ef3SyY0aObcYgdK47ikXBNUY9APSs';
+const SHEET_SERVICE_TAB = 'service';
+// Set this when ready: const SERVICE_SHEET_ID = 'your-service-sheet-id';
 let logoTaps = 0;
 let currentPlan = null;
 let currentPlanTier = 0; // 0=none 1=city 2=country 3=all
@@ -1359,36 +1354,19 @@ function buildVenueFilters() {
   const cities = ['All',...selectedCountry.cities.filter(c => cvs.some(v=>v.city===c))];
   const genres = ['All',...new Set(cvs.flatMap(v=>v.genre||[]))];
   const TYPE_DISPLAY = {
-    // Nightclub
     'Nightclub':'Nightclub','Night Club':'Nightclub','nightclub':'Nightclub','Club':'Nightclub',
-    // Bar (separate from club)
-    'Bar & Club':'Bar','Bar':'Bar','Lounge':'Bar',
-    // Rooftop — own category
-    'Rooftop Bar':'Rooftop Bar','Rooftop':'Rooftop Bar','rooftop bar':'Rooftop Bar',
-    // Promo Group
+    'Rooftop Bar':'Rooftop Bar',
     'Promo Group':'Promo Group',
-    // Festival
-    'Festival':'Festival',
-    'festival':'Festival',
-    'Festival ':'Festival',
-    'Music Festival':'Festival',
-    'Beach Festival':'Festival',
-    // Beach Club
+    'Bar & Club':'Bar & Club','Bar':'Bar & Club','Lounge':'Bar & Club',
     'Beach Club':'Beach Club',
-    // Restaurant — rooftop restaurants map here
     'Restaurant':'Restaurant',
     // Music Shop / Service / Rental → excluded from venue filters (belong to Service section)
   };
-  const TYPES_ORDER = ['All','Nightclub','Rooftop Bar','Bar','Promo Group','Festival','Beach Club','Restaurant'];
-  // Exclude service types from venue type filter chips
-  const SVC_TYPES_SET = new Set(['Music Shop','Service Center','Rental','Facebook Group Shop']);
-  const presentTypes = new Set(cvs
-    .filter(v => !SVC_TYPES_SET.has(v.type))
-    .map(v => TYPE_DISPLAY[v.type] || v.type)
-    .filter(t => t && !SVC_TYPES_SET.has(t)));
+  const TYPES_ORDER = ['All','Nightclub','Rooftop Bar','Promo Group','Bar & Club','Beach Club','Restaurant'];
+  const presentTypes = new Set(cvs.map(v => TYPE_DISPLAY[v.type] || v.type));
   const orderedTypes = TYPES_ORDER.filter(t => t==='All' || presentTypes.has(t));
-  // Add any venue types from data not in our predefined list (but not service types)
-  presentTypes.forEach(t => { if(!orderedTypes.includes(t) && !SVC_TYPES_SET.has(t)) orderedTypes.push(t); });
+  // Add any types from data not in our list
+  presentTypes.forEach(t => { if(!orderedTypes.includes(t)) orderedTypes.push(t); });
   document.getElementById('venueTypeFilters').innerHTML = orderedTypes.map(t =>
     `<button class="filter-chip ${venueTypeFilter===t?'active':''}" onclick="setVenueTypeFilter('${t}')">${t==='All'?'🎵 '+T('allVenues'):t}</button>`).join('');
   document.getElementById('venueCityFilters').innerHTML = cities.map(c =>
@@ -1425,7 +1403,7 @@ function renderVenueList() {
   const SERVICE_TYPES = ['Music Shop','Service Center','Rental','Facebook Group Shop'];
   let list = venues.filter(v => countryToId(v.country) === selectedCountry.id && !SERVICE_TYPES.includes(v.type));
   if (venueTypeFilter !== 'All') {
-    const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Bar & Club':'Bar','Bar':'Bar','Lounge':'Bar','Rooftop Bar':'Rooftop Bar','Rooftop':'Rooftop Bar','Promo Group':'Promo Group','Festival':'Festival','Music Festival':'Festival','Beach Festival':'Festival','Beach Club':'Beach Club','Restaurant':'Restaurant'};
+    const TYPE_DISPLAY_F = {'Nightclub':'Nightclub','Night Club':'Nightclub','Club':'Nightclub','Rooftop Bar':'Rooftop Bar','Promo Group':'Promo Group','Bar & Club':'Bar & Club','Bar':'Bar & Club','Lounge':'Bar & Club','Beach Club':'Beach Club','Restaurant':'Restaurant'};
     list = list.filter(v => (TYPE_DISPLAY_F[v.type] || v.type) === venueTypeFilter);
   }
   if (venueCityFilter !== 'All') list = list.filter(v => v.city === venueCityFilter);
@@ -1454,122 +1432,49 @@ const SVC_CATEGORY_MAP = {
   'Аренда': 'rental',
   'Equipment Rental': 'rental',
   'Аренда оборудования': 'rental',
-  'Bar': 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g_bar%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2310001a%22/%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23200030%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22url%28%23g_bar%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%22220%22%20rx%3D%2280%22%20ry%3D%2210%22%20fill%3D%22%23e879f9%22%20opacity%3D%220.2%22/%3E%3Cline%20x1%3D%22200%22%20y1%3D%22100%22%20x2%3D%22200%22%20y2%3D%22220%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%224%22%20opacity%3D%220.6%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M130%2045%20L270%2045%20L240%20120%20Q200%20145%20160%20120%20Z%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%223%22%20opacity%3D%220.75%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22100%22%20r%3D%226%22%20fill%3D%22%23e879f9%22%20opacity%3D%220.5%22/%3E%3Cline%20x1%3D%22100%22%20y1%3D%22230%22%20x2%3D%22300%22%20y2%3D%22230%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%223%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%22250%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22252%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3Ccircle%20cx%3D%22252%22%20cy%3D%22250%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222%22%20opacity%3D%220.4%22/%3E%3Cline%20x1%3D%22155%22%20y1%3D%2245%22%20x2%3D%22148%22%20y2%3D%2215%22%20stroke%3D%22%23e879f9%22%20stroke-width%3D%222.5%22%20opacity%3D%220.5%22/%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%2212%22%20r%3D%225%22%20fill%3D%22%23e879f9%22%20opacity%3D%220.5%22/%3E%3C/svg%3E',
   'Facebook Group Shop': 'groups',
 };
 
 // Загрузка из Google Sheets (таблица service)
 async function loadServicesFromSheet() {
+  // Service section uses its own dedicated Google Sheet (separate from venues)
+  // To enable: define SERVICE_SHEET_ID at the top of this script
+  if (typeof SERVICE_SHEET_ID === 'undefined' || !SERVICE_SHEET_ID) return;
   document.getElementById('svcLoading').style.display = 'block';
-
-  // Parse a Google Sheet gviz response into service objects
-  function parseSheet(text, idPrefix) {
-    try {
-      // CSV fallback path
-      if (text.startsWith('__CSV__')) {
-        const csv = text.slice(7);
-        const lines = csv.split('\n').filter(l => l.trim());
-        if (lines.length < 2) return [];
-        const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g,'').toLowerCase().trim());
-        return lines.slice(1).map((line, idx) => {
-          // Simple CSV parse (handles quoted fields)
-          const vals = line.match(/(".*?"|[^,]+|(?<=,)(?=,)|(?<=,)$|^(?=,))/g) || line.split(',');
-          const get = (name) => {
-            const i = headers.indexOf(name);
-            return i >= 0 && vals[i] ? String(vals[i]).replace(/^"|"$/g,'').trim() : '';
-          };
-          const type = get('type') || 'Music Shop';
-          return {
-            id: idPrefix + idx, name: get('name'), type,
-            category: SVC_CATEGORY_MAP[type] || 'shop',
-            city: get('city'), area: get('area'), country: get('country'),
-            rating: parseFloat(get('rating')) || 4.0,
-            description: get('description'), instagram: get('instagram'),
-            instagramVenue: get('instagramvenue'), whatsapp: get('whatsapp'),
-            email: get('email'), mapurl: get('mapurl'),
-            workingDays: get('workingdays'), photo1: get('photo1'),
-            contactName: get('contactname'), contactRole: get('contactrole'),
-            isPremium: get('ispremium').toUpperCase() === 'TRUE', contacts: [],
-          };
-        }).filter(s => s.name);
-      }
-      const json = JSON.parse(text.substring(47).slice(0,-2));
-      const cols = json.table.cols.map(c => (c.label||'').toLowerCase().trim());
-      return json.table.rows.map((row, idx) => {
-        const get = (name) => {
-          const i = cols.indexOf(name);
-          return i >= 0 && row.c[i] ? String(row.c[i].v||'').trim() : '';
-        };
-        const type = get('type') || get('category') || 'Music Shop';
-        return {
-          id: idPrefix + idx,
-          name: get('name'),
-          type,
-          category: SVC_CATEGORY_MAP[type] || 'shop',
-          city: get('city'),
-          area: get('area') || get('district') || '',
-          country: get('country'),
-          rating: parseFloat(get('rating')) || 4.0,
-          description: get('description') || get('desc') || '',
-          instagram: get('instagram'),
-          instagramVenue: get('instagramvenue') || get('venue_instagram') || '',
-          whatsapp: get('whatsapp') || '',
-          email: get('email') || '',
-          mapurl: get('mapurl') || get('map') || '',
-          brands: get('brands') || get('brand') || '',
-          workingDays: get('workingdays') || get('hours') || '',
-          photo1: get('photo1') || get('logo') || '',
-          contactName: get('contactname') || '',
-          contactRole: get('contactrole') || '',
-          isPremium: (get('ispremium') || get('premium') || '').toUpperCase() === 'TRUE',
-          contacts: [],
-        };
-      }).filter(s => s.name);
-    } catch(e) {
-      console.warn('Parse error:', e);
-      return [];
-    }
-  }
-
-  const fetchSheet = async (id) => {
-    // Try gviz first (preferred — returns structured JSON)
-    const gvizUrl = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json`;
-    try {
-      const res = await fetch(gvizUrl);
-      if (!res.ok) throw new Error('gviz failed');
-      const text = await res.text();
-      if (text.includes('google.visualization')) return text;
-      throw new Error('unexpected response');
-    } catch(e) {
-      // Fallback: export as CSV
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${id}/export?format=csv`;
-      const res = await fetch(csvUrl);
-      if (!res.ok) throw new Error('CSV export also failed');
-      // Return in gviz-like format by wrapping CSV parse
-      const csv = await res.text();
-      return '__CSV__' + csv;
-    }
-  };
-
   try {
-    const [shopText, svcText] = await Promise.all([
-      fetchSheet(SHOP_SHEET_ID),
-      fetchSheet(SERVICE_SHEET_ID),
-    ]);
-    const shops    = parseSheet(shopText,  'shop_');
-    const svcs     = parseSheet(svcText,   'svc_');
-    const combined = [...shops, ...svcs];
-    if (combined.length > 0) services = combined;
-    console.log(`Loaded ${shops.length} shops + ${svcs.length} service centers`);
+    const url = `https://docs.google.com/spreadsheets/d/${SERVICE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_SERVICE_TAB)}`;
+    const res = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.substring(47).slice(0,-2));
+    const cols = json.table.cols.map(c => (c.label||'').toLowerCase().trim());
+    const rows = json.table.rows;
+    const parsed = rows.map((row, idx) => {
+      const get = (name) => {
+        const i = cols.indexOf(name);
+        return i >= 0 && row.c[i] ? String(row.c[i].v||'').trim() : '';
+      };
+      const type = get('type') || get('category') || 'Music Shop';
+      return {
+        id: 'svc_' + idx,
+        name: get('name'),
+        type,
+        category: SVC_CATEGORY_MAP[type] || 'shop',
+        city: get('city'),
+        area: get('area') || get('district') || '',
+        country: get('country'),
+        rating: parseFloat(get('rating')) || 4.0,
+        description: get('description') || get('desc') || '',
+        instagram: get('instagram'),
+        brands: get('brands') || get('brand') || '',
+        workingHours: get('hours') || get('workinghours') || '',
+        photo1: get('photo1') || get('logo') || '',
+        isPremium: get('premium') === 'true' || get('hot') === 'true',
+        contacts: [],
+      };
+    }).filter(s => s.name);
+    if (parsed.length > 0) services = parsed;
   } catch(e) {
     console.warn('Sheets load failed:', e);
-    document.getElementById('svcLoading').style.display = 'none';
-    document.getElementById('serviceListNew').innerHTML =
-      `<div class="empty-state" style="color:#c9a84c;">
-        <div class="empty-icon">⚠️</div>
-        <p style="color:#888;font-size:12px;">Could not load data.<br>Please check your internet connection.</p>
-      </div>`;
-    return;
   }
   document.getElementById('svcLoading').style.display = 'none';
   buildSvcSortDropdowns();
@@ -1642,14 +1547,11 @@ function svcCardHTML(s) {
   const countryObj = COUNTRIES.find(c => c.id === countryToId(s.country));
   const flag = countryObj ? countryObj.flag : '';
   const countryName = countryObj ? countryObj.name : s.country;
-  const catEmoji = {shop:'🎸', service:'🔧', rental:'🎚️', groups:'👥'};
+  const catEmoji = {shop:'🎸', service:'🔧', rental:'🎚️'};
   const cat = SVC_CATEGORY_MAP[s.type] || s.category || 'shop';
-  const svcTypeImg = TYPE_IMAGES[s.type] || null;
   const logoHTML = s.photo1
-    ? `<div class="svc-logo"><img src="${s.photo1}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"></div>`
-    : svcTypeImg
-      ? `<div class="svc-logo" style="background-image:url('${svcTypeImg}');background-size:cover;background-position:center;border-radius:12px;"></div>`
-      : `<div class="svc-logo" style="font-size:24px;">${catEmoji[cat]||'🎵'}</div>`;
+    ? `<div class="svc-logo"><img src="${s.photo1}" alt="${s.name}" onerror="this.parentElement.innerHTML='${catEmoji[cat]||'🎵'}'"></div>`
+    : `<div class="svc-logo" style="font-size:24px;">${catEmoji[cat]||'🎵'}</div>`;
 
   // Аренда — открываем форму запроса
   const clickAction = cat === 'rental'
@@ -1702,15 +1604,7 @@ function venueCardHTML(v) {
         <img src="${photo1}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
        </div>`
     : [0].map(i => {
-        const _typeNorm = {'Night Club':'Nightclub','nightclub':'Nightclub','Club':'Nightclub',
-          'Rooftop bar':'Rooftop Bar','rooftop':'Rooftop Bar','Rooftop Bar':'Rooftop Bar',
-          'Promo group':'Promo Group','promo':'Promo Group',
-          'Bar':'Bar','Bar & Club':'Bar','Lounge':'Bar',
-          'Beach club':'Beach Club','beachclub':'Beach Club',
-          'Music shop':'Music Shop','service center':'Service Center','festival':'Festival','Festival ':'Festival',
-        };
-        const _t = v.type || '';
-        const typeImg = TYPE_IMAGES[_t] || TYPE_IMAGES[_typeNorm[_t]] || TYPE_IMAGES['Nightclub'];
+        const typeImg = TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub'];
         return `<div class="carousel-slide active" style="background-image:url('${typeImg}');background-size:cover;background-position:center;background-color:${grads[0]};"></div>`;
       }).join('');
 
@@ -1753,15 +1647,7 @@ function openVenue(id) {
   const slideCount = 1;
 
   // Use photo1 if available, otherwise TYPE_IMAGE data URI
-  const _typeNorm2 = {'Night Club':'Nightclub','nightclub':'Nightclub','Club':'Nightclub',
-    'Rooftop bar':'Rooftop Bar','rooftop':'Rooftop Bar','Rooftop Bar':'Rooftop Bar',
-    'Promo group':'Promo Group','promo':'Promo Group',
-    'Bar':'Bar','Bar & Club':'Bar','Lounge':'Bar',
-    'Beach club':'Beach Club',
-    'Music shop':'Music Shop','service center':'Service Center','festival':'Festival','Festival ':'Festival',
-  };
-  const _t2 = v.type || '';
-  const typeImg = TYPE_IMAGES[_t2] || TYPE_IMAGES[_typeNorm2[_t2]] || TYPE_IMAGES['Nightclub'];
+  const typeImg = TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub'];
   const slidesBg = photo1
     ? `background:${grads[0]};background-image:url('${photo1}');background-size:cover;background-position:center;`
     : `background-image:url('${typeImg}');background-size:cover;background-position:center;background-color:${grads[0]};`;
@@ -1780,29 +1666,7 @@ function openVenue(id) {
 
   // Body
   const isSaved = savedIds.includes(v.id);
-  // Build contacts from flat fields if contacts array is empty (data from Sheets)
-  // Service/shop items use: instagram (contact), instagramVenue, whatsapp, telegram, line, email, mapurl
-  let contacts = (v.contacts||[]).filter(c=>c.name);
-  if (!contacts.length) {
-    const hasContact = v.contactName || v.instagram || v.whatsapp || v.telegram || v.line || v.email;
-    if (hasContact) {
-      contacts = [{
-        name:      v.contactName || '',
-        role:      v.contactRole || 'Manager',
-        whatsapp:  v.whatsapp  || '',
-        telegram:  v.telegram  || '',
-        line:      v.line      || '',
-        instagram: v.instagram || '',
-        facebook:  v.facebook  || v.mapurl?.includes('facebook') ? (v.mapurl||'') : '',
-        email:     v.email     || '',
-      }];
-    }
-  }
-  // Normalize field aliases from different data sources
-  const venueIg = v.venueInstagram || v.instagramVenue || v.instagramvenue || '';
-  const workingInfo = v.workingDays || v.workingdays || v.workingHours || v.workinghours || '';
-  const brandsInfo = v.brands || v.brand || '';
-  const mapUrl = v.mapurl || v.map || '';
+  const contacts = (v.contacts||[]).filter(c=>c.name);
   function channelUrl(key, val) {
     const v = val.trim();
     if (key === 'whatsapp') {
@@ -1871,12 +1735,12 @@ function openVenue(id) {
     </div>
     ${v.description?`<div class="detail-section"><div class="detail-section-label">${T('dAbout')}</div><div class="detail-desc">${v.description}</div></div>`:''}
     ${v.genre&&v.genre.length?`<div class="detail-section"><div class="detail-section-label">${T('dGenres')}</div><div class="tag-row">${v.genre.map(g=>`<span class="tag">${g}</span>`).join('')}</div></div>`:''}
-    ${v.fee?`<div class="detail-section"><div class="detail-section-label">${T('dFee')}</div><div class="detail-desc" style="color:${color};">${v.fee}</div></div>`:''}
+    ${v.fee?`<div class="detail-section"><div class="detail-section-label">${T('dFee')}</div><div class="detail-desc" style="color:${color};">${v.fee} THB</div></div>`:''}
     ${v.nights&&v.nights.length?`<div class="detail-section"><div class="detail-section-label">${T('dDays')}</div><div class="tag-row">${v.nights.map(n=>`<span class="tag">${n}</span>`).join('')}</div></div>`:''}
-    ${workingInfo?`<div class="detail-section"><div class="detail-section-label">${T('dHours')}</div><div class="detail-desc">${workingInfo}</div></div>`:''}
-    ${brandsInfo?`<div class="detail-section"><div class="detail-section-label">${T('dBrands')}</div><div class="detail-desc" style="color:#60a5fa;">${brandsInfo}</div></div>`:''}
-    ${venueIg?`<div class="detail-section"><div class="detail-section-label">${T('dInstagram')}</div><div class="detail-desc"><a href="https://instagram.com/${venueIg.replace('@','')}" target="_blank" style="color:#c9a84c;text-decoration:none;">📸 ${venueIg}</a></div></div>`:''}
-    ${mapUrl?`<div class="detail-section"><div class="detail-section-label">${T('dLocation')}</div><div class="detail-desc"><a href="${mapUrl}" target="_blank" style="color:#60a5fa;text-decoration:none;">📍 ${mapUrl.includes('facebook')?'Open Facebook Group':T('dOpenMap')}</a></div></div>`:''}
+    ${v.brands?`<div class="detail-section"><div class="detail-section-label">${T('dBrands')}</div><div class="detail-desc" style="color:#60a5fa;">${v.brands}</div></div>`:''}
+    ${v.workingHours?`<div class="detail-section"><div class="detail-section-label">${T('dHours')}</div><div class="detail-desc">${v.workingHours}</div></div>`:''}
+    ${v.venueInstagram?`<div class="detail-section"><div class="detail-section-label">${T('dInstagram')}</div><div class="detail-desc"><a href="https://instagram.com/${v.venueInstagram.replace('@','')}" target="_blank" style="color:#c9a84c;text-decoration:none;">📸 ${v.venueInstagram}</a></div></div>`:''}
+    ${v.mapurl?`<div class="detail-section"><div class="detail-section-label">${T('dLocation')}</div><div class="detail-desc"><a href="${v.mapurl}" target="_blank" style="color:#60a5fa;text-decoration:none;">📍 ${T('dOpenMap')}</a></div></div>`:''}
     ${contactsHTML?`<div style="margin-top:4px;"><div style="font-size:10px;color:${color};letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">${T('dContacts')}</div>${contactsHTML}</div>`:''}`;
 
   document.getElementById('venue-detail').classList.add('open');
@@ -2046,7 +1910,7 @@ function openAdminForm(id) {
   editingAdminItem = id ? (adminSection==='venues'?venues:services).find(v=>v.id===id) : null;
   const v = editingAdminItem;
   const countries_opts = COUNTRIES.map(c=>`<option value="${c.id}" ${v&&v.country===c.id?'selected':''}>${c.flag} ${c.name}</option>`).join('');
-  const types = adminSection==='venues'?['Nightclub','Beach Club','Rooftop Bar','Bar','Club','Lounge','Restaurant']:['Music Shop','Service Center'];
+  const types = adminSection==='venues'?['Nightclub','Beach Club','Rooftop Bar','Bar & Club','Club','Lounge']:['Music Shop','Service Center'];
   const type_opts = types.map(t=>`<option value="${t}" ${v&&v.type===t?'selected':''}>${t}</option>`).join('');
   document.getElementById('adminFormView').innerHTML = `
     <button class="back-btn" onclick="closeAdminForm()" style="margin:12px 0;">← Back</button>
