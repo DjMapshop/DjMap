@@ -1,20 +1,10 @@
 // ══════════════════════════════════════════════
 //  DJ MAP — DATA LOADER
-//  Main venues:   1ODl5g1ac57wEUHmnSY0naG2SgUXyLvisUJinSL6a9Qo
-//  Service Ctrs:  1TrYuCqj2j-Cr28ef3SyY0aObcYgdK47ikXBNUY9APSs
-//  Shops/FB:      1UPDzvZWsQaamHxbo2eW2mW3l3E07sh7OGgGR5hqxCn8
 // ══════════════════════════════════════════════
 
 const SHEET_ID       = '1ODl5g1ac57wEUHmnSY0naG2SgUXyLvisUJinSL6a9Qo';
 const SHEET_ID_SVC   = '1TrYuCqj2j-Cr28ef3SyY0aObcYgdK47ikXBNUY9APSs';
 const SHEET_ID_SHOPS = '1UPDzvZWsQaamHxbo2eW2mW3l3E07sh7OGgGR5hqxCn8';
-
-const SHEET_CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Лист1`;
-const SHEET_CSV_URL2 = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
-const SVC_CSV_URL    = `https://docs.google.com/spreadsheets/d/${SHEET_ID_SVC}/gviz/tq?tqx=out:csv`;
-const SVC_CSV_URL2   = `https://docs.google.com/spreadsheets/d/${SHEET_ID_SVC}/export?format=csv&gid=0`;
-const SHOPS_CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID_SHOPS}/gviz/tq?tqx=out:csv`;
-const SHOPS_CSV_URL2 = `https://docs.google.com/spreadsheets/d/${SHEET_ID_SHOPS}/export?format=csv&gid=0`;
 
 const COUNTRY_MAP = {
   'thailand':'thailand','таиланд':'thailand',
@@ -47,9 +37,9 @@ const TYPE_MAP = {
   'promo group':'Promo Group','promo':'Promo Group',
   'restaurant':'Restaurant','ресторан':'Restaurant',
   'music shop':'Music Shop','музыкальный магазин':'Music Shop','shop':'Music Shop','магазин':'Music Shop',
-  'service center':'Service Center','сервисный центр':'Service Center','service':'Service Center','сервис':'Service Center',
+  'service center':'Service Center','сервисный центр':'Service Center','service':'Service Center','сервис':'Service Center','service centre':'Service Center',
   'rental':'Rental','аренда':'Rental','аренда оборудования':'Rental','equipment rental':'Rental',
-  'facebook group shop':'Facebook Group Shop','facebook group':'Facebook Group Shop','fb group':'Facebook Group Shop','fb shop':'Facebook Group Shop',
+  'facebook group shop':'Facebook Group Shop','facebook group':'Facebook Group Shop','fb group':'Facebook Group Shop','fb shop':'Facebook Group Shop','facebook shop':'Facebook Group Shop',
 };
 
 function parseCSVLine(line) {
@@ -70,6 +60,32 @@ async function tryFetch(url) {
   return res.text();
 }
 
+// Try multiple URL variants for a sheet
+async function fetchSheet(sheetId, sheetName) {
+  const base = `https://docs.google.com/spreadsheets/d/${sheetId}`;
+  const encoded = sheetName ? encodeURIComponent(sheetName) : null;
+  const urls = encoded
+    ? [
+        `${base}/gviz/tq?tqx=out:csv&sheet=${encoded}`,
+        `${base}/export?format=csv&gid=0`,
+      ]
+    : [
+        `${base}/gviz/tq?tqx=out:csv&sheet=%D0%9B%D0%B8%D1%81%D1%821`,
+        `${base}/gviz/tq?tqx=out:csv`,
+        `${base}/export?format=csv&gid=0`,
+      ];
+  for (const url of urls) {
+    try {
+      const text = await tryFetch(url);
+      if (text && text.length > 50 && !text.includes('<!DOCTYPE')) {
+        console.log(`✅ Loaded from: ${url}`);
+        return text;
+      }
+    } catch(e) { /* try next */ }
+  }
+  throw new Error(`All URLs failed for sheet ${sheetId}`);
+}
+
 function normaliseGenre(g) {
   const map = {
     'afro house':'Afro House','organic house':'Organic House','melodic house':'Melodic House',
@@ -83,159 +99,120 @@ function normaliseGenre(g) {
   return map[g.toLowerCase()] || g.trim();
 }
 
-// Parse a CSV text into venue/service objects
 function parseSheetCSV(text, idOffset, defaultType) {
   const lines = text.split('\n').map(l => l.replace('\r','')).filter(l => l.trim());
   if (lines.length < 2) return [];
 
   const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim());
+  console.log(`📋 Headers [offset=${idOffset}]:`, headers.join(', '));
 
-  const iName      = headers.indexOf('name');
-  const iType      = headers.indexOf('type');
-  const iCountry   = headers.indexOf('country');
-  const iCity      = headers.indexOf('city');
-  const iArea      = headers.indexOf('area');
-  const iRating    = headers.indexOf('rating');
-  const iGenre     = headers.indexOf('genre');
-  const iNights    = headers.indexOf('nights');
-  const iFee       = headers.indexOf('fee');
-  const iDesc      = headers.indexOf('description');
-  const iIgVenue   = headers.indexOf('instagramvenue');
-  const iMapUrl    = headers.indexOf('mapurl');
-  const iBrands    = headers.indexOf('brands');
-  const iHours     = headers.indexOf('workinghours');
-  const iPhoto1    = headers.indexOf('photo1');
-  const iPhoto2    = headers.indexOf('photo2');
-  const iPhoto3    = headers.indexOf('photo3');
-  const iHot       = headers.indexOf('hot');
-  const iPremium   = headers.indexOf('ispremium');
-  const iCapacity  = headers.indexOf('capacity');
-  const iCName     = headers.indexOf('contactname');
-  const iCRole     = headers.indexOf('contactrole');
-  const iWhatsApp  = headers.indexOf('whatsapp');
-  const iTelegram  = headers.indexOf('telegram');
-  const iLine      = headers.indexOf('line');
-  const iInstagram = headers.indexOf('instagram');
-  const iEmail     = headers.indexOf('email');
-  const iWebsite   = headers.indexOf('website');
+  const col = (vals, key) => {
+    const i = headers.indexOf(key);
+    return (i >= 0 && i < vals.length) ? (vals[i] || '').trim() : '';
+  };
 
   return lines.slice(1).map((line, idx) => {
     const vals = parseCSVLine(line);
-    const col  = (i) => (i >= 0 && i < vals.length) ? (vals[i] || '').trim() : '';
+    const g = (key) => col(vals, key);
 
-    const name = col(iName);
+    const name = g('name');
     if (!name) return null;
 
-    const typeRaw = col(iType).toLowerCase();
-    const type = TYPE_MAP[typeRaw] || (defaultType || col(iType) || 'Nightclub');
+    const typeRaw = g('type').toLowerCase();
+    const type = TYPE_MAP[typeRaw] || defaultType || g('type') || 'Music Shop';
 
-    const genreRaw = col(iGenre);
-    const genre = genreRaw ? genreRaw.split(/[;,]/).map(s => normaliseGenre(s.trim())).filter(Boolean) : [];
-
-    const nightsRaw = col(iNights);
-    const nights = nightsRaw ? nightsRaw.split(/[;,]/).map(s => s.trim()).filter(Boolean) : [];
-
-    const contactName = col(iCName);
-    const contacts = contactName ? [{
-      name:      contactName,
-      role:      col(iCRole) || 'Manager',
-      whatsapp:  col(iWhatsApp),
-      telegram:  col(iTelegram),
-      instagram: col(iInstagram),
-      line:      col(iLine),
-      email:     col(iEmail),
-    }] : [];
-
-    const countryRaw = col(iCountry).toLowerCase().trim();
-    const country = COUNTRY_MAP[countryRaw] || countryRaw.replace(/\s+/g,'');
-
-    const isPremiumRaw = col(iPremium) || col(iHot);
-    const isPremium = ['true','1','yes','да'].includes((isPremiumRaw || '').toLowerCase());
-
-    // Determine category for service section
-    const SVC_TYPES = ['Music Shop','Service Center','Rental','Facebook Group Shop'];
     const category = type === 'Music Shop' ? 'shop'
       : type === 'Service Center' ? 'service'
       : type === 'Rental' ? 'rental'
       : type === 'Facebook Group Shop' ? 'groups'
       : null;
 
+    const genreRaw = g('genre');
+    const genre = genreRaw ? genreRaw.split(/[;,]/).map(s => normaliseGenre(s.trim())).filter(Boolean) : [];
+
+    const contactName = g('contactname');
+    const contacts = contactName ? [{
+      name:      contactName,
+      role:      g('contactrole') || 'Manager',
+      whatsapp:  g('whatsapp'),
+      telegram:  g('telegram'),
+      instagram: g('instagram'),
+      line:      g('line'),
+      email:     g('email'),
+    }] : [];
+
+    const countryRaw = g('country').toLowerCase().trim();
+    const country = COUNTRY_MAP[countryRaw] || countryRaw.replace(/\s+/g,'');
+
+    const isPremiumRaw = g('ispremium') || g('hot');
+    const isPremium = ['true','1','yes','да'].includes(isPremiumRaw.toLowerCase());
+
     return {
       id: idOffset + idx,
       name,
       country,
-      city:         col(iCity),
-      area:         col(iArea),
+      city:         g('city'),
+      area:         g('area'),
       type,
+      category,
       genre,
-      rating:       parseFloat(col(iRating)) || 4.5,
-      capacity:     parseInt(col(iCapacity)) || 0,
-      description:  col(iDesc),
-      fee:          col(iFee),
-      nights,
+      rating:       parseFloat(g('rating')) || 4.5,
+      capacity:     parseInt(g('capacity')) || 0,
+      description:  g('description'),
+      fee:          g('fee'),
+      nights:       [],
       isPremium,
       contacts,
-      instagram:      col(iIgVenue) || col(iInstagram),
-      venueInstagram: col(iIgVenue),
-      website:        col(iWebsite) || '',
-      mapurl:         col(iMapUrl),
-      brands:         col(iBrands) || '',
-      workingHours:   col(iHours) || '',
-      photos:         [],
-      category,
+      instagram:      g('instagramvenue') || g('instagram'),
+      venueInstagram: g('instagramvenue'),
+      website:        g('website') || '',
+      mapurl:         g('mapurl'),
+      brands:         g('brands') || '',
+      workingHours:   g('workinghours') || '',
+      photos: [],
     };
   }).filter(Boolean);
 }
 
 async function loadSheetData() {
-  // ── 1. Main venues sheet ──────────────────────────────────────────────────
-  let venueRows = [];
+  const SVC_TYPES = ['Music Shop','Service Center','Rental','Facebook Group Shop'];
+
+  // ── 1. Main venues ────────────────────────────────────────────────────────
+  let venueRows = [], serviceRowsFromMain = [];
   try {
-    let text = '';
-    try { text = await tryFetch(SHEET_CSV_URL); }
-    catch(e) { text = await tryFetch(SHEET_CSV_URL2); }
-    venueRows = parseSheetCSV(text, 1000, 'Nightclub');
-    console.log(`✅ Venues loaded: ${venueRows.length}`);
+    const text = await fetchSheet(SHEET_ID, 'Лист1');
+    const all = parseSheetCSV(text, 1000, 'Nightclub');
+    venueRows = all.filter(v => !SVC_TYPES.includes(v.type));
+    serviceRowsFromMain = all.filter(v => SVC_TYPES.includes(v.type));
+    console.log(`✅ Main: ${venueRows.length} venues, ${serviceRowsFromMain.length} services`);
   } catch(e) {
-    console.warn('⚠️ Main sheet unavailable:', e.message);
+    console.warn('⚠️ Main sheet failed:', e.message);
   }
 
-  // ── 2. Service Centers sheet ──────────────────────────────────────────────
+  // ── 2. Service Centers ────────────────────────────────────────────────────
   let svcRows = [];
   try {
-    let text = '';
-    try { text = await tryFetch(SVC_CSV_URL); }
-    catch(e) { text = await tryFetch(SVC_CSV_URL2); }
+    const text = await fetchSheet(SHEET_ID_SVC, 'dj service centers');
     svcRows = parseSheetCSV(text, 3000, 'Service Center');
-    console.log(`✅ Service Centers loaded: ${svcRows.length}`);
+    console.log(`✅ Service Centers: ${svcRows.length}`);
   } catch(e) {
-    console.warn('⚠️ Service sheet unavailable:', e.message);
+    console.warn('⚠️ Service Centers sheet failed:', e.message);
   }
 
-  // ── 3. Shops + FB Groups sheet ────────────────────────────────────────────
+  // ── 3. Shops + FB Groups ──────────────────────────────────────────────────
   let shopRows = [];
   try {
-    let text = '';
-    try { text = await tryFetch(SHOPS_CSV_URL); }
-    catch(e) { text = await tryFetch(SHOPS_CSV_URL2); }
+    const text = await fetchSheet(SHEET_ID_SHOPS, 'dj music shops');
     shopRows = parseSheetCSV(text, 5000, 'Music Shop');
-    console.log(`✅ Shops/FB loaded: ${shopRows.length}`);
+    console.log(`✅ Shops/FB: ${shopRows.length}`);
   } catch(e) {
-    console.warn('⚠️ Shops sheet unavailable:', e.message);
+    console.warn('⚠️ Shops sheet failed:', e.message);
   }
 
-  // ── Split: venues vs services ─────────────────────────────────────────────
-  const SVC_TYPES = ['Music Shop','Service Center','Rental','Facebook Group Shop'];
-  const allRows   = venueRows;
+  window.venuesFromSheet   = venueRows;
+  window.servicesFromSheet = [...serviceRowsFromMain, ...svcRows, ...shopRows];
 
-  window.venuesFromSheet   = allRows.filter(v => !SVC_TYPES.includes(v.type));
-  window.servicesFromSheet = [
-    ...allRows.filter(v => SVC_TYPES.includes(v.type)),
-    ...svcRows,
-    ...shopRows,
-  ];
-
-  console.log(`✅ Final: ${window.venuesFromSheet.length} venues, ${window.servicesFromSheet.length} services`);
+  console.log(`📊 Total: ${window.venuesFromSheet.length} venues, ${window.servicesFromSheet.length} services`);
   return true;
 }
 
