@@ -1676,8 +1676,16 @@ function venueCardHTML(v) {
         <img src="${photo1}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
        </div>`
     : [0].map(i => {
-        const typeImg = TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub'];
-        return `<div class="carousel-slide active" style="background-image:url('${typeImg}');background-size:cover;background-position:center;background-color:${grads[0]};"></div>`;
+        const _typeNorm = {'Night Club':'Nightclub','nightclub':'Nightclub','Club':'Nightclub',
+          'Rooftop bar':'Rooftop Bar','rooftop':'Rooftop Bar',
+          'Promo group':'Promo Group','promo':'Promo Group',
+          'Bar':'Bar & Club','Lounge':'Bar & Club',
+          'Beach club':'Beach Club','beachclub':'Beach Club',
+          'Music shop':'Music Shop','service center':'Service Center',
+        };
+        const _t = v.type || '';
+        const typeImg = TYPE_IMAGES[_t] || TYPE_IMAGES[_typeNorm[_t]] || TYPE_IMAGES['Nightclub'];
+        return `<div class="carousel-slide active" style="background-image:url('${typeImg}');background-size:contain;background-repeat:no-repeat;background-position:center;background-color:${grads[0]};"></div>`;
       }).join('');
 
   const dots = Array.from({length: slideCount}, (_, i) =>
@@ -1719,10 +1727,18 @@ function openVenue(id) {
   const slideCount = 1;
 
   // Use photo1 if available, otherwise TYPE_IMAGE data URI
-  const typeImg = TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub'];
+  const _typeNorm2 = {'Night Club':'Nightclub','nightclub':'Nightclub','Club':'Nightclub',
+    'Rooftop bar':'Rooftop Bar','rooftop':'Rooftop Bar',
+    'Promo group':'Promo Group','promo':'Promo Group',
+    'Bar':'Bar & Club','Lounge':'Bar & Club',
+    'Beach club':'Beach Club',
+    'Music shop':'Music Shop','service center':'Service Center',
+  };
+  const _t2 = v.type || '';
+  const typeImg = TYPE_IMAGES[_t2] || TYPE_IMAGES[_typeNorm2[_t2]] || TYPE_IMAGES['Nightclub'];
   const slidesBg = photo1
     ? `background:${grads[0]};background-image:url('${photo1}');background-size:cover;background-position:center;`
-    : `background-image:url('${typeImg}');background-size:cover;background-position:center;background-color:${grads[0]};`;
+    : `background-image:url('${typeImg}');background-size:contain;background-repeat:no-repeat;background-position:center;background-color:${grads[0]};`;
   const slides = `<div class="detail-slide active" style="${slidesBg};position:relative;" id="ds_${id}_0">
     <span class="detail-name-bg">${v.name.toUpperCase()}</span>
   </div>`;
