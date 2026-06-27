@@ -54,9 +54,9 @@ const TYPE_MAP = {
   'nightclub':'Nightclub','night club':'Nightclub','ночной клуб':'Nightclub',
   'beach club':'Beach Club','beachclub':'Beach Club','бич клуб':'Beach Club',
   'rooftop bar':'Rooftop Bar','rooftop':'Rooftop Bar',
-  'bar & club':'Bar & Club','bar and club':'Bar & Club',
-  'bar':'Bar & Club','клуб':'Nightclub','club':'Nightclub',
-  'lounge':'Bar & Club','лаунж':'Bar & Club',
+  'bar & club':'Bar','bar and club':'Bar',
+  'bar':'Bar','клуб':'Nightclub','club':'Nightclub',
+  'lounge':'Bar','лаунж':'Bar & Club',
   'promo group':'Promo Group','promo':'Promo Group',
   'restaurant':'Restaurant','ресторан':'Restaurant',
   'music shop':'Music Shop','музыкальный магазин':'Music Shop',
@@ -164,7 +164,9 @@ async function loadSheetData() {
       // Google Drive open link
       const m2 = url.match(/id=([a-zA-Z0-9_-]+)/);
       if (m2) return 'https://drive.google.com/thumbnail?id=' + m2[1] + '&sz=w800';
-      return url;
+      // Only return if it's a valid http URL
+      if (url.startsWith('http://') || url.startsWith('https://')) return url;
+      return ''; // ignore @handles, website names, etc.
     }
 
     const photo1 = driveUrl(get('photo1'));
