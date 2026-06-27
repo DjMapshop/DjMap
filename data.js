@@ -131,15 +131,23 @@ function parseSheetCSV(text, idOffset, defaultType) {
     const genreRaw = g('genre');
     const genre = genreRaw ? genreRaw.split(/[;,]/).map(s => normaliseGenre(s.trim())).filter(Boolean) : [];
 
-    const contactName = g('contactname');
-    const contacts = contactName ? [{
+    // Support multiple column name variants
+    const contactName = g('contactname') || g('contact name') || g('contact') || g('manager') || name;
+    const contactRole = g('contactrole') || g('contact role') || g('role') || 'Manager';
+    const whatsapp  = g('whatsapp') || g('whats app') || g('phone') || g('tel') || '';
+    const telegram  = g('telegram') || g('tg') || '';
+    const instagram = g('instagram') || g('ig') || '';
+    const lineVal   = g('line') || '';
+    const email     = g('email') || g('e-mail') || '';
+
+    const contacts = (whatsapp || telegram || instagram || lineVal || email) ? [{
       name:      contactName,
-      role:      g('contactrole') || 'Manager',
-      whatsapp:  g('whatsapp'),
-      telegram:  g('telegram'),
-      instagram: g('instagram'),
-      line:      g('line'),
-      email:     g('email'),
+      role:      contactRole,
+      whatsapp,
+      telegram,
+      instagram,
+      line:      lineVal,
+      email,
     }] : [];
 
     const countryRaw = g('country').toLowerCase().trim();
