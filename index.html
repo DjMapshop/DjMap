@@ -1196,10 +1196,9 @@ function enterApp(pro) {
       if (!ok) return;
       if (window.venuesFromSheet && window.venuesFromSheet.length > 0) {
         venues = window.venuesFromSheet;
-        // Split services out of venues array
-        const SVC_TYPES = ['Music Shop','Service Center','Rental','Facebook Group Shop'];
-        services = venues.filter(v => SVC_TYPES.includes(v.type));
-        venues = venues.filter(v => !SVC_TYPES.includes(v.type));
+        if (window.servicesFromSheet && window.servicesFromSheet.length > 0) {
+          services = window.servicesFromSheet;
+        }
       }
       rebuildCountriesFromData();
       renderCountriesGrid();
