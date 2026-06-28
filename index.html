@@ -1654,9 +1654,9 @@ function openVenue(id) {
 
   // Always use inline SVG placeholder
   const typeImg = TYPE_IMAGES[v.type] || TYPE_IMAGES['Nightclub'];
-    const slides = `<div class="detail-slide active" style="position:relative;overflow:hidden;background:${grads[0]};" id="ds_${id}_0">
+    const slides = `<div class="detail-slide active" style="background:${grads[0]};" id="ds_${id}_0">
     <img src="${typeImg}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="">
-    <span class="detail-name-bg">${v.name.toUpperCase()}</span>
+    <span class="detail-name-bg" style="position:relative;z-index:2;">${v.name.toUpperCase()}</span>
   </div>`;
   const dots = Array.from({length: slideCount}, (_, i) =>
     `<div class="detail-dot" id="dd_${id}_${i}" style="width:${i===0?20:6}px;${i===0?'background:#fff;':''}"></div>`).join('');
@@ -1758,7 +1758,6 @@ function openVenue(id) {
     ${v.fee?`<div class="detail-section"><div class="detail-section-label">${T('dFee')}</div><div class="detail-desc" style="color:${color};">${v.fee} THB</div></div>`:''}
     ${v.nights&&v.nights.length?`<div class="detail-section"><div class="detail-section-label">${T('dDays')}</div><div class="tag-row">${v.nights.map(n=>`<span class="tag">${n}</span>`).join('')}</div></div>`:''}
     ${v.brands?`<div class="detail-section"><div class="detail-section-label">${T('dBrands')}</div><div class="detail-desc" style="color:#60a5fa;">${v.brands}</div></div>`:''}
-    ${v.workingHours?`<div class="detail-section"><div class="detail-section-label">${T('dHours')}</div><div class="detail-desc">${v.workingHours}</div></div>`:''}
     ${(() => {
       const igRaw = v.venueInstagram || '';
       const igHandle = igRaw.startsWith('http') ? igRaw.replace(/.*instagram\.com\//, '@').replace(/\/$/, '') : igRaw;
